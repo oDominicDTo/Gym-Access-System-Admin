@@ -21,12 +21,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       title: 'Gym Kiosk Admin',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-      ),
-      home: const LoginScreenNfc(), // Your login screen as the initial route
+
+      home: LoginScreenNfc(), // Your login screen as the initial route
     );
   }
 }

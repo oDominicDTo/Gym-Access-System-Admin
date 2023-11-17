@@ -1,46 +1,71 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import '../services/nfc_service.dart'; // Import your NFC service
+import '../services/nfc_service.dart';
 import 'package:gym_kiosk_admin/screens/home.dart';
 
-class LoginScreenNfc extends StatelessWidget {
+class LoginScreenNfc extends StatefulWidget {
   const LoginScreenNfc({Key? key}) : super(key: key);
 
-  Future<void> checkCardUID(BuildContext context) async {
-    final nfcService = NFCService();
-    final cardSerialNumber = await nfcService.getCardSerialNumber();
+  @override
+  State createState() => _LoginScreenNfcState();
+}
 
-    // Define your card UIDs
-    const validUIDs = ['D3BCF3EC', 'B385AAFD', 'C3FF9310'];
+class _LoginScreenNfcState extends State<LoginScreenNfc> {
+  final nfcService = NFCService();
+  late StreamSubscription<String> _nfcSubscription;
 
-    if (cardSerialNumber != null && validUIDs.contains(cardSerialNumber)) {
-      Future.delayed(Duration(milliseconds: 500), () {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => HomeAdmin()),
-        );
-      });
-    } else {
-      // If the card's UID is not valid, display an error message or take appropriate action
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('Error'),
-            content: const Text('Invalid card detected.'),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Text('OK'),
-              ),
-            ],
-          );
-        },
-      );
-    }
+  @override
+  void initState() {
+    super.initState();
+    startNFCListener();
   }
+
+  void startNFCListener() {
+    _nfcSubscription = nfcService.onNFCEvent.listen((cardSerialNumber) {
+      if (cardSerialNumber != 'Error') {
+        // Define your card UIDs
+        const validUIDs = ['D3BCF3EC', 'B385AAFD', 'c3ff9310'];
+
+        if (validUIDs.contains(cardSerialNumber)) {
+          // Delay navigation for 500 milliseconds
+          Future.delayed(const Duration(milliseconds: 500), () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => HomeAdmin()),
+            );
+          });
+        } else {
+          // If the card's UID is not valid, display an error message or take appropriate action
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text('Error'),
+                content: const Text('Invalid card detected.'),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('OK'),
+                  ),
+                ],
+              );
+            },
+          );
+        }
+      }
+    });
+  }
+  @override
+  void dispose() {
+    _nfcSubscription.cancel();
+    nfcService.disposeNFCListener();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -114,10 +139,6 @@ class LoginScreenNfc extends StatelessWidget {
           ),
           Expanded(
             flex: 5,
-            child: GestureDetector(
-              onTap: () async {
-                await checkCardUID(context);
-              },
               child: Container(
                 color: Colors.white,
                 child: Center(
@@ -158,7 +179,6 @@ class LoginScreenNfc extends StatelessWidget {
                 ),
               ),
             ),
-          ),
         ],
       ),
     );
