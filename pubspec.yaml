@@ -43,6 +43,10 @@ dependencies:
       url: https://github.com/google/flutter-desktop-embedding
       path: plugins/window_size
   window_manager: ^0.2.7
+  objectbox: ^2.1.0
+  objectbox_flutter_libs: any
+  objectbox_sync_flutter_libs: any
+
 
 dev_dependencies:
   flutter_test:
@@ -54,6 +58,8 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
+  build_runner: ^2.4.6
+  objectbox_generator: any
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
