@@ -26,7 +26,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
       ),
-      home: const LoginScreenNfc(), // Your login screen as the initial route
+      //home: const LoginScreenNfc(), // Your login screen as the initial route
+        home: HomeAdmin()
     );
   }
 }
