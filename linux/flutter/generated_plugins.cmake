@@ -4,7 +4,6 @@
 
 list(APPEND FLUTTER_PLUGIN_LIST
   objectbox_flutter_libs
-  objectbox_sync_flutter_libs
   screen_retriever
   window_manager
   window_size

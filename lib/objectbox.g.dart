@@ -22,7 +22,7 @@ final _entities = <ModelEntity>[
   ModelEntity(
       id: const IdUid(1, 3748044336097075588),
       name: 'Member',
-      lastPropertyId: const IdUid(12, 51433292769410626),
+      lastPropertyId: const IdUid(22, 4985405420510405406),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
@@ -31,18 +31,145 @@ final _entities = <ModelEntity>[
             type: 6,
             flags: 1),
         ModelProperty(
-            id: const IdUid(2, 7917382204248819544),
-            name: 'name',
+            id: const IdUid(13, 5788129214567572943),
+            name: 'firstName',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(3, 6069712064201288121),
+            id: const IdUid(14, 2413816776795001885),
+            name: 'lastName',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(15, 7593278007052107825),
+            name: 'contactNumber',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(16, 6696026095842803512),
+            name: 'membershipTypeId',
+            type: 11,
+            flags: 520,
+            indexId: const IdUid(1, 9220823875031468001),
+            relationTarget: 'MembershipType'),
+        ModelProperty(
+            id: const IdUid(18, 8440122022333707946),
+            name: 'dateCreated',
+            type: 10,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(19, 7587890181390779687),
+            name: 'nfcTagID',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(20, 7652988575071154012),
             name: 'email',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(12, 51433292769410626),
-            name: 'phoneNumber',
+            id: const IdUid(21, 5429982170979899301),
+            name: 'dateOfBirth',
+            type: 10,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(22, 4985405420510405406),
+            name: 'address',
+            type: 9,
+            flags: 0)
+      ],
+      relations: <ModelRelation>[],
+      backlinks: <ModelBacklink>[]),
+  ModelEntity(
+      id: const IdUid(2, 8465745737525015078),
+      name: 'Attendance',
+      lastPropertyId: const IdUid(6, 4869879890159906831),
+      flags: 0,
+      properties: <ModelProperty>[
+        ModelProperty(
+            id: const IdUid(1, 8210820910057928503),
+            name: 'id',
+            type: 6,
+            flags: 1),
+        ModelProperty(
+            id: const IdUid(3, 3092609652524573519),
+            name: 'checkInTime',
+            type: 10,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(4, 3983741942389938392),
+            name: 'checkOutTime',
+            type: 10,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(6, 4869879890159906831),
+            name: 'memberId',
+            type: 11,
+            flags: 520,
+            indexId: const IdUid(5, 6947746077445817224),
+            relationTarget: 'Member')
+      ],
+      relations: <ModelRelation>[],
+      backlinks: <ModelBacklink>[]),
+  ModelEntity(
+      id: const IdUid(5, 2984732517655358409),
+      name: 'MembershipType',
+      lastPropertyId: const IdUid(5, 6288213097031078528),
+      flags: 0,
+      properties: <ModelProperty>[
+        ModelProperty(
+            id: const IdUid(1, 9182839263428512215),
+            name: 'id',
+            type: 6,
+            flags: 1),
+        ModelProperty(
+            id: const IdUid(2, 924860437331411374),
+            name: 'typeName',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(3, 2961982082893044264),
+            name: 'fee',
+            type: 8,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(4, 10604965359477169),
+            name: 'discount',
+            type: 8,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(5, 6288213097031078528),
+            name: 'isLifetime',
+            type: 1,
+            flags: 0)
+      ],
+      relations: <ModelRelation>[],
+      backlinks: <ModelBacklink>[]),
+  ModelEntity(
+      id: const IdUid(6, 6306018231033438161),
+      name: 'Administrator',
+      lastPropertyId: const IdUid(4, 3907427976412737726),
+      flags: 0,
+      properties: <ModelProperty>[
+        ModelProperty(
+            id: const IdUid(1, 4125466394964549531),
+            name: 'id',
+            type: 6,
+            flags: 1),
+        ModelProperty(
+            id: const IdUid(2, 5066433988226746852),
+            name: 'username',
+            type: 9,
+            flags: 2080,
+            indexId: const IdUid(6, 2120226973327850613)),
+        ModelProperty(
+            id: const IdUid(3, 8050502793383891001),
+            name: 'password',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(4, 3907427976412737726),
+            name: 'nfcTagID',
             type: 9,
             flags: 0)
       ],
@@ -70,12 +197,12 @@ Future<Store> openStore(
 ModelDefinition getObjectBoxModel() {
   final model = ModelInfo(
       entities: _entities,
-      lastEntityId: const IdUid(1, 3748044336097075588),
-      lastIndexId: const IdUid(0, 0),
+      lastEntityId: const IdUid(6, 6306018231033438161),
+      lastIndexId: const IdUid(6, 2120226973327850613),
       lastRelationId: const IdUid(0, 0),
       lastSequenceId: const IdUid(0, 0),
-      retiredEntityUids: const [],
-      retiredIndexUids: const [],
+      retiredEntityUids: const [2820634563096386653, 4791937999762440180],
+      retiredIndexUids: const [5016079819760097089, 1031270484984883474],
       retiredPropertyUids: const [
         7215617545020444247,
         277679724193056298,
@@ -84,7 +211,19 @@ ModelDefinition getObjectBoxModel() {
         615075402634005090,
         5091391286527150474,
         3441854909883553164,
-        6073846162601961073
+        6073846162601961073,
+        7917382204248819544,
+        51433292769410626,
+        6069712064201288121,
+        7505092549254043189,
+        3476232581982776087,
+        3505108149545887651,
+        2959878710206970280,
+        7903212712206819593,
+        6220206829420078622,
+        1620603911374805699,
+        5541981984867774193,
+        4136168887959246208
       ],
       retiredRelationUids: const [],
       modelVersion: 5,
@@ -94,21 +233,30 @@ ModelDefinition getObjectBoxModel() {
   final bindings = <Type, EntityDefinition>{
     Member: EntityDefinition<Member>(
         model: _entities[0],
-        toOneRelations: (Member object) => [],
+        toOneRelations: (Member object) => [object.membershipType],
         toManyRelations: (Member object) => {},
         getId: (Member object) => object.id,
         setId: (Member object, int id) {
           object.id = id;
         },
         objectToFB: (Member object, fb.Builder fbb) {
-          final nameOffset = fbb.writeString(object.name);
+          final firstNameOffset = fbb.writeString(object.firstName);
+          final lastNameOffset = fbb.writeString(object.lastName);
+          final contactNumberOffset = fbb.writeString(object.contactNumber);
+          final nfcTagIDOffset = fbb.writeString(object.nfcTagID);
           final emailOffset = fbb.writeString(object.email);
-          final phoneNumberOffset = fbb.writeString(object.phoneNumber);
-          fbb.startTable(13);
+          final addressOffset = fbb.writeString(object.address);
+          fbb.startTable(23);
           fbb.addInt64(0, object.id);
-          fbb.addOffset(1, nameOffset);
-          fbb.addOffset(2, emailOffset);
-          fbb.addOffset(11, phoneNumberOffset);
+          fbb.addOffset(12, firstNameOffset);
+          fbb.addOffset(13, lastNameOffset);
+          fbb.addOffset(14, contactNumberOffset);
+          fbb.addInt64(15, object.membershipType.targetId);
+          fbb.addInt64(17, object.dateCreated.millisecondsSinceEpoch);
+          fbb.addOffset(18, nfcTagIDOffset);
+          fbb.addOffset(19, emailOffset);
+          fbb.addInt64(20, object.dateOfBirth.millisecondsSinceEpoch);
+          fbb.addOffset(21, addressOffset);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -117,13 +265,126 @@ ModelDefinition getObjectBoxModel() {
           final rootOffset = buffer.derefObject(0);
 
           final object = Member(
-              const fb.StringReader(asciiOptimization: true)
+              id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
+              firstName: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 28, ''),
+              lastName: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 30, ''),
+              contactNumber: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 32, ''),
+              email: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 42, ''),
+              dateOfBirth: DateTime.fromMillisecondsSinceEpoch(
+                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 44, 0)),
+              address: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 46, ''),
+              nfcTagID: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 40, ''),
+              dateCreated: DateTime.fromMillisecondsSinceEpoch(const fb.Int64Reader().vTableGet(buffer, rootOffset, 38, 0)));
+          object.membershipType.targetId =
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 34, 0);
+          object.membershipType.attach(store);
+          return object;
+        }),
+    Attendance: EntityDefinition<Attendance>(
+        model: _entities[1],
+        toOneRelations: (Attendance object) => [object.member],
+        toManyRelations: (Attendance object) => {},
+        getId: (Attendance object) => object.id,
+        setId: (Attendance object, int id) {
+          object.id = id;
+        },
+        objectToFB: (Attendance object, fb.Builder fbb) {
+          fbb.startTable(7);
+          fbb.addInt64(0, object.id);
+          fbb.addInt64(2, object.checkInTime.millisecondsSinceEpoch);
+          fbb.addInt64(3, object.checkOutTime.millisecondsSinceEpoch);
+          fbb.addInt64(5, object.member.targetId);
+          fbb.finish(fbb.endTable());
+          return object.id;
+        },
+        objectFromFB: (Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+
+          final object = Attendance(
+              id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
+              checkInTime: DateTime.fromMillisecondsSinceEpoch(
+                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 8, 0)),
+              checkOutTime: DateTime.fromMillisecondsSinceEpoch(
+                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 10, 0)));
+          object.member.targetId =
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 14, 0);
+          object.member.attach(store);
+          return object;
+        }),
+    MembershipType: EntityDefinition<MembershipType>(
+        model: _entities[2],
+        toOneRelations: (MembershipType object) => [],
+        toManyRelations: (MembershipType object) => {},
+        getId: (MembershipType object) => object.id,
+        setId: (MembershipType object, int id) {
+          object.id = id;
+        },
+        objectToFB: (MembershipType object, fb.Builder fbb) {
+          final typeNameOffset = fbb.writeString(object.typeName);
+          fbb.startTable(6);
+          fbb.addInt64(0, object.id);
+          fbb.addOffset(1, typeNameOffset);
+          fbb.addFloat64(2, object.fee);
+          fbb.addFloat64(3, object.discount);
+          fbb.addBool(4, object.isLifetime);
+          fbb.finish(fbb.endTable());
+          return object.id;
+        },
+        objectFromFB: (Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+
+          final object = MembershipType(
+              id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
+              typeName: const fb.StringReader(asciiOptimization: true)
                   .vTableGet(buffer, rootOffset, 6, ''),
-              const fb.StringReader(asciiOptimization: true)
+              fee: const fb.Float64Reader().vTableGet(buffer, rootOffset, 8, 0),
+              discount:
+                  const fb.Float64Reader().vTableGet(buffer, rootOffset, 10, 0),
+              isLifetime: const fb.BoolReader()
+                  .vTableGet(buffer, rootOffset, 12, false));
+
+          return object;
+        }),
+    Administrator: EntityDefinition<Administrator>(
+        model: _entities[3],
+        toOneRelations: (Administrator object) => [],
+        toManyRelations: (Administrator object) => {},
+        getId: (Administrator object) => object.id,
+        setId: (Administrator object, int id) {
+          object.id = id;
+        },
+        objectToFB: (Administrator object, fb.Builder fbb) {
+          final usernameOffset = fbb.writeString(object.username);
+          final passwordOffset = fbb.writeString(object.password);
+          final nfcTagIDOffset = fbb.writeString(object.nfcTagID);
+          fbb.startTable(5);
+          fbb.addInt64(0, object.id);
+          fbb.addOffset(1, usernameOffset);
+          fbb.addOffset(2, passwordOffset);
+          fbb.addOffset(3, nfcTagIDOffset);
+          fbb.finish(fbb.endTable());
+          return object.id;
+        },
+        objectFromFB: (Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+
+          final object = Administrator(
+              id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
+              username: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 6, ''),
+              password: const fb.StringReader(asciiOptimization: true)
                   .vTableGet(buffer, rootOffset, 8, ''),
-              const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 26, ''),
-              id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0));
+              nfcTagID: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 10, ''));
 
           return object;
         })
@@ -137,13 +398,99 @@ class Member_ {
   /// see [Member.id]
   static final id = QueryIntegerProperty<Member>(_entities[0].properties[0]);
 
-  /// see [Member.name]
-  static final name = QueryStringProperty<Member>(_entities[0].properties[1]);
+  /// see [Member.firstName]
+  static final firstName =
+      QueryStringProperty<Member>(_entities[0].properties[1]);
+
+  /// see [Member.lastName]
+  static final lastName =
+      QueryStringProperty<Member>(_entities[0].properties[2]);
+
+  /// see [Member.contactNumber]
+  static final contactNumber =
+      QueryStringProperty<Member>(_entities[0].properties[3]);
+
+  /// see [Member.membershipType]
+  static final membershipType =
+      QueryRelationToOne<Member, MembershipType>(_entities[0].properties[4]);
+
+  /// see [Member.dateCreated]
+  static final dateCreated =
+      QueryIntegerProperty<Member>(_entities[0].properties[5]);
+
+  /// see [Member.nfcTagID]
+  static final nfcTagID =
+      QueryStringProperty<Member>(_entities[0].properties[6]);
 
   /// see [Member.email]
-  static final email = QueryStringProperty<Member>(_entities[0].properties[2]);
+  static final email = QueryStringProperty<Member>(_entities[0].properties[7]);
 
-  /// see [Member.phoneNumber]
-  static final phoneNumber =
-      QueryStringProperty<Member>(_entities[0].properties[3]);
+  /// see [Member.dateOfBirth]
+  static final dateOfBirth =
+      QueryIntegerProperty<Member>(_entities[0].properties[8]);
+
+  /// see [Member.address]
+  static final address =
+      QueryStringProperty<Member>(_entities[0].properties[9]);
+}
+
+/// [Attendance] entity fields to define ObjectBox queries.
+class Attendance_ {
+  /// see [Attendance.id]
+  static final id =
+      QueryIntegerProperty<Attendance>(_entities[1].properties[0]);
+
+  /// see [Attendance.checkInTime]
+  static final checkInTime =
+      QueryIntegerProperty<Attendance>(_entities[1].properties[1]);
+
+  /// see [Attendance.checkOutTime]
+  static final checkOutTime =
+      QueryIntegerProperty<Attendance>(_entities[1].properties[2]);
+
+  /// see [Attendance.member]
+  static final member =
+      QueryRelationToOne<Attendance, Member>(_entities[1].properties[3]);
+}
+
+/// [MembershipType] entity fields to define ObjectBox queries.
+class MembershipType_ {
+  /// see [MembershipType.id]
+  static final id =
+      QueryIntegerProperty<MembershipType>(_entities[2].properties[0]);
+
+  /// see [MembershipType.typeName]
+  static final typeName =
+      QueryStringProperty<MembershipType>(_entities[2].properties[1]);
+
+  /// see [MembershipType.fee]
+  static final fee =
+      QueryDoubleProperty<MembershipType>(_entities[2].properties[2]);
+
+  /// see [MembershipType.discount]
+  static final discount =
+      QueryDoubleProperty<MembershipType>(_entities[2].properties[3]);
+
+  /// see [MembershipType.isLifetime]
+  static final isLifetime =
+      QueryBooleanProperty<MembershipType>(_entities[2].properties[4]);
+}
+
+/// [Administrator] entity fields to define ObjectBox queries.
+class Administrator_ {
+  /// see [Administrator.id]
+  static final id =
+      QueryIntegerProperty<Administrator>(_entities[3].properties[0]);
+
+  /// see [Administrator.username]
+  static final username =
+      QueryStringProperty<Administrator>(_entities[3].properties[1]);
+
+  /// see [Administrator.password]
+  static final password =
+      QueryStringProperty<Administrator>(_entities[3].properties[2]);
+
+  /// see [Administrator.nfcTagID]
+  static final nfcTagID =
+      QueryStringProperty<Administrator>(_entities[3].properties[3]);
 }
