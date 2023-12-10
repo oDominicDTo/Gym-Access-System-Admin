@@ -1,8 +1,12 @@
+
+
 import 'package:flutter/material.dart';
 import '../screens/dashboard_screen.dart';
 import '../screens/membership_status_screen.dart';
 
 class CustomDrawer extends StatelessWidget {
+
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -24,6 +28,7 @@ class CustomDrawer extends StatelessWidget {
                 ),
                 SizedBox(width: 0), // Add some spacing between the images
                 // Second Image widget
+
 
               ],
             ),
@@ -111,9 +116,6 @@ class CustomDrawer extends StatelessWidget {
 
 
 
-
-
-
           ListTile(
             title: Row(
               children: [
@@ -142,3 +144,4 @@ class CustomDrawer extends StatelessWidget {
     );
   }
 }
+

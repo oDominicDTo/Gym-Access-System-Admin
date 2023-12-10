@@ -10,6 +10,7 @@ class LoginScreenNfc extends StatelessWidget {
     final nfcService = NFCService();
     final cardSerialNumber = await nfcService.getCardSerialNumber();
 
+
     // Define your card UIDs
     const validUIDs = ['D3BCF3EC', 'B385AAFD', 'C3FF9310'];
 

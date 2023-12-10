@@ -1,15 +1,23 @@
+// screens/example_screen.dart
+
 import 'package:flutter/material.dart';
 
+
 class DashboardScreen extends StatelessWidget {
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Dashboard'),
+        title: Text('Example Screen'),
       ),
       body: Center(
-        child: Text('Dashboard Content Goes Here'),
+
+          child: Text('Show Custom Dialog'),
+
       ),
     );
   }
+
 }
