@@ -5,7 +5,7 @@
   "entities": [
     {
       "id": "1:3748044336097075588",
-      "lastPropertyId": "22:4985405420510405406",
+      "lastPropertyId": "24:2701655918142605216",
       "name": "Member",
       "properties": [
         {
@@ -38,11 +38,6 @@
           "relationTarget": "MembershipType"
         },
         {
-          "id": "18:8440122022333707946",
-          "name": "dateCreated",
-          "type": 10
-        },
-        {
           "id": "19:7587890181390779687",
           "name": "nfcTagID",
           "type": 9
@@ -61,6 +56,16 @@
           "id": "22:4985405420510405406",
           "name": "address",
           "type": 9
+        },
+        {
+          "id": "23:1566255455413648655",
+          "name": "membershipStartDate",
+          "type": 10
+        },
+        {
+          "id": "24:2701655918142605216",
+          "name": "membershipEndDate",
+          "type": 10
         }
       ],
       "relations": []
@@ -161,10 +166,37 @@
         }
       ],
       "relations": []
+    },
+    {
+      "id": "7:788978535339810145",
+      "lastPropertyId": "4:654207595721476097",
+      "name": "RenewalLog",
+      "properties": [
+        {
+          "id": "1:4314453429701557409",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "3:3459498858212329392",
+          "name": "renewalDate",
+          "type": 10
+        },
+        {
+          "id": "4:654207595721476097",
+          "name": "memberId",
+          "type": 11,
+          "flags": 520,
+          "indexId": "7:1735341259590220276",
+          "relationTarget": "Member"
+        }
+      ],
+      "relations": []
     }
   ],
-  "lastEntityId": "6:6306018231033438161",
-  "lastIndexId": "6:2120226973327850613",
+  "lastEntityId": "7:788978535339810145",
+  "lastIndexId": "7:1735341259590220276",
   "lastRelationId": "0:0",
   "lastSequenceId": "0:0",
   "modelVersion": 5,
@@ -197,7 +229,9 @@
     6220206829420078622,
     1620603911374805699,
     5541981984867774193,
-    4136168887959246208
+    4136168887959246208,
+    2981336468151332057,
+    8440122022333707946
   ],
   "retiredRelationUids": [],
   "version": 1

@@ -22,7 +22,7 @@ final _entities = <ModelEntity>[
   ModelEntity(
       id: const IdUid(1, 3748044336097075588),
       name: 'Member',
-      lastPropertyId: const IdUid(22, 4985405420510405406),
+      lastPropertyId: const IdUid(24, 2701655918142605216),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
@@ -53,11 +53,6 @@ final _entities = <ModelEntity>[
             indexId: const IdUid(1, 9220823875031468001),
             relationTarget: 'MembershipType'),
         ModelProperty(
-            id: const IdUid(18, 8440122022333707946),
-            name: 'dateCreated',
-            type: 10,
-            flags: 0),
-        ModelProperty(
             id: const IdUid(19, 7587890181390779687),
             name: 'nfcTagID',
             type: 9,
@@ -76,6 +71,16 @@ final _entities = <ModelEntity>[
             id: const IdUid(22, 4985405420510405406),
             name: 'address',
             type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(23, 1566255455413648655),
+            name: 'membershipStartDate',
+            type: 10,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(24, 2701655918142605216),
+            name: 'membershipEndDate',
+            type: 10,
             flags: 0)
       ],
       relations: <ModelRelation>[],
@@ -174,6 +179,32 @@ final _entities = <ModelEntity>[
             flags: 0)
       ],
       relations: <ModelRelation>[],
+      backlinks: <ModelBacklink>[]),
+  ModelEntity(
+      id: const IdUid(7, 788978535339810145),
+      name: 'RenewalLog',
+      lastPropertyId: const IdUid(4, 654207595721476097),
+      flags: 0,
+      properties: <ModelProperty>[
+        ModelProperty(
+            id: const IdUid(1, 4314453429701557409),
+            name: 'id',
+            type: 6,
+            flags: 1),
+        ModelProperty(
+            id: const IdUid(3, 3459498858212329392),
+            name: 'renewalDate',
+            type: 10,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(4, 654207595721476097),
+            name: 'memberId',
+            type: 11,
+            flags: 520,
+            indexId: const IdUid(7, 1735341259590220276),
+            relationTarget: 'Member')
+      ],
+      relations: <ModelRelation>[],
       backlinks: <ModelBacklink>[])
 ];
 
@@ -197,8 +228,8 @@ Future<Store> openStore(
 ModelDefinition getObjectBoxModel() {
   final model = ModelInfo(
       entities: _entities,
-      lastEntityId: const IdUid(6, 6306018231033438161),
-      lastIndexId: const IdUid(6, 2120226973327850613),
+      lastEntityId: const IdUid(7, 788978535339810145),
+      lastIndexId: const IdUid(7, 1735341259590220276),
       lastRelationId: const IdUid(0, 0),
       lastSequenceId: const IdUid(0, 0),
       retiredEntityUids: const [2820634563096386653, 4791937999762440180],
@@ -223,7 +254,9 @@ ModelDefinition getObjectBoxModel() {
         6220206829420078622,
         1620603911374805699,
         5541981984867774193,
-        4136168887959246208
+        4136168887959246208,
+        2981336468151332057,
+        8440122022333707946
       ],
       retiredRelationUids: const [],
       modelVersion: 5,
@@ -246,17 +279,18 @@ ModelDefinition getObjectBoxModel() {
           final nfcTagIDOffset = fbb.writeString(object.nfcTagID);
           final emailOffset = fbb.writeString(object.email);
           final addressOffset = fbb.writeString(object.address);
-          fbb.startTable(23);
+          fbb.startTable(25);
           fbb.addInt64(0, object.id);
           fbb.addOffset(12, firstNameOffset);
           fbb.addOffset(13, lastNameOffset);
           fbb.addOffset(14, contactNumberOffset);
           fbb.addInt64(15, object.membershipType.targetId);
-          fbb.addInt64(17, object.dateCreated.millisecondsSinceEpoch);
           fbb.addOffset(18, nfcTagIDOffset);
           fbb.addOffset(19, emailOffset);
           fbb.addInt64(20, object.dateOfBirth.millisecondsSinceEpoch);
           fbb.addOffset(21, addressOffset);
+          fbb.addInt64(22, object.membershipStartDate.millisecondsSinceEpoch);
+          fbb.addInt64(23, object.membershipEndDate.millisecondsSinceEpoch);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -280,7 +314,8 @@ ModelDefinition getObjectBoxModel() {
                   .vTableGet(buffer, rootOffset, 46, ''),
               nfcTagID: const fb.StringReader(asciiOptimization: true)
                   .vTableGet(buffer, rootOffset, 40, ''),
-              dateCreated: DateTime.fromMillisecondsSinceEpoch(const fb.Int64Reader().vTableGet(buffer, rootOffset, 38, 0)));
+              membershipEndDate: DateTime.fromMillisecondsSinceEpoch(const fb.Int64Reader().vTableGet(buffer, rootOffset, 50, 0)),
+              membershipStartDate: DateTime.fromMillisecondsSinceEpoch(const fb.Int64Reader().vTableGet(buffer, rootOffset, 48, 0)));
           object.membershipType.targetId =
               const fb.Int64Reader().vTableGet(buffer, rootOffset, 34, 0);
           object.membershipType.attach(store);
@@ -387,6 +422,35 @@ ModelDefinition getObjectBoxModel() {
                   .vTableGet(buffer, rootOffset, 10, ''));
 
           return object;
+        }),
+    RenewalLog: EntityDefinition<RenewalLog>(
+        model: _entities[4],
+        toOneRelations: (RenewalLog object) => [object.member],
+        toManyRelations: (RenewalLog object) => {},
+        getId: (RenewalLog object) => object.id,
+        setId: (RenewalLog object, int id) {
+          object.id = id;
+        },
+        objectToFB: (RenewalLog object, fb.Builder fbb) {
+          fbb.startTable(5);
+          fbb.addInt64(0, object.id);
+          fbb.addInt64(2, object.renewalDate.millisecondsSinceEpoch);
+          fbb.addInt64(3, object.member.targetId);
+          fbb.finish(fbb.endTable());
+          return object.id;
+        },
+        objectFromFB: (Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+
+          final object = RenewalLog(
+              id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
+              renewalDate: DateTime.fromMillisecondsSinceEpoch(
+                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 8, 0)));
+          object.member.targetId =
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 10, 0);
+          object.member.attach(store);
+          return object;
         })
   };
 
@@ -414,24 +478,28 @@ class Member_ {
   static final membershipType =
       QueryRelationToOne<Member, MembershipType>(_entities[0].properties[4]);
 
-  /// see [Member.dateCreated]
-  static final dateCreated =
-      QueryIntegerProperty<Member>(_entities[0].properties[5]);
-
   /// see [Member.nfcTagID]
   static final nfcTagID =
-      QueryStringProperty<Member>(_entities[0].properties[6]);
+      QueryStringProperty<Member>(_entities[0].properties[5]);
 
   /// see [Member.email]
-  static final email = QueryStringProperty<Member>(_entities[0].properties[7]);
+  static final email = QueryStringProperty<Member>(_entities[0].properties[6]);
 
   /// see [Member.dateOfBirth]
   static final dateOfBirth =
-      QueryIntegerProperty<Member>(_entities[0].properties[8]);
+      QueryIntegerProperty<Member>(_entities[0].properties[7]);
 
   /// see [Member.address]
   static final address =
-      QueryStringProperty<Member>(_entities[0].properties[9]);
+      QueryStringProperty<Member>(_entities[0].properties[8]);
+
+  /// see [Member.membershipStartDate]
+  static final membershipStartDate =
+      QueryIntegerProperty<Member>(_entities[0].properties[9]);
+
+  /// see [Member.membershipEndDate]
+  static final membershipEndDate =
+      QueryIntegerProperty<Member>(_entities[0].properties[10]);
 }
 
 /// [Attendance] entity fields to define ObjectBox queries.
@@ -493,4 +561,19 @@ class Administrator_ {
   /// see [Administrator.nfcTagID]
   static final nfcTagID =
       QueryStringProperty<Administrator>(_entities[3].properties[3]);
+}
+
+/// [RenewalLog] entity fields to define ObjectBox queries.
+class RenewalLog_ {
+  /// see [RenewalLog.id]
+  static final id =
+      QueryIntegerProperty<RenewalLog>(_entities[4].properties[0]);
+
+  /// see [RenewalLog.renewalDate]
+  static final renewalDate =
+      QueryIntegerProperty<RenewalLog>(_entities[4].properties[1]);
+
+  /// see [RenewalLog.member]
+  static final member =
+      QueryRelationToOne<RenewalLog, Member>(_entities[4].properties[2]);
 }

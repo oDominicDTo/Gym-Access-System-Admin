@@ -1,153 +1,140 @@
 import 'package:flutter/material.dart';
-import '../objectbox.dart'; // Ensure correct import path
+import '../main.dart';
 import '../models/model.dart';
-import 'package:intl/intl.dart';
 
-class AddMemberScreen extends StatefulWidget {
-  const AddMemberScreen({super.key});
+class MemberInput extends StatefulWidget {
+  const MemberInput({Key? key}) : super(key: key);
 
   @override
-   createState() => _AddMemberScreenState();
+  State<MemberInput> createState() => _MemberInputState();
 }
 
-class _AddMemberScreenState extends State<AddMemberScreen> {
-  final _formKey = GlobalKey<FormState>();
+class _MemberInputState extends State<MemberInput> {
+  late TextEditingController firstNameController;
+  late TextEditingController lastNameController;
+  late TextEditingController contactNumberController;
+  late TextEditingController emailController;
+  late TextEditingController addressController;
+  late MembershipType? selectedMembershipType;
+  List<MembershipType> membershipTypes = [];
 
-  final TextEditingController _firstNameController = TextEditingController();
-  final TextEditingController _lastNameController = TextEditingController();
-  final TextEditingController _contactNumberController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _nfcTagIDController = TextEditingController();
-  final TextEditingController _dateOfBirthController = TextEditingController();
-
-  DateTime? _selectedDate;
-
-  void _presentDatePicker() {
-    showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(1900),
-      lastDate: DateTime.now(),
-    ).then((pickedDate) {
-      if (pickedDate == null) {
-        return;
-      }
-      setState(() {
-        _selectedDate = pickedDate;
-        _dateOfBirthController.text = DateFormat('dd.MM.yy').format(_selectedDate!);
-      });
-    });
+  @override
+  void initState() {
+    super.initState();
+    firstNameController = TextEditingController();
+    lastNameController = TextEditingController();
+    contactNumberController = TextEditingController();
+    emailController = TextEditingController();
+    addressController = TextEditingController();
+    _fetchMembershipTypes(); // Fetch membership types when the widget initializes
+    selectedMembershipType = null;
   }
 
-  void _saveMember() async {
-    if (_formKey.currentState!.validate()) {
-      final firstName = _firstNameController.text;
-      final lastName = _lastNameController.text;
-      final contactNumber = _contactNumberController.text;
-      final email = _emailController.text;
-      final nfcTagID = _nfcTagIDController.text;
-      final dateOfBirth = _selectedDate ?? DateTime.now(); // If no date selected, use current date
-
-      final store = await ObjectBox.create();
-      await store.addMember(
-        firstName as Member,
-        lastName,
-        contactNumber as int,
-        email,
-        nfcTagID,
-        dateOfBirth,
-      );
-
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Member added successfully!'),
-      ));
+  Future<void> _fetchMembershipTypes() async {
+    membershipTypes = await objectbox.getAllMembershipTypes();
+    if (membershipTypes.isNotEmpty) {
+      setState(() {
+        selectedMembershipType = membershipTypes.first;
+      });
     }
+  }
+
+  @override
+  void dispose() {
+    firstNameController.dispose();
+    lastNameController.dispose();
+    contactNumberController.dispose();
+    emailController.dispose();
+    addressController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Add Member'),
-      ),
+      appBar: AppBar(title: const Text('Add New Member')),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              TextFormField(
-                controller: _firstNameController,
-                decoration: const InputDecoration(labelText: 'First Name'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter first name';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _lastNameController,
-                decoration: const InputDecoration(labelText: 'Last Name'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter last name';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _contactNumberController,
-                decoration: const InputDecoration(labelText: 'Contact Number'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter contact number';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _emailController,
-                decoration: const InputDecoration(labelText: 'Email'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter email';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _nfcTagIDController,
-                decoration: const InputDecoration(labelText: 'NFC Tag ID'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter NFC Tag ID';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                readOnly: true,
-                controller: _dateOfBirthController,
-                decoration: const InputDecoration(labelText: 'Date of Birth'),
-                onTap: _presentDatePicker,
-                validator: (value) {
-                  if (_selectedDate == null) {
-                    return 'Please select a date';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _saveMember,
-                child: const Text('Save Member'),
-              ),
-            ],
-          ),
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            TextFormField(
+              controller: firstNameController,
+              decoration: const InputDecoration(labelText: 'First Name'),
+            ),
+            TextFormField(
+              controller: lastNameController,
+              decoration: const InputDecoration(labelText: 'Last Name'),
+            ),
+            TextFormField(
+              controller: contactNumberController,
+              decoration: const InputDecoration(labelText: 'Contact Number'),
+              keyboardType: TextInputType.phone,
+            ),
+            TextFormField(
+              controller: emailController,
+              decoration: const InputDecoration(labelText: 'Email'),
+              keyboardType: TextInputType.emailAddress,
+            ),
+            TextFormField(
+              controller: addressController,
+              decoration: const InputDecoration(labelText: 'Address'),
+              maxLines: 3,
+            ),
+            const SizedBox(height: 20),
+            DropdownButton<MembershipType>(
+              hint: const Text('Select Membership Type'),
+              value: selectedMembershipType,
+              onChanged: (MembershipType? newValue) {
+                setState(() {
+                  selectedMembershipType = newValue!;
+                });
+              },
+              items: membershipTypes.map((MembershipType type) {
+                return DropdownMenuItem<MembershipType>(
+                  value: type,
+                  child: Text(type.typeName), // Customize the display here
+                );
+              }).toList(),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                _saveMember();
+              },
+              child: const Text('Save'),
+            ),
+          ],
         ),
       ),
     );
+  }
+
+  void _saveMember() {
+    String firstName = firstNameController.text;
+    String lastName = lastNameController.text;
+    String contactNumber = contactNumberController.text;
+    String email = emailController.text;
+    String address = addressController.text;
+
+    if (selectedMembershipType != null) {
+      Member newMember = Member(
+        firstName: firstName,
+        lastName: lastName,
+        contactNumber: contactNumber,
+        email: email,
+        address: address,
+        dateOfBirth: DateTime.now(),
+        nfcTagID: 'sampleNfcTagID', // Sample NFC ID, replace with actual logic
+        membershipStartDate: DateTime.now(),
+        membershipEndDate: DateTime.now(),
+      );
+
+      // Set the membership type through the relation
+      newMember.membershipType.target = selectedMembershipType;
+
+      // Save the member using your ObjectBox logic
+      objectbox.addMember(newMember);
+    }
   }
 }

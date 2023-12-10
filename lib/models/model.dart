@@ -1,6 +1,10 @@
 import 'package:objectbox/objectbox.dart';
 import 'package:intl/intl.dart'; // Import the intl package for date formatting
 
+
+enum MembershipStatus { active, inactive, expired }
+enum AdminRole { superAdmin, admin, staff }
+
 @Entity()
 class Administrator {
   int id;
@@ -27,7 +31,10 @@ class Member {
   DateTime dateOfBirth;
 
   @Property(type: PropertyType.date)
-  DateTime dateCreated;
+  DateTime membershipStartDate;
+
+  @Property(type: PropertyType.date)
+  DateTime membershipEndDate;
 
   String address;
 
@@ -42,13 +49,51 @@ class Member {
     required this.dateOfBirth,
     required this.address,
     required this.nfcTagID,
+    required this.membershipEndDate,
+    DateTime? membershipStartDate,
     DateTime? dateCreated})
-      : dateCreated = dateCreated ?? DateTime.now();
+      : membershipStartDate = membershipStartDate ?? DateTime.now();
 
-  String get dateCreatedFormat => DateFormat('dd.MM.yy HH:mm:ss').format(dateCreated);
+  String get dateOfBirthFormat => DateFormat('MMMM.dd.yy').format(dateOfBirth);
 
-  String get dateOfBirthFormat => DateFormat('dd.MM.yy').format(dateOfBirth);
+  String get membershipStartDateFormat => DateFormat('MMMM.dd.yy').format(membershipStartDate);
+
+  String get membershipEndDateFormat => DateFormat('MMMM.dd.yy').format(membershipEndDate);
+
+
+  int getRemainingMembershipDays() {
+    final currentDate = DateTime.now();
+    final remainingDays = membershipEndDate.difference(currentDate).inDays;
+    return remainingDays > 0 ? remainingDays : 0;
+  }
+
+  String getFormattedMembershipEndDate() {
+    return DateFormat('dd.MM.yyyy').format(membershipEndDate);
+  }
+
+  void extendMembership(int additionalDays) {
+    membershipEndDate = membershipEndDate.add(Duration(days: additionalDays));
+  }
+
+  MembershipStatus getMembershipStatus() {
+    final currentDate = DateTime.now();
+    if (currentDate.isBefore(membershipStartDate)) {
+      return MembershipStatus.inactive; // Membership has not started yet
+    } else if (currentDate.isBefore(membershipEndDate)) {
+      return MembershipStatus.active; // Membership is active
+    } else {
+      return MembershipStatus.expired; // Membership has expired
+    }
+  }
+
+  bool isInactiveForMonths(int monthsThreshold) {
+    final currentDate = DateTime.now();
+    final inactiveThreshold = currentDate.subtract(Duration(days: monthsThreshold * 30)); // Converting months to days
+    return membershipEndDate.isBefore(inactiveThreshold);
+  }
+
 }
+
 
 @Entity()
 class Attendance {
@@ -85,4 +130,24 @@ class MembershipType {
     required this.discount,
     required this.isLifetime,
   });
+}
+
+@Entity()
+class RenewalLog {
+  @Id()
+  int id;
+
+  final member = ToOne<Member>(); // Name of the member who renewed
+
+  @Property(type: PropertyType.date)
+  DateTime renewalDate; // Date of renewal
+
+  RenewalLog({
+    this.id = 0,
+    required this.renewalDate,
+  });
+
+  String getFormattedRenewalDate() {
+    return DateFormat('MMM dd, yyyy').format(renewalDate);
+  }
 }

@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:gym_kiosk_admin/screens/add_member.dart';
 import 'package:gym_kiosk_admin/objectbox.dart';
@@ -10,7 +10,7 @@ import 'package:window_size/window_size.dart';
 
 late ObjectBox objectbox;
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   objectbox = await ObjectBox.create();
@@ -25,9 +25,9 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-
-
-  const MyApp({Key? key, }) : super(key: key);
+  const MyApp({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

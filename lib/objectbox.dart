@@ -49,13 +49,13 @@ class ObjectBox {
     MembershipType type1 = MembershipType(
       typeName: 'VIP',
       fee: 100.0,
-      discount: 10.0,
+      discount: 0,
       isLifetime: true,
     );
     MembershipType type2 = MembershipType(
       typeName: 'Athlete',
       fee: 50.0,
-      discount: 5.0,
+      discount: 0,
       isLifetime: false,
     );
 
@@ -67,61 +67,88 @@ class ObjectBox {
       lastName: 'Tanas',
       contactNumber: '09178701138',
       nfcTagID: 'c3ff9310',
-      dateOfBirth: DateTime(1990, 5, 15),
+      dateOfBirth: DateTime(2001, 04, 29),
       address: '123 Main St',
       email: 'dominic@example.com',
+      membershipStartDate: DateTime.now(),
+      membershipEndDate: DateTime.now().add(const Duration(days: 365)),
     );
     member1.membershipType.target = type1;
+
     Member member2 = Member(
       firstName: 'Jay Ann',
       lastName: 'Garcia',
       contactNumber: '09672182672',
       nfcTagID: 'b385aafd',
-      dateOfBirth: DateTime(1985, 9, 22),
+      dateOfBirth: DateTime(2001, 7, 14),
       address: '456 Elm St',
       email: 'jay@example.com',
+      membershipStartDate: DateTime.now(),
+      membershipEndDate: DateTime.now().add(const Duration(days: 365)),
     );
     member2.membershipType.target = type2;
+
     // When the Member is put, its MembershipType will automatically be put into the MembershipType Box.
     await _memberBox.putMany([member1, member2]);
   }
 
   // CRUD methods for Member entity
-  Future<void> addMember(
-      String firstName,
-      String lastName,
-      String contactNumber,
-      String email,
-      String nfcTagID,
-      DateTime dateOfBirth,
-      ) async {
-    final newMember = Member(
-      // Initialize a Member object with the provided details
-      firstName: firstName,
-      lastName: lastName,
-      contactNumber: contactNumber,
-      email: email,
-      nfcTagID: nfcTagID,
-      dateOfBirth: dateOfBirth,
-    );
-
-    // Add the new member using ObjectBox methods
-    await _memberBox.put(newMember);
-  }
-  Member? getMemberById(int memberId) {
-    return _memberBox.get(memberId);
+  // Create a new Member
+  Future<int> addMember(Member member) async {
+    return _memberBox.put(member);
   }
 
-  void removeMember(int memberId) {
-    _memberBox.remove(memberId);
+  // Retrieve a Member by ID
+  Member getMember(int id) {
+    return _memberBox.get(id)!;
   }
 
-  Box<Member> getMemberBox() {
-    return _memberBox;
-// Similar CRUD methods for Attendance and MembershipType entities can be added here.
+  // Update an existing Member
+  void updateMember(Member updatedMember) {
+    _memberBox.put(updatedMember);
   }
-  Stream<List<Member>> getMemberStream() {
-    // Assuming _memberBox is a Box<Member> in your ObjectBox class
-    return _memberBox.watchAll().map((query) => query.find());
+
+  // Delete a Member by ID
+  void deleteMember(int id) {
+    _memberBox.remove(id);
+  }
+
+  // Retrieve all Members
+  List<Member> getAllMembers() {
+    return _memberBox.getAll();
+  }
+
+  // Retrieve all Members asynchronously
+  Future<List<Member>> getAllMembersAsync() async {
+    return _memberBox.getAllAsync();
+  }
+
+  // Example method to get Members with a specific name
+  List<Member> getMembersByName(String name) {
+    // Create a query to find members with a specific first name
+    final query = _memberBox.query(Member_.firstName.equals(name)).build();
+
+    // Find and return matching members
+    return query.find();
+  }
+
+  Future<List<MembershipType>> getAllMembershipTypes() async {
+    return _membershipTypeBox.getAll();
+  }
+
+  Future<int> addMembershipType(MembershipType membershipType) async {
+    return _membershipTypeBox.put(membershipType);
+  }
+
+  MembershipType getMembershipType(int id) {
+    return _membershipTypeBox.get(id)!;
+  }
+
+  void updateMembershipType(MembershipType updatedMembershipType) {
+    _membershipTypeBox.put(updatedMembershipType);
+  }
+
+  void deleteMembershipType(int id) {
+    _membershipTypeBox.remove(id);
   }
 }
