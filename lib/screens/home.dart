@@ -1,7 +1,9 @@
 // main.dart
 
 import 'package:flutter/material.dart';
-import 'package:gym_kiosk_admin/widget/add_new_member_form.dart';
+import 'package:gym_kiosk_admin/UI/Admin/profile_admin.dart';
+import 'package:gym_kiosk_admin/UI/Member/add_new_member_form.dart';
+import 'package:gym_kiosk_admin/UI/Member/blank_card.dart';
 
 void main() {
   runApp(MyApp());
@@ -54,9 +56,7 @@ class _HomeAdminState extends State<HomeAdmin> {
               ),
             ],
           ),
-          actions: [
-           // Display the search bar in the AppBar
-          ],
+
         ),
       ),
       body: Row(
@@ -97,7 +97,7 @@ class _HomeAdminState extends State<HomeAdmin> {
                   style: TextStyle(fontFamily: 'Poppins'),),
               ),
               NavigationRailDestination(
-                icon: Icon(Icons.settings),
+                icon: Icon(Icons.logout_rounded),
                 label: Text('Log Out',
                   style: TextStyle(fontFamily: 'Poppins'),),
               ),
@@ -126,13 +126,13 @@ class _HomeAdminState extends State<HomeAdmin> {
   Widget _getContent(int index) {
     switch (index) {
       case 0:
-        return Center(child: Text('Home Content'));
+        return InsertBlankCard();
       case 1:
         return AddNewMemberForm();
       case 2:
         return Center(child: Text('3'));
       case 4:
-        return Center(child: Text('4'));
+        return AdminProfile();
       case 5:
         return Center(child: Text('5'));
       case 6:

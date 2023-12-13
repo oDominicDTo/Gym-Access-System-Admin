@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 
-class ConfirmationDialog {
+class DeleteDialog {
   final BuildContext context;
 
-  ConfirmationDialog(this.context);
+  DeleteDialog(this.context);
 
-  Future<void> showConfirmationDialog() async {
+  Future<void> showDeleteDialog() async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Are you sure you want to save?'),
+          title: Text('Are you sure you want to delete?'),
           actions: <Widget>[
             TextButton(
               child: Text('No'),
@@ -22,14 +22,12 @@ class ConfirmationDialog {
             TextButton(
               child: Text('Yes'),
               onPressed: () {
-                Navigator.of(context).pop(true); // Return true when Yes is pressed
-              },
+            Navigator.of(context).pop(true); // Return true when Yes is pressed
+            },
             ),
           ],
         );
       },
     );
-
-
   }
 }

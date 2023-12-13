@@ -48,6 +48,7 @@ dependencies:
   image_picker: ^1.0.4
   file_picker: ^4.0.0
 
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -76,6 +77,7 @@ flutter:
       - assets/images/whole_logo.png
       - assets/images/logo_1.png
       - assets/animation/scan_nfc.json
+      - assets/animation/insert_card.json
       - assets/images/graph_icon.png
       - assets/images/home_icon.png
       - assets/images/medal_icon.png
