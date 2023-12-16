@@ -215,6 +215,7 @@ class _CameraPageState extends State<CameraPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Camera Page'),
+        automaticallyImplyLeading: false,
       ),
       body: Column(
         children: [

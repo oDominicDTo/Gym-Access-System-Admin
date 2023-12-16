@@ -68,11 +68,11 @@ class ObjectBox {
       contactNumber: '09178701138',
       nfcTagID: 'c3ff9310',
       dateOfBirth: DateTime(2001, 04, 29),
-      address: '123 Main St',
+      address: 'Zapote',
       email: 'dominic@example.com',
       membershipStartDate: DateTime.now(),
       membershipEndDate: DateTime.now().add(const Duration(days: 365)),
-      photoPath: 'C:/Users/DT/Documents/Kiosk/Photos/dom.jpeg',
+      photoPath: 'dom.jpg',
     );
     member1.membershipType.target = type1;
 
@@ -82,16 +82,16 @@ class ObjectBox {
       contactNumber: '09672182672',
       nfcTagID: 'b385aafd',
       dateOfBirth: DateTime(2001, 7, 14),
-      address: '456 Elm St',
+      address: 'Bungahan',
       email: 'jay@example.com',
       membershipStartDate: DateTime.now(),
       membershipEndDate: DateTime.now().add(const Duration(days: 365)),
-      photoPath: 'C:/Users/DT/Documents/Kiosk/Photos/jayan.jpeg',
+      photoPath: 'jayan.jpg',
     );
     member2.membershipType.target = type2;
 
     // When the Member is put, its MembershipType will automatically be put into the MembershipType Box.
-    await _memberBox.putMany([member1, member2]);
+    _memberBox.putMany([member1, member2]);
   }
 
   // CRUD methods for Member entity
