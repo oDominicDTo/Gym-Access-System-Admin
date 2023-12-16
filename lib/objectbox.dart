@@ -72,6 +72,7 @@ class ObjectBox {
       email: 'dominic@example.com',
       membershipStartDate: DateTime.now(),
       membershipEndDate: DateTime.now().add(const Duration(days: 365)),
+      photoPath: 'C:/Users/DT/Documents/Kiosk/Photos/dom.jpeg',
     );
     member1.membershipType.target = type1;
 
@@ -85,6 +86,7 @@ class ObjectBox {
       email: 'jay@example.com',
       membershipStartDate: DateTime.now(),
       membershipEndDate: DateTime.now().add(const Duration(days: 365)),
+      photoPath: 'C:/Users/DT/Documents/Kiosk/Photos/jayan.jpeg',
     );
     member2.membershipType.target = type2;
 

@@ -5,7 +5,7 @@
   "entities": [
     {
       "id": "1:3748044336097075588",
-      "lastPropertyId": "24:2701655918142605216",
+      "lastPropertyId": "25:5957749286008793752",
       "name": "Member",
       "properties": [
         {
@@ -66,6 +66,11 @@
           "id": "24:2701655918142605216",
           "name": "membershipEndDate",
           "type": 10
+        },
+        {
+          "id": "25:5957749286008793752",
+          "name": "photoPath",
+          "type": 9
         }
       ],
       "relations": []

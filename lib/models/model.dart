@@ -40,6 +40,8 @@ class Member {
 
   final membershipType = ToOne<MembershipType>();
 
+  String photoPath;
+
   Member({
     this.id = 0,
     required this.firstName,
@@ -50,6 +52,7 @@ class Member {
     required this.address,
     required this.nfcTagID,
     required this.membershipEndDate,
+    required this.photoPath,
     DateTime? membershipStartDate,
     DateTime? dateCreated})
       : membershipStartDate = membershipStartDate ?? DateTime.now();

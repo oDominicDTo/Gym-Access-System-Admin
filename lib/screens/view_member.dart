@@ -36,7 +36,8 @@ class MemberListScreen extends StatelessWidget {
                   DataColumn(label: Text('Membership Type')),
                   DataColumn(label: Text('Membership Status')),
                   DataColumn(label: Text('Start Date')),
-                  DataColumn(label: Text('Remaining Days'))
+                  DataColumn(label: Text('Remaining Days')),
+                  DataColumn(label: Text('Address')),
                 ],
                 rows: snapshot.data!.map((member) {
                   return DataRow(cells: [
@@ -47,7 +48,8 @@ class MemberListScreen extends StatelessWidget {
                     DataCell(Text(member.membershipType.target!.typeName)),
                     DataCell(Text(_getMembershipStatus(member))),
                     DataCell(Text(member.membershipStartDateFormat)),
-                    DataCell(Text(_getRemainingMembershipDays(member)))
+                    DataCell(Text(_getRemainingMembershipDays(member))),
+                    DataCell(Text(member.address))
                   ]);
                 }).toList(),
               ),

@@ -22,7 +22,7 @@ final _entities = <ModelEntity>[
   ModelEntity(
       id: const IdUid(1, 3748044336097075588),
       name: 'Member',
-      lastPropertyId: const IdUid(24, 2701655918142605216),
+      lastPropertyId: const IdUid(25, 5957749286008793752),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
@@ -81,6 +81,11 @@ final _entities = <ModelEntity>[
             id: const IdUid(24, 2701655918142605216),
             name: 'membershipEndDate',
             type: 10,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(25, 5957749286008793752),
+            name: 'photoPath',
+            type: 9,
             flags: 0)
       ],
       relations: <ModelRelation>[],
@@ -279,7 +284,8 @@ ModelDefinition getObjectBoxModel() {
           final nfcTagIDOffset = fbb.writeString(object.nfcTagID);
           final emailOffset = fbb.writeString(object.email);
           final addressOffset = fbb.writeString(object.address);
-          fbb.startTable(25);
+          final photoPathOffset = fbb.writeString(object.photoPath);
+          fbb.startTable(26);
           fbb.addInt64(0, object.id);
           fbb.addOffset(12, firstNameOffset);
           fbb.addOffset(13, lastNameOffset);
@@ -291,6 +297,7 @@ ModelDefinition getObjectBoxModel() {
           fbb.addOffset(21, addressOffset);
           fbb.addInt64(22, object.membershipStartDate.millisecondsSinceEpoch);
           fbb.addInt64(23, object.membershipEndDate.millisecondsSinceEpoch);
+          fbb.addOffset(24, photoPathOffset);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -315,6 +322,7 @@ ModelDefinition getObjectBoxModel() {
               nfcTagID: const fb.StringReader(asciiOptimization: true)
                   .vTableGet(buffer, rootOffset, 40, ''),
               membershipEndDate: DateTime.fromMillisecondsSinceEpoch(const fb.Int64Reader().vTableGet(buffer, rootOffset, 50, 0)),
+              photoPath: const fb.StringReader(asciiOptimization: true).vTableGet(buffer, rootOffset, 52, ''),
               membershipStartDate: DateTime.fromMillisecondsSinceEpoch(const fb.Int64Reader().vTableGet(buffer, rootOffset, 48, 0)));
           object.membershipType.targetId =
               const fb.Int64Reader().vTableGet(buffer, rootOffset, 34, 0);
@@ -500,6 +508,10 @@ class Member_ {
   /// see [Member.membershipEndDate]
   static final membershipEndDate =
       QueryIntegerProperty<Member>(_entities[0].properties[10]);
+
+  /// see [Member.photoPath]
+  static final photoPath =
+      QueryStringProperty<Member>(_entities[0].properties[11]);
 }
 
 /// [Attendance] entity fields to define ObjectBox queries.
