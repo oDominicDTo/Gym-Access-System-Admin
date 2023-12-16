@@ -12,6 +12,7 @@ class MemberListScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Member List'),
+        automaticallyImplyLeading: false,
       ),
       body: StreamBuilder<List<Member>>(
         stream: objectbox.getAllMembersAsync().asStream(),

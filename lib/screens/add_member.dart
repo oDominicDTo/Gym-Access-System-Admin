@@ -89,7 +89,7 @@ class _MemberInputState extends State<MemberInput> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Add New Member')),
+      appBar: AppBar(title: const Text('Add New Member'), automaticallyImplyLeading: false),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Form(
@@ -249,16 +249,14 @@ class _MemberInputState extends State<MemberInput> {
               ElevatedButton(
                 onPressed: () {
                   // _saveMember();
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return const Dialog(
-                        child: CameraPage(),
-                      );
-                    },
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const CameraPage(), // Replace with your desired next page
+                    ),
                   );
                 },
-                child: const Text('Save'),
+                child: const Text('Next'),
               ),
             ],
           ),

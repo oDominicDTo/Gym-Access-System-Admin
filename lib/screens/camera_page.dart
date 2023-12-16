@@ -1,5 +1,6 @@
 import 'package:camera_platform_interface/camera_platform_interface.dart';
 import 'package:flutter/material.dart';
+import 'package:gym_kiosk_admin/screens/blank_card.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'dart:math';
@@ -19,15 +20,21 @@ class _CameraPageState extends State<CameraPage> {
   bool _initialized = false;
   bool _photoTaken = false;
   late String _lastImagePath;
+  bool _isDisposed = false;
 
   @override
   void initState() {
     super.initState();
-    _initializeCamera();
+    _initializeOrDisposeCamera();
   }
 
   Future<void> _initializeCamera() async {
     try {
+      if (_cameraId >= 0 && !_isDisposed) {
+        await CameraPlatform.instance.dispose(_cameraId);
+        _cameraId = -1;
+      }
+
       final List<CameraDescription> cameras =
       await CameraPlatform.instance.availableCameras();
       if (cameras.isNotEmpty) {
@@ -41,7 +48,8 @@ class _CameraPageState extends State<CameraPage> {
         });
       }
     } on CameraException catch (e) {
-      _showSnackBar('Failed to initialize camera: ${e.code}: ${e.description}');
+      _showSnackBar(
+          'Failed to initialize camera: ${e.code}: ${e.description}');
     }
   }
 
@@ -53,10 +61,17 @@ class _CameraPageState extends State<CameraPage> {
           _initialized = false;
         });
       }
-      _cameraId = -1; // Reset the camera ID after disposal
+      _cameraId = -1;
     }
   }
 
+  void _initializeOrDisposeCamera() {
+    if (_initialized) {
+      _disposeCamera();
+    } else {
+      _initializeCamera();
+    }
+  }
 
   Future<void> _takePhoto() async {
     if (_cameraId >= 0 && _initialized) {
@@ -116,6 +131,37 @@ class _CameraPageState extends State<CameraPage> {
     }
   }
 
+  void _navigateToNextPage() {
+    if (_photoTaken) {
+      _disposeCamera(); // Dispose the camera before navigating to the next page
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const InsertBlankCard(), // Replace with your desired next page
+        ),
+      );
+    } else {
+      // Show an alert if a photo hasn't been taken yet
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Take Photo'),
+            content: const Text('Please take a photo before proceeding.'),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
   Widget _buildOverlay(Size previewSize) {
     final double circleRadius = min(previewSize.width, previewSize.height) / 3;
 
@@ -157,8 +203,6 @@ class _CameraPageState extends State<CameraPage> {
     ));
   }
 
-  bool _isDisposed = false;
-
   @override
   void dispose() {
     _isDisposed = true;
@@ -179,6 +223,25 @@ class _CameraPageState extends State<CameraPage> {
           ElevatedButton(
             onPressed: _photoTaken ? _retakePhoto : _takePhoto,
             child: Text(_photoTaken ? 'Retake' : 'Take Photo'),
+          ),
+          const SizedBox(height: 16),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  // Dispose the camera when "Cancel" is clicked
+                  _disposeCamera();
+                  Navigator.pop(context);
+                },
+                child: const Text('Cancel'),
+              ),
+              const SizedBox(width: 20),
+              ElevatedButton(
+                onPressed: _navigateToNextPage,
+                child: const Text('Next'),
+              ),
+            ],
           ),
         ],
       ),
