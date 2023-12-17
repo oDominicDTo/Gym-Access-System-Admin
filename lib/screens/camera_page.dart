@@ -1,5 +1,6 @@
 import 'package:camera_platform_interface/camera_platform_interface.dart';
 import 'package:flutter/material.dart';
+import 'package:gym_kiosk_admin/models/model.dart';
 import 'package:gym_kiosk_admin/screens/blank_card.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
@@ -9,7 +10,12 @@ import 'dart:ui' as ui;
 import 'dart:typed_data';
 
 class CameraPage extends StatefulWidget {
-  const CameraPage({Key? key}) : super(key: key);
+  final MembershipType? selectedMembershipType;
+  final Member newMember;
+
+  const CameraPage(
+      {Key? key, required this.newMember, this.selectedMembershipType})
+      : super(key: key);
 
   @override
   State createState() => _CameraPageState();
@@ -36,7 +42,7 @@ class _CameraPageState extends State<CameraPage> {
       }
 
       final List<CameraDescription> cameras =
-      await CameraPlatform.instance.availableCameras();
+          await CameraPlatform.instance.availableCameras();
       if (cameras.isNotEmpty) {
         _cameraId = await CameraPlatform.instance.createCamera(
           cameras[0],
@@ -48,8 +54,7 @@ class _CameraPageState extends State<CameraPage> {
         });
       }
     } on CameraException catch (e) {
-      _showSnackBar(
-          'Failed to initialize camera: ${e.code}: ${e.description}');
+      _showSnackBar('Failed to initialize camera: ${e.code}: ${e.description}');
     }
   }
 
@@ -84,29 +89,28 @@ class _CameraPageState extends State<CameraPage> {
       final File imageFile = File(file.path);
       final Uint8List imageBytes = await imageFile.readAsBytes();
       final ui.Image image =
-      await decodeImageFromList(Uint8List.fromList(imageBytes));
+          await decodeImageFromList(Uint8List.fromList(imageBytes));
 
       // Check if the image is flipped, and correct it if needed
       final bool isFlipped = image.width > image.height;
       final imglib.Image imgLibImage = imglib.decodeImage(imageBytes)!;
-      final imglib.Image fixedImage = isFlipped
-          ? imglib.flipHorizontal(imgLibImage)
-          : imgLibImage;
+      final imglib.Image fixedImage =
+          isFlipped ? imglib.flipHorizontal(imgLibImage) : imgLibImage;
 
       // Get the documents directory
       final Directory documentsDirectory =
-      await getApplicationDocumentsDirectory();
+          await getApplicationDocumentsDirectory();
 
       // Create a folder named "Kiosk"
       final Directory kioskDirectory =
-      Directory('${documentsDirectory.path}/Kiosk/Photos');
+          Directory('${documentsDirectory.path}/Kiosk/Photos');
       if (!await kioskDirectory.exists()) {
         await kioskDirectory.create();
       }
-
+      final String fileName =
+          '${widget.newMember.firstName}${widget.newMember.lastName}.jpg';
       // Save the corrected image to the "Kiosk" folder
-      final String newPath =
-          '${kioskDirectory.path}/${DateTime.now().millisecondsSinceEpoch}.jpg';
+      final String newPath = '${kioskDirectory.path}/$fileName';
       await File(newPath).writeAsBytes(imglib.encodeJpg(fixedImage));
 
       setState(() {
@@ -115,6 +119,7 @@ class _CameraPageState extends State<CameraPage> {
       });
 
       _showSnackBar('Photo captured and saved: $newPath');
+      widget.newMember.photoPath = fileName;
     }
   }
 
@@ -137,7 +142,9 @@ class _CameraPageState extends State<CameraPage> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => const InsertBlankCard(), // Replace with your desired next page
+          builder: (context) => InsertBlankCard(
+              newMember: widget.newMember,
+              selectedMembershipType: widget.selectedMembershipType),
         ),
       );
     } else {
@@ -235,7 +242,7 @@ class _CameraPageState extends State<CameraPage> {
                   _disposeCamera();
                   Navigator.pop(context);
                 },
-                child: const Text('Cancel'),
+                child: const Text('Previous'),
               ),
               const SizedBox(width: 20),
               ElevatedButton(

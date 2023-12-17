@@ -1,15 +1,106 @@
 import 'package:flutter/material.dart';
+import 'package:gym_kiosk_admin/screens/home_admin.dart';
 import 'package:lottie/lottie.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
+import '../models/model.dart';
+import '../services/nfc_service.dart';
+import 'package:gym_kiosk_admin/main.dart';
 
 class InsertBlankCard extends StatefulWidget {
-  const InsertBlankCard({Key? key}) : super(key: key);
+  final Member newMember;
+  final MembershipType? selectedMembershipType;
+  const InsertBlankCard({Key? key, required this.newMember, this.selectedMembershipType}) : super(key: key);
 
   @override
   State<InsertBlankCard> createState() => _InsertBlankCardState();
 }
 
 class _InsertBlankCardState extends State<InsertBlankCard> {
+  late NFCService _nfcService;
+
+
+  @override
+  void initState() {
+    super.initState();
+    _nfcService = NFCService();
+    _listenToNFCEvents();
+  }
+
+  void _listenToNFCEvents() {
+    _nfcService.onNFCEvent.listen((String tagId) {
+      if (tagId != 'Error') {
+        _checkAndSaveTagId(tagId);
+      }
+    });
+  }
+
+  Future<void> _checkAndSaveTagId(String tagId) async {
+    final bool exists = await objectbox.checkTagIdExists(tagId);
+
+    if (!exists) {
+      widget.newMember.nfcTagID = tagId;
+      widget.newMember.membershipType.target = widget.selectedMembershipType;
+      objectbox.addMember(widget.newMember);
+      _showSuccessDialog();
+    } else {
+      _showExistingTagDialog();
+    }
+  }
+
+
+
+  void _showExistingTagDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Tag Exists'),
+          content: const Text('This NFC tag is already in use.'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showSuccessDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('NFC Tag Assigned'),
+          content: const Text('NFC tag assigned successfully.'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.of(context).popUntil((route) => route.isFirst);
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const HomeAdminPage(),
+                  ),
+                );
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    _nfcService.disposeNFCListener();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,8 +119,8 @@ class _InsertBlankCardState extends State<InsertBlankCard> {
                     fontFamily: 'Poppins',
                     fontSize: 50,
                     fontWeight: FontWeight.bold,
-                    color: Colors.black, // Set the text color
-                    backgroundColor: Colors.white, // Set a background color
+                    color: Colors.black,
+                    backgroundColor: Colors.white,
                   ),
                   speed: const Duration(milliseconds: 50),
                 ),

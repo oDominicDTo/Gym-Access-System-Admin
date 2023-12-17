@@ -15,6 +15,7 @@ class LoginScreenNfc extends StatefulWidget {
 class _LoginScreenNfcState extends State<LoginScreenNfc> {
   final nfcService = NFCService();
   late StreamSubscription<String> _nfcSubscription;
+  bool _isScanning = true;
 
   @override
   void initState() {
@@ -24,11 +25,14 @@ class _LoginScreenNfcState extends State<LoginScreenNfc> {
 
   void startNFCListener() {
     _nfcSubscription = nfcService.onNFCEvent.listen((cardSerialNumber) {
-      if (cardSerialNumber != 'Error') {
-        // Define your card UIDs
+      if (_isScanning && cardSerialNumber != 'Error') {
         const validUIDs = ['D3BCF3EC', 'b385aafd', 'c3ff9310'];
 
         if (validUIDs.contains(cardSerialNumber)) {
+          setState(() {
+            _isScanning = false; // Stop scanning once a valid card is detected
+          });
+
           // Delay navigation for 500 milliseconds
           Future.delayed(const Duration(milliseconds: 500), () {
             Navigator.push(
@@ -37,7 +41,6 @@ class _LoginScreenNfcState extends State<LoginScreenNfc> {
             );
           });
         } else {
-          // If the card's UID is not valid, display an error message or take appropriate action
           showDialog(
             context: context,
             builder: (BuildContext context) {

@@ -16,7 +16,7 @@ class _HomeAdminPageState extends State<HomeAdminPage> {
   final List<Widget> _screens = [
     const Center(child: Text('Welcome to Admin Dashboard!')),
     const MemberInput(),
-    MemberListScreen(),
+    const MemberListScreen(),
   ];
 
   @override

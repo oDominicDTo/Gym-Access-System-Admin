@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../main.dart';
 import '../models/model.dart';
 import 'camera_page.dart';
+import 'membership_duration.dart';
 
 enum AddressSelection { binan, other }
 
@@ -89,7 +90,9 @@ class _MemberInputState extends State<MemberInput> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Add New Member'), automaticallyImplyLeading: false),
+      appBar: AppBar(
+          title: const Text('Add New Member'),
+          automaticallyImplyLeading: false),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Form(
@@ -126,8 +129,7 @@ class _MemberInputState extends State<MemberInput> {
                     return 'Please enter a valid contact number';
                   }
                   // Validate the Philippine contact number pattern
-                  // This pattern allows a 7 to 13 digit phone number starting with 09 or +63
-                  if (!RegExp(r'^(\+63|0)9[0-9]{9}$').hasMatch(value)) {
+                  if (!RegExp(r'^(\+63|0)9\d{9}$').hasMatch(value)) {
                     return 'Please enter a valid Philippine contact number';
                   }
                   return null;
@@ -248,13 +250,25 @@ class _MemberInputState extends State<MemberInput> {
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
-                  // _saveMember();
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const CameraPage(), // Replace with your desired next page
-                    ),
-                  );
+                  // if (_formKey.currentState!.validate()) {
+                  //   if (selectedMembershipType != null) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MembershipDurationPage(
+                            selectedMembershipType: selectedMembershipType,
+                            firstName: firstNameController.text,
+                            lastName: lastNameController.text,
+                            contactNumber: contactNumberController.text,
+                            email: emailController.text,
+                            address: selectedAddress == AddressSelection.other
+                                ? '$otherCity, $otherBarangay'
+                                : 'Biñan, $selectedBinanBarangay', onSaveMember: (Member newMember) {  },
+                          ),
+                        ),
+                      );
+                  //   }
+                  // }
                 },
                 child: const Text('Next'),
               ),
@@ -265,7 +279,7 @@ class _MemberInputState extends State<MemberInput> {
     );
   }
 
-  void _saveMember() {
+ /* void _saveMember() {
     if (_formKey.currentState!.validate()) {
       String firstName = firstNameController.text;
       String lastName = lastNameController.text;
@@ -296,5 +310,5 @@ class _MemberInputState extends State<MemberInput> {
         objectbox.addMember(newMember);
       }
     }
-  }
+  }*/
 }

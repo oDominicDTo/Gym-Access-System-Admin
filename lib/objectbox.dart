@@ -54,13 +54,20 @@ class ObjectBox {
     );
     MembershipType type2 = MembershipType(
       typeName: 'Athlete',
-      fee: 50.0,
+      fee: 250.0,
+      discount: 0,
+      isLifetime: false,
+    );
+
+    MembershipType type3 = MembershipType(
+      typeName: 'Standard',
+      fee: 500.0,
       discount: 0,
       isLifetime: false,
     );
 
     // Add the MembershipType objects to the _membershipTypeBox
-    _membershipTypeBox.putMany([type1, type2]);
+    _membershipTypeBox.putMany([type1, type2,type3]);
 
     Member member1 = Member(
       firstName: 'Dominic John',
@@ -152,5 +159,16 @@ class ObjectBox {
 
   void deleteMembershipType(int id) {
     _membershipTypeBox.remove(id);
+  }
+
+  Future<bool> checkTagIdExists(String tagId) async {
+    // Create a query to find a member with the given NFC tag ID
+    final query = _memberBox.query(Member_.nfcTagID.equals(tagId)).build();
+
+    // Find members with the specified NFC tag ID
+    final List<Member> members = query.find();
+
+    // Return whether any member with the tag ID exists
+    return members.isNotEmpty;
   }
 }
