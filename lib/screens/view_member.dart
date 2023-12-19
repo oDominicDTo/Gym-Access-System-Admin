@@ -62,8 +62,12 @@ class MemberListScreen extends StatelessWidget {
                           } else if (snapshot.hasError || snapshot.data == null) {
                             return const Icon(Icons.person); // Placeholder icon if image not found
                           } else {
+                            final file = File(snapshot.data!);
+                            if (!file.existsSync()) {
+                              return const Icon(Icons.person); // Placeholder icon if image file doesn't exist
+                            }
                             return Image.file(
-                              File(snapshot.data!),
+                              file,
                               width: 80,
                               height: 80,
                               fit: BoxFit.cover,

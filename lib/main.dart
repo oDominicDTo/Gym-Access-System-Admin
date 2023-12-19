@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
     return const MaterialApp(
       title: 'Gym Kiosk Admin',
       debugShowCheckedModeBanner: false,
-      home: LoginScreenNfc(),
+      home: HomeAdminPage(),
     );
   }
 }

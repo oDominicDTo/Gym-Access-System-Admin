@@ -9,6 +9,7 @@ class MembershipDurationPage extends StatefulWidget {
   final String contactNumber;
   final String email;
   final String address;
+  final String dateOfBirth;
   final Function(Member) onSaveMember;
 
   const MembershipDurationPage({
@@ -20,6 +21,7 @@ class MembershipDurationPage extends StatefulWidget {
     required this.email,
     required this.address,
     required this.onSaveMember,
+    required this.dateOfBirth,
   }) : super(key: key);
 
   @override
@@ -34,123 +36,128 @@ class _MembershipDurationPageState extends State<MembershipDurationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Membership Duration'),
-        automaticallyImplyLeading: true,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Container(
-              width: 400,
-              height: 200,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(),
+        appBar: AppBar(
+          title: const Text('Membership Duration'),
+          automaticallyImplyLeading: true,
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                width: 400,
+                height: 200,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    IconButton(
+                      onPressed: () {
+                        setState(() {
+                          if (months > 1) months--;
+                        });
+                      },
+                      icon: const Icon(Icons.remove),
+                    ),
+                    Text(
+                      months == 1 ? '1 month' : '$months months',
+                      style: const TextStyle(fontSize: 48),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        setState(() {
+                          months++;
+                        });
+                      },
+                      icon: const Icon(Icons.add),
+                    ),
+                  ],
+                ),
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              const SizedBox(height: 20),
+              Text(
+                'Total Price: PHP ${totalPrice.toStringAsFixed(2)}',
+                style: const TextStyle(fontSize: 18),
+              ),
+              const SizedBox(height: 100),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  IconButton(
+                  ElevatedButton(
                     onPressed: () {
-                      setState(() {
-                        if (months > 1) months--;
-                      });
+                      // Handle cancellation logic here
+                      Navigator.pop(context); // Go back to the previous page
                     },
-                    icon: const Icon(Icons.remove),
+                    child: const Text('Cancel'),
                   ),
-                  Text(
-                    months == 1 ? '1 month' : '$months months',
-                    style: const TextStyle(fontSize: 48),
-                  ),
-                  IconButton(
+                  const SizedBox(width: 40),
+                  ElevatedButton(
                     onPressed: () {
-                      setState(() {
-                        months++;
-                      });
+                      if (widget.selectedMembershipType != null) {
+                        DateTime membershipEndDate =
+                            DateTime.now().add(Duration(days: 30 * months));
+
+                        Member newMember = Member(
+                          firstName: widget.firstName,
+                          lastName: widget.lastName,
+                          contactNumber: widget.contactNumber,
+                          email: widget.email,
+                          address: widget.address,
+                          dateOfBirth: DateTime.parse(widget.dateOfBirth),
+                          nfcTagID: 'sampleNfcTagID',
+                          membershipStartDate: DateTime.now(),
+                          membershipEndDate: membershipEndDate,
+                          photoPath: '',
+                        );
+
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Text('Confirm Payment'),
+                              content: const Text(
+                                  'Did you receive the payment for this membership?'),
+                              actions: <Widget>[
+                                TextButton(
+                                  child: const Text('No'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                                TextButton(
+                                  child: const Text('Yes'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                    widget.onSaveMember(newMember);
+
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => CameraPage(
+                                            newMember: newMember,
+                                            selectedMembershipType:
+                                                widget.selectedMembershipType),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      }
                     },
-                    icon: const Icon(Icons.add),
+                    child: const Text('Confirm'),
                   ),
                 ],
               ),
-            ),
-            const SizedBox(height: 20),
-            Text(
-              'Total Price: PHP ${totalPrice.toStringAsFixed(2)}',
-              style: const TextStyle(fontSize: 18),
-            ),
-        const SizedBox(height: 100),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            ElevatedButton(
-              onPressed: () {
-                // Handle cancellation logic here
-                Navigator.pop(context); // Go back to the previous page
-              },
-              child: const Text('Cancel'),
-            ),
-            const SizedBox(width: 40),
-            ElevatedButton(
-              onPressed: () {
-                  if (widget.selectedMembershipType != null) {
-                    DateTime membershipEndDate = DateTime.now().add(Duration(days: 30 * months));
-
-                    Member newMember = Member(
-                      firstName: widget.firstName,
-                      lastName: widget.lastName,
-                      contactNumber: widget.contactNumber,
-                      email: widget.email,
-                      address: widget.address,
-                      dateOfBirth: DateTime.now(),
-                      nfcTagID: 'sampleNfcTagID',
-                      membershipStartDate: DateTime.now(),
-                      membershipEndDate: membershipEndDate,
-                      photoPath: '',
-
-                    );
-
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: const Text('Confirm Payment'),
-                          content: const Text('Did you receive the payment for this membership?'),
-                          actions: <Widget>[
-                            TextButton(
-                              child: const Text('No'),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                            TextButton(
-                              child: const Text('Yes'),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                                widget.onSaveMember(newMember);
-
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => CameraPage(newMember: newMember, selectedMembershipType: widget.selectedMembershipType),
-                                  ),
-                                );
-                              },
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                  }
-              },
-              child: const Text('Confirm'),
-            ),
-          ],
-        ),
-      ],),
-    ));
+            ],
+          ),
+        ));
   }
 }
