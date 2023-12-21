@@ -1,10 +1,14 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:gym_kiosk_admin/screens/home_admin.dart';
 import 'package:lottie/lottie.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
-import '../models/model.dart';
-import '../services/nfc_service.dart';
 import 'package:gym_kiosk_admin/main.dart';
+import 'package:gym_kiosk_admin/models/model.dart';
+
+import '../../services/nfc_service.dart';
+import 'admin/home_admin.dart';
+
 
 class InsertBlankCard extends StatefulWidget {
   final Member newMember;
@@ -17,24 +21,24 @@ class InsertBlankCard extends StatefulWidget {
 
 class _InsertBlankCardState extends State<InsertBlankCard> {
   late NFCService _nfcService;
-
+  late StreamSubscription<String> _nfcSubscription;
 
   @override
   void initState() {
     super.initState();
     _nfcService = NFCService();
-    _listenToNFCEvents();
+    _startNFCListener();
   }
 
-  void _listenToNFCEvents() {
-    _nfcService.onNFCEvent.listen((String tagId) {
+  void _startNFCListener() {
+    _nfcSubscription = _nfcService.onNFCEvent.listen((String tagId) {
       if (tagId != 'Error') {
         _checkAndSaveTagId(tagId);
       }
     });
   }
 
-  Future<void> _checkAndSaveTagId(String tagId) async {
+  void _checkAndSaveTagId(String tagId) async {
     final bool exists = await objectbox.checkTagIdExists(tagId);
 
     if (!exists) {
@@ -46,9 +50,6 @@ class _InsertBlankCardState extends State<InsertBlankCard> {
       _showExistingTagDialog();
     }
   }
-
-
-
   void _showExistingTagDialog() {
     showDialog(
       context: context,
@@ -97,7 +98,8 @@ class _InsertBlankCardState extends State<InsertBlankCard> {
 
   @override
   void dispose() {
-    _nfcService.disposeNFCListener();
+    _nfcSubscription.cancel();
+    _nfcService.disposeNFCListener(); // Adjusted the method name
     super.dispose();
   }
 

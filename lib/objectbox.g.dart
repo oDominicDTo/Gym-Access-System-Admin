@@ -158,7 +158,7 @@ final _entities = <ModelEntity>[
   ModelEntity(
       id: const IdUid(6, 6306018231033438161),
       name: 'Administrator',
-      lastPropertyId: const IdUid(4, 3907427976412737726),
+      lastPropertyId: const IdUid(6, 7786986850897892930),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
@@ -170,8 +170,7 @@ final _entities = <ModelEntity>[
             id: const IdUid(2, 5066433988226746852),
             name: 'username',
             type: 9,
-            flags: 2080,
-            indexId: const IdUid(6, 2120226973327850613)),
+            flags: 0),
         ModelProperty(
             id: const IdUid(3, 8050502793383891001),
             name: 'password',
@@ -180,6 +179,17 @@ final _entities = <ModelEntity>[
         ModelProperty(
             id: const IdUid(4, 3907427976412737726),
             name: 'nfcTagID',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(5, 4136632901090055812),
+            name: 'name',
+            type: 9,
+            flags: 2080,
+            indexId: const IdUid(8, 1991822988256613916)),
+        ModelProperty(
+            id: const IdUid(6, 7786986850897892930),
+            name: 'type',
             type: 9,
             flags: 0)
       ],
@@ -234,11 +244,15 @@ ModelDefinition getObjectBoxModel() {
   final model = ModelInfo(
       entities: _entities,
       lastEntityId: const IdUid(7, 788978535339810145),
-      lastIndexId: const IdUid(7, 1735341259590220276),
+      lastIndexId: const IdUid(8, 1991822988256613916),
       lastRelationId: const IdUid(0, 0),
       lastSequenceId: const IdUid(0, 0),
       retiredEntityUids: const [2820634563096386653, 4791937999762440180],
-      retiredIndexUids: const [5016079819760097089, 1031270484984883474],
+      retiredIndexUids: const [
+        5016079819760097089,
+        1031270484984883474,
+        2120226973327850613
+      ],
       retiredPropertyUids: const [
         7215617545020444247,
         277679724193056298,
@@ -408,11 +422,15 @@ ModelDefinition getObjectBoxModel() {
           final usernameOffset = fbb.writeString(object.username);
           final passwordOffset = fbb.writeString(object.password);
           final nfcTagIDOffset = fbb.writeString(object.nfcTagID);
-          fbb.startTable(5);
+          final nameOffset = fbb.writeString(object.name);
+          final typeOffset = fbb.writeString(object.type);
+          fbb.startTable(7);
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, usernameOffset);
           fbb.addOffset(2, passwordOffset);
           fbb.addOffset(3, nfcTagIDOffset);
+          fbb.addOffset(4, nameOffset);
+          fbb.addOffset(5, typeOffset);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -422,6 +440,10 @@ ModelDefinition getObjectBoxModel() {
 
           final object = Administrator(
               id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
+              name: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 12, ''),
+              type: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 14, ''),
               username: const fb.StringReader(asciiOptimization: true)
                   .vTableGet(buffer, rootOffset, 6, ''),
               password: const fb.StringReader(asciiOptimization: true)
@@ -573,6 +595,14 @@ class Administrator_ {
   /// see [Administrator.nfcTagID]
   static final nfcTagID =
       QueryStringProperty<Administrator>(_entities[3].properties[3]);
+
+  /// see [Administrator.name]
+  static final name =
+      QueryStringProperty<Administrator>(_entities[3].properties[4]);
+
+  /// see [Administrator.type]
+  static final type =
+      QueryStringProperty<Administrator>(_entities[3].properties[5]);
 }
 
 /// [RenewalLog] entity fields to define ObjectBox queries.

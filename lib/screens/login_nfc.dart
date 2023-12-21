@@ -1,9 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:gym_kiosk_admin/models/model.dart';
 import 'package:lottie/lottie.dart';
-import '../services/nfc_service.dart';
-import 'package:gym_kiosk_admin/screens/home_admin.dart';
+
+import '../../services/nfc_service.dart';
+import '../main.dart';
 
 class LoginScreenNfc extends StatefulWidget {
   const LoginScreenNfc({Key? key}) : super(key: key);
@@ -15,7 +17,7 @@ class LoginScreenNfc extends StatefulWidget {
 class _LoginScreenNfcState extends State<LoginScreenNfc> {
   final nfcService = NFCService();
   late StreamSubscription<String> _nfcSubscription;
-  bool _isScanning = true;
+  bool _isScanning = true; // Add this variable to track scanning state
 
   @override
   void initState() {
@@ -26,47 +28,80 @@ class _LoginScreenNfcState extends State<LoginScreenNfc> {
   void startNFCListener() {
     _nfcSubscription = nfcService.onNFCEvent.listen((cardSerialNumber) {
       if (_isScanning && cardSerialNumber != 'Error') {
-        const validUIDs = ['D3BCF3EC', 'b385aafd', 'c3ff9310'];
-
-        if (validUIDs.contains(cardSerialNumber)) {
-          setState(() {
-            _isScanning = false; // Stop scanning once a valid card is detected
-          });
-
-          // Delay navigation for 500 milliseconds
-          Future.delayed(const Duration(milliseconds: 500), () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => HomeAdminPage()),
-            );
-          });
-        } else {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: const Text('Error'),
-                content: const Text('Invalid card detected.'),
-                actions: <Widget>[
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: const Text('OK'),
-                  ),
-                ],
-              );
-            },
-          );
-        }
+        _handleNFCEvent(cardSerialNumber);
       }
+    });
+  }
+
+  Future<void> _handleNFCEvent(String cardSerialNumber) async {
+    if (!mounted) return; // Check if the widget is disposed
+
+    bool tagExists = await objectbox.checkTagIdExists(cardSerialNumber);
+
+    if (!mounted) return; // Check if the widget is disposed after async operation
+
+    if (tagExists) {
+      Administrator? admin = await objectbox.getAdministratorByTagId(cardSerialNumber);
+
+      if (!mounted) return; // Check if the widget is disposed after async operation
+
+      if (admin != null) {
+        String adminType = admin.type.toLowerCase();
+
+        if (adminType == 'superadmin') {
+          _handleNavigation('/homeSuperAdmin');
+        } else if (adminType == 'admin') {
+          _handleNavigation('/homeAdmin');
+        } else if (adminType == 'staff') {
+          _handleNavigation('/homeStaff');
+        } else {
+          _showErrorDialog('Unknown admin type.');
+        }
+      } else {
+        _showErrorDialog('Admin data not found.');
+      }
+    } else {
+      _showErrorDialog('Invalid card detected.');
+    }
+  }
+
+  void _showErrorDialog(String message) {
+    if (!mounted) return; // Check if the widget is disposed
+
+    showDialog(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: const Text('Error'),
+          content: Text(message),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(dialogContext).pop();
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _handleNavigation(String route) {
+    if (!mounted) return; // Check if the widget is disposed
+
+    setState(() {
+      _isScanning = false;
+    });
+
+    Future.delayed(const Duration(milliseconds: 500), () {
+      Navigator.pushReplacementNamed(context, route);
     });
   }
 
   @override
   void dispose() {
     _nfcSubscription.cancel();
-    nfcService.disposeNFCListener();
     super.dispose();
   }
 

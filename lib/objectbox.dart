@@ -8,7 +8,7 @@ class ObjectBox {
   late final Store _store;
 
   late final Admin _admin;
-
+  late final Box<Administrator> _administratorBox;
   late final Box<Member> _memberBox;
   late final Box<Attendance> _attendanceBox;
   late final Box<MembershipType> _membershipTypeBox;
@@ -20,7 +20,7 @@ class ObjectBox {
       // Keep a reference until no longer needed or manually closed.
       _admin = Admin(_store);
     }
-
+    _administratorBox = Box<Administrator>(_store);
     _memberBox = Box<Member>(_store);
     _attendanceBox = Box<Attendance>(_store);
     _membershipTypeBox = Box<MembershipType>(_store);
@@ -29,12 +29,15 @@ class ObjectBox {
     if (_memberBox.isEmpty()) {
       _putDemoData();
     }
+    if (_administratorBox.isEmpty()) {
+      _putAdminData();
+    }
   }
 
   static Future<ObjectBox> create() async {
     // Set a unique directory within the documents directory
     final directoryPath =
-    p.join((await getApplicationDocumentsDirectory()).path, "Kiosk");
+        p.join((await getApplicationDocumentsDirectory()).path, "Kiosk");
 
     // Create the directory if it doesn't exist
     await Directory(directoryPath).create(recursive: true);
@@ -67,7 +70,7 @@ class ObjectBox {
     );
 
     // Add the MembershipType objects to the _membershipTypeBox
-    _membershipTypeBox.putMany([type1, type2,type3]);
+    _membershipTypeBox.putMany([type1, type2, type3]);
 
     Member member1 = Member(
       firstName: 'Dominic John',
@@ -92,13 +95,32 @@ class ObjectBox {
       address: 'Bungahan',
       email: 'jay@example.com',
       membershipStartDate: DateTime.now(),
-      membershipEndDate: DateTime.now().add(const Duration(days: 365)),
+      membershipEndDate: DateTime.now().add(const Duration(days: 0)),
       photoPath: 'jayan.jpg',
     );
     member2.membershipType.target = type2;
 
     // When the Member is put, its MembershipType will automatically be put into the MembershipType Box.
     _memberBox.putMany([member1, member2]);
+  }
+
+  void _putAdminData() async {
+    Administrator member1 = Administrator(
+        name: 'Dominic Tañas',
+        type: 'superadmin',
+        username: 'dominicdt',
+        password: '042323',
+        nfcTagID: 'c3ff9310');
+
+    Administrator member2 = Administrator(
+        name: 'Jay Ann Garcia',
+        type: 'admin',
+        username: 'jayanngarcia',
+        password: '042323',
+        nfcTagID: 'b385aafd');
+
+    // When the Member is put, its MembershipType will automatically be put into the MembershipType Box.
+    _administratorBox.putMany([member1, member2]);
   }
 
   // CRUD methods for Member entity
@@ -162,13 +184,23 @@ class ObjectBox {
   }
 
   Future<bool> checkTagIdExists(String tagId) async {
-    // Create a query to find a member with the given NFC tag ID
-    final query = _memberBox.query(Member_.nfcTagID.equals(tagId)).build();
+    // Create a query to find an administrator with the given NFC tag ID
+    final query = _administratorBox.query(Administrator_.nfcTagID.equals(tagId)).build();
 
-    // Find members with the specified NFC tag ID
-    final List<Member> members = query.find();
+    // Find administrators with the specified NFC tag ID
+    final List<Administrator> admins = query.find();
 
-    // Return whether any member with the tag ID exists
-    return members.isNotEmpty;
+    // Return whether any administrator with the tag ID exists
+    return admins.isNotEmpty;
   }
+
+  Future<Administrator?> getAdministratorByTagId(String tagId) async {
+    // Create a query to find an administrator with the given NFC tag ID
+    final query = _administratorBox.query(Administrator_.nfcTagID.equals(tagId)).build();
+
+    // Find and return the first matching administrator (or null if not found)
+    final List<Administrator> admins = query.find();
+    return admins.isNotEmpty ? admins.first : null;
+  }
+
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../main.dart';
-import '../models/model.dart';
+import 'package:gym_kiosk_admin/main.dart';
+import 'package:gym_kiosk_admin/models/model.dart';
 import 'camera_page.dart';
 import 'membership_duration.dart';
 import 'package:intl/intl.dart';
@@ -101,7 +101,7 @@ class _MemberInputState extends State<MemberInput> {
       body: Column(
         children: [
           const Padding(
-            padding: EdgeInsets.all(50.0),
+            padding: EdgeInsets.all(1.0),
             child: Text(
               'Add New Member',
               style: TextStyle(
@@ -113,7 +113,7 @@ class _MemberInputState extends State<MemberInput> {
           ),
           Center(
             child: Padding(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(5),
               child: SingleChildScrollView(
                 child: Form(
                   key: _formKey,
@@ -133,7 +133,7 @@ class _MemberInputState extends State<MemberInput> {
                               if (value.length < 2) {
                                 return 'First Name should be at least 2 characters';
                               }
-                              if (!RegExp(r'^[a-zA-Z]+$').hasMatch(value)) {
+                              if (!RegExp(r'^[a-zA-ZñÑ]+$').hasMatch(value)) {
                                 return 'First Name should not contain special characters or numbers';
                               }
                               return null;
@@ -152,9 +152,10 @@ class _MemberInputState extends State<MemberInput> {
                               if (value.length < 2) {
                                 return 'Last Name should be at least 2 characters';
                               }
-                              if (!RegExp(r'^[a-zA-Z]+$').hasMatch(value)) {
+                              if (!RegExp(r'^[a-zA-ZñÑ]+$').hasMatch(value)) {
                                 return 'Last Name should not contain special characters or numbers';
                               }
+
                               return null;
                             },
                             isNameField:
@@ -278,7 +279,7 @@ class _MemberInputState extends State<MemberInput> {
     bool isNameField = false, // Add a flag to identify name fields
   }) {
     return Container(
-      width: 500,
+      width: MediaQuery.of(context).size.width * 0.3,
       margin: const EdgeInsets.symmetric(vertical: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -340,7 +341,7 @@ class _MemberInputState extends State<MemberInput> {
 
   Widget _buildDOBFormField() {
     return Container(
-      width: 250,
+      width: MediaQuery.of(context).size.width * 0.2,
       margin: const EdgeInsets.symmetric(vertical: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -402,7 +403,7 @@ class _MemberInputState extends State<MemberInput> {
 
   Widget _buildAddressDropdown() {
     return Container(
-      width: 250,
+      width: MediaQuery.of(context).size.width * 0.2,
       margin: const EdgeInsets.symmetric(vertical: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -463,7 +464,7 @@ class _MemberInputState extends State<MemberInput> {
 
   Widget _buildBinanBarangayDropdown() {
     return Container(
-      width: 250,
+      width: MediaQuery.of(context).size.width * 0.2,
       margin: const EdgeInsets.symmetric(vertical: 10),
       child: DropdownButtonFormField<String>(
         value: selectedBinanBarangay,
@@ -554,7 +555,7 @@ class _MemberInputState extends State<MemberInput> {
     required FormFieldValidator<String> validator,
   }) {
     return Container(
-      width: 300,
+      width: MediaQuery.of(context).size.width * 0.2,
       margin: const EdgeInsets.symmetric(vertical: 10),
       child: TextFormField(
         decoration: InputDecoration(
@@ -590,7 +591,7 @@ class _MemberInputState extends State<MemberInput> {
 
   Widget _buildDropdownMembershipType() {
     return Container(
-      width: 250,
+      width: MediaQuery.of(context).size.width * 0.2,
       margin: const EdgeInsets.symmetric(vertical: 10),
       padding: const EdgeInsets.symmetric(horizontal: 10),
       decoration: BoxDecoration(

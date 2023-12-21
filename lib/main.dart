@@ -4,9 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:gym_kiosk_admin/screens/add_member.dart';
 import 'package:gym_kiosk_admin/objectbox.dart';
 import 'package:gym_kiosk_admin/objectbox.g.dart';
-import 'package:gym_kiosk_admin/screens/home_admin.dart';
 import 'package:gym_kiosk_admin/screens/login_nfc.dart';
 import 'package:window_size/window_size.dart';
+import 'package:gym_kiosk_admin/screens/admin/home_admin.dart';
+import 'package:gym_kiosk_admin/screens/staff/home_staff.dart';
+import 'package:gym_kiosk_admin/screens/superadmin/home_super_admin.dart';
+
 
 late ObjectBox objectbox;
 
@@ -18,7 +21,7 @@ Future<void> main() async {
   if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
     setWindowTitle('Gym Kiosk Admin');
     setWindowMaxSize(const Size(1920, 1080));
-    setWindowMinSize(const Size(1920, 1080));
+    setWindowMinSize(const Size(1366, 720));
   }
 
   runApp(const MyApp());
@@ -31,10 +34,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return  MaterialApp(
       title: 'Gym Kiosk Admin',
       debugShowCheckedModeBanner: false,
-      home: HomeAdminPage(),
+      initialRoute: '/', // Set the initial route
+      routes: {
+        '/': (context) => const LoginScreenNfc(), // Define the initial route
+        '/homeSuperAdmin': (context) => const HomeSuperAdminPage(),
+        '/homeAdmin': (context) => const HomeAdminPage(),
+        '/homeStaff': (context) => const HomeStaffPage(),
+        // Add more routes if needed
+      },
     );
   }
 }

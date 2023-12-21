@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:gym_kiosk_admin/screens/add_member.dart'; // Import the AddMemberScreen widget
-import 'package:gym_kiosk_admin/screens/view_member.dart';
+import 'package:gym_kiosk_admin/screens/add_member.dart';
+import 'package:gym_kiosk_admin/screens/member_list_screen.dart';
 
-class HomeAdminPage extends StatefulWidget {
-  const HomeAdminPage({super.key});
+class HomeStaffPage extends StatefulWidget {
+  const HomeStaffPage({super.key});
 
   @override
-  State createState() => _HomeAdminPageState();
+  State createState() => _HomeStaffPageState();
 }
 
-class _HomeAdminPageState extends State<HomeAdminPage> {
+class _HomeStaffPageState extends State<HomeStaffPage> {
   int _selectedIndex = 0;
 
   final List<Widget> _screens = [
@@ -25,8 +25,9 @@ class _HomeAdminPageState extends State<HomeAdminPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(70.0),
+        preferredSize: const Size.fromHeight(50.0),
         child: AppBar(
+          automaticallyImplyLeading: false,
           backgroundColor: Colors.white,
           elevation: 4,
           titleSpacing: 0,
@@ -40,7 +41,7 @@ class _HomeAdminPageState extends State<HomeAdminPage> {
                   right: 2.0,
                 ),
                 child: SizedBox(
-                  height: 50,
+                  height: 40,
                   width: 300,
                   child: Image.asset(
                     'assets/images/whole_logo.png',

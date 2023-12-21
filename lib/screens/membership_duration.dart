@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gym_kiosk_admin/screens/camera_page.dart';
-import '../models/model.dart';
+import 'package:gym_kiosk_admin/models/model.dart';
+import 'package:intl/intl.dart';
 
 class MembershipDurationPage extends StatefulWidget {
   final MembershipType? selectedMembershipType;
@@ -99,6 +100,7 @@ class _MembershipDurationPageState extends State<MembershipDurationPage> {
                   ElevatedButton(
                     onPressed: () {
                       if (widget.selectedMembershipType != null) {
+                        DateTime parsedDate = DateFormat('MMMM dd, yyyy').parse(widget.dateOfBirth);
                         DateTime membershipEndDate =
                             DateTime.now().add(Duration(days: 30 * months));
 
@@ -108,7 +110,7 @@ class _MembershipDurationPageState extends State<MembershipDurationPage> {
                           contactNumber: widget.contactNumber,
                           email: widget.email,
                           address: widget.address,
-                          dateOfBirth: DateTime.parse(widget.dateOfBirth),
+                          dateOfBirth: parsedDate,
                           nfcTagID: 'sampleNfcTagID',
                           membershipStartDate: DateTime.now(),
                           membershipEndDate: membershipEndDate,

@@ -1,10 +1,22 @@
+import 'dart:async';
 import 'package:flutter_pcsc/flutter_pcsc.dart';
 
 class NFCService {
+  StreamController<String>? _nfcEventController;
   Stream<String>? _nfcEventStream;
+  StreamSubscription<String>? _nfcSubscription;
 
   Stream<String> get onNFCEvent {
-    _nfcEventStream ??= Stream.periodic(const Duration(seconds: 1)).asyncMap((_) async {
+    _nfcEventController ??= StreamController<String>.broadcast();
+    _nfcEventStream ??= _nfcEventController!.stream;
+
+    _nfcSubscription ??= startListening();
+
+    return _nfcEventStream!;
+  }
+
+  StreamSubscription<String> startListening() {
+    return Stream.periodic(const Duration(seconds: 1)).asyncMap((_) async {
       try {
         int context = await Pcsc.establishContext(PcscSCope.user);
         List<String> readers = await Pcsc.listReaders(context);
@@ -39,13 +51,19 @@ class NFCService {
         }
       }
       return 'Error';
-    }).distinct();
-    return _nfcEventStream!;
+    }).distinct().listen((String tagId) {
+      if (tagId != 'Error') {
+        _nfcEventController!.add(tagId);
+      }
+    });
   }
 
   void disposeNFCListener() {
-    _nfcEventStream?.drain();
+    _nfcEventController?.close();
+    _nfcSubscription?.cancel();
+    _nfcEventController = null;
     _nfcEventStream = null;
+    _nfcSubscription = null;
   }
 
   String hexDump(List<int> data) {

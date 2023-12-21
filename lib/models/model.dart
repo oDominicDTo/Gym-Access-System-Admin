@@ -10,11 +10,12 @@ class Administrator {
   int id;
 
   @Unique()
+  String name;
   String username;
   String password;
   String nfcTagID;
-
-  Administrator({this.id = 0, required this.username, required this.password, required this.nfcTagID});
+  String type;
+  Administrator({this.id = 0,required this.name,required this.type, required this.username, required this.password, required this.nfcTagID});
 }
 
 @Entity()
