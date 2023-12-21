@@ -13,7 +13,7 @@ class _HomeSuperAdminPageState extends State<HomeSuperAdminPage> {
   int _selectedIndex = 0;
 
   final List<Widget> _screens = [
-    const Center(child: Text('Welcome to Home!')),
+    const Center(child: Text('Welcome to SuperAdmin')),
     const Center(child: Text('Welcome to Overview!')),
     const MemberInput(),
     const MemberListScreen(),
