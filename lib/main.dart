@@ -20,8 +20,8 @@ Future<void> main() async {
 
   if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
     setWindowTitle('Gym Kiosk Admin');
-    setWindowMaxSize(const Size(1920, 1080));
-    setWindowMinSize(const Size(1366, 720));
+    setWindowMaxSize(const Size(1366, 768));
+    setWindowMinSize(const Size(1366, 768));
   }
 
   runApp(const MyApp());
