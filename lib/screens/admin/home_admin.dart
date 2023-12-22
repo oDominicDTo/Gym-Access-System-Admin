@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gym_kiosk_admin/screens/add_member.dart';
 import 'package:gym_kiosk_admin/screens/member_list_screen.dart';
+import 'package:gym_kiosk_admin/widgets/top_navigation_bar.dart';
 
 class HomeAdminPage extends StatefulWidget {
   const HomeAdminPage({super.key});
@@ -25,46 +26,15 @@ class _HomeAdminPageState extends State<HomeAdminPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(50.0),
-        child: AppBar(
-          automaticallyImplyLeading: false,
-          backgroundColor: Colors.white,
-          elevation: 4,
-          titleSpacing: 0,
-          title: Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                  top: 30.0,
-                  bottom: 25.0,
-                  left: 2.0,
-                  right: 2.0,
-                ),
-                child: SizedBox(
-                  height: 40,
-                  width: 300,
-                  child: Image.asset(
-                    'assets/images/whole_logo.png',
-                    fit: BoxFit.contain,
-                  ),
-                ),
-
-              ),
-            ],
-          ),
-
-        ),
-      ),
+      appBar: const TopNavigationBar(),
       body: Row(
         children: <Widget>[
           NavigationRail(
             selectedIndex: _selectedIndex,
             onDestinationSelected: (int index) {
-              if (index == 7) { // Check if "Log Out" button is clicked
-                // Perform logout actions here
-                Navigator.of(context).pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
-                // This will navigate to the home route ("/") and remove all routes from the stack
+              if (index == 7) {
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                    '/', (Route<dynamic> route) => false);
               } else {
                 setState(() {
                   _selectedIndex = index;
@@ -127,7 +97,10 @@ class _HomeAdminPageState extends State<HomeAdminPage> {
           ),
           const VerticalDivider(thickness: 1, width: 1),
           Expanded(
-            child: _screens[_selectedIndex],
+            child: Scaffold(
+               // Using the TopNavigationBar widget here
+              body: _screens[_selectedIndex],
+            ),
           ),
         ],
       ),
