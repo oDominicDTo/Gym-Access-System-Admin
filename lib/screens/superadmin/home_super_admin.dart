@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gym_kiosk_admin/screens/add_member.dart';
 import 'package:gym_kiosk_admin/screens/member_list_screen.dart';
+import 'package:gym_kiosk_admin/screens/profile_page.dart';
 
 class HomeSuperAdminPage extends StatefulWidget {
   const HomeSuperAdminPage({super.key});
@@ -17,9 +18,9 @@ class _HomeSuperAdminPageState extends State<HomeSuperAdminPage> {
     const Center(child: Text('Welcome to Overview!')),
     const MemberInput(),
     const MemberListScreen(),
-    const Center(child: Text('Welcome to Profile')),
     const Center(child: Text('Welcome to Feedback')),
   ];
+
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +61,7 @@ class _HomeSuperAdminPageState extends State<HomeSuperAdminPage> {
           NavigationRail(
             selectedIndex: _selectedIndex,
             onDestinationSelected: (int index) {
-              if (index == 6) { // Check if "Log Out" button is clicked
+              if (index == 5) { // Check if "Log Out" button is clicked
                 // Perform logout actions here
                 Navigator.of(context).pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
                 // This will navigate to the home route ("/") and remove all routes from the stack
@@ -99,11 +100,6 @@ class _HomeSuperAdminPageState extends State<HomeSuperAdminPage> {
                   'View Members',
                   style: TextStyle(fontFamily: 'Poppins'),
                 ),
-              ),
-              NavigationRailDestination(
-                icon: Icon(Icons.person),
-                label: Text('Profile',
-                  style: TextStyle(fontFamily: 'Poppins'),),
               ),
               NavigationRailDestination(
                 icon: Icon(Icons.feedback_outlined),

@@ -1,8 +1,8 @@
 import 'package:objectbox/objectbox.dart';
 import 'package:intl/intl.dart'; // Import the intl package for date formatting
 
-
 enum MembershipStatus { active, inactive, expired }
+
 enum AdminRole { superAdmin, admin, staff }
 
 @Entity()
@@ -15,7 +15,14 @@ class Administrator {
   String password;
   String nfcTagID;
   String type;
-  Administrator({this.id = 0,required this.name,required this.type, required this.username, required this.password, required this.nfcTagID});
+
+  Administrator(
+      {this.id = 0,
+      required this.name,
+      required this.type,
+      required this.username,
+      required this.password,
+      required this.nfcTagID});
 }
 
 @Entity()
@@ -43,27 +50,28 @@ class Member {
 
   String photoPath;
 
-  Member({
-    this.id = 0,
-    required this.firstName,
-    required this.lastName,
-    required this.contactNumber,
-    required this.email,
-    required this.dateOfBirth,
-    required this.address,
-    required this.nfcTagID,
-    required this.membershipEndDate,
-    required this.photoPath,
-    DateTime? membershipStartDate,
-    DateTime? dateCreated})
+  Member(
+      {this.id = 0,
+      required this.firstName,
+      required this.lastName,
+      required this.contactNumber,
+      required this.email,
+      required this.dateOfBirth,
+      required this.address,
+      required this.nfcTagID,
+      required this.membershipEndDate,
+      required this.photoPath,
+      DateTime? membershipStartDate,
+      DateTime? dateCreated})
       : membershipStartDate = membershipStartDate ?? DateTime.now();
 
   String get dateOfBirthFormat => DateFormat('MMMM.dd.yy').format(dateOfBirth);
 
-  String get membershipStartDateFormat => DateFormat('MMMM.dd.yy').format(membershipStartDate);
+  String get membershipStartDateFormat =>
+      DateFormat('MMMM.dd.yy').format(membershipStartDate);
 
-  String get membershipEndDateFormat => DateFormat('MMMM.dd.yy').format(membershipEndDate);
-
+  String get membershipEndDateFormat =>
+      DateFormat('MMMM.dd.yy').format(membershipEndDate);
 
   int getRemainingMembershipDays() {
     final currentDate = DateTime.now();
@@ -81,23 +89,21 @@ class Member {
 
   MembershipStatus getMembershipStatus() {
     final currentDate = DateTime.now();
-    if (currentDate.isBefore(membershipStartDate)) {
-      return MembershipStatus.inactive; // Membership has not started yet
-    } else if (currentDate.isBefore(membershipEndDate)) {
+
+    if (currentDate.isBefore(membershipEndDate)) {
       return MembershipStatus.active; // Membership is active
     } else {
-      return MembershipStatus.expired; // Membership has expired
+      final twoMonthsAfterExpiration = membershipEndDate.add(
+          const Duration(days: 2 * 30)); // Two months after membership ended
+      if (currentDate.isBefore(twoMonthsAfterExpiration)) {
+        return MembershipStatus.expired; // Membership expired
+      } else {
+        return MembershipStatus
+            .inactive; // Membership inactive for 2 months after expiry
+      }
     }
   }
-
-  bool isInactiveForMonths(int monthsThreshold) {
-    final currentDate = DateTime.now();
-    final inactiveThreshold = currentDate.subtract(Duration(days: monthsThreshold * 30)); // Converting months to days
-    return membershipEndDate.isBefore(inactiveThreshold);
-  }
-
 }
-
 
 @Entity()
 class Attendance {
