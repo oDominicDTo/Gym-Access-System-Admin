@@ -46,6 +46,42 @@ class TopNavigationBar extends StatelessWidget implements PreferredSizeWidget {
             ),
           ),
           Expanded(child: Container()), // To push items to the right side
+          InkWell(
+            onTap: () {
+              // Navigate to profile page logic here
+              Navigator.of(context).pushNamed('/profile');
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.3),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: const Row(
+                  children: [
+                    Text(
+                      'Dominic Tanas',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'Poppins',
+                        fontSize: 16, // Adjust the font size as needed
+                      ),
+                    ),
+                    SizedBox(width: 8),
+                    CircleAvatar(
+                      backgroundColor: Colors.white,
+                      child: Icon(
+                        Icons.person_outline,
+                        color: Colors.black, // Customize the icon color as needed
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
           IconButton(
             icon: const Icon(
               Icons.settings,
@@ -81,34 +117,6 @@ class TopNavigationBar extends StatelessWidget implements PreferredSizeWidget {
                 ),
               )
             ],
-          ),
-          Container(
-            width: 1,
-            height: 24,
-            color: Colors.grey, // Divider color
-            margin: const EdgeInsets.symmetric(horizontal: 12),
-          ),
-          const Text(
-            "Santos Enoque",
-            style: TextStyle(
-              color: Colors.black,
-              fontFamily: 'Poppins',
-              fontSize: 16// Customize the color as needed
-            ),
-          ),
-          const SizedBox(width: 16), // Adjust the spacing as needed
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.grey.withOpacity(0.5), // Customize the color as needed
-              borderRadius: BorderRadius.circular(30),
-            ),
-            child: const CircleAvatar(
-              backgroundColor: Colors.white,
-              child: Icon(
-                Icons.person_outline,
-                color: Colors.black, // Customize the icon color as needed
-              ),
-            ),
           ),
           const SizedBox(width: 16), // Adjust the spacing as needed
         ],

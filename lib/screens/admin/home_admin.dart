@@ -18,8 +18,8 @@ class _HomeAdminPageState extends State<HomeAdminPage> {
     const Center(child: Text('Welcome to Overview!')),
     const MemberInput(),
     const MemberListScreen(),
+    const Center(child: Text('Welcome to Renew')),
     const Center(child: Text('Welcome to Management')),
-    const Center(child: Text('Welcome to Profile')),
     const Center(child: Text('Welcome to Feedback')),
   ];
 
@@ -72,13 +72,13 @@ class _HomeAdminPageState extends State<HomeAdminPage> {
                 ),
               ),
               NavigationRailDestination(
-                icon: Icon(Icons.build_outlined),
-                label: Text('Management',
+                icon: Icon(Icons.person),
+                label: Text('Renew',
                   style: TextStyle(fontFamily: 'Poppins'),),
               ),
               NavigationRailDestination(
-                icon: Icon(Icons.person),
-                label: Text('Profile',
+                icon: Icon(Icons.build_outlined),
+                label: Text('Management',
                   style: TextStyle(fontFamily: 'Poppins'),),
               ),
               NavigationRailDestination(
