@@ -1,9 +1,7 @@
 import 'dart:io';
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:gym_kiosk_admin/screens/add_member.dart';
 import 'package:gym_kiosk_admin/objectbox.dart';
-import 'package:gym_kiosk_admin/objectbox.g.dart';
 import 'package:gym_kiosk_admin/screens/login_nfc.dart';
 import 'package:window_size/window_size.dart';
 import 'package:gym_kiosk_admin/screens/admin/home_admin.dart';

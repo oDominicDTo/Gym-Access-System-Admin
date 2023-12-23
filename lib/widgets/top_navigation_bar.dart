@@ -1,13 +1,40 @@
 import 'package:flutter/material.dart';
 
-class TopNavigationBar extends StatelessWidget implements PreferredSizeWidget {
+import '../screens/profile_page.dart';
+
+class TopNavigationBar extends StatefulWidget implements PreferredSizeWidget {
   const TopNavigationBar({super.key});
 
   @override
+  State createState() => _TopNavigationBarState();
+
+  @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+}
+
+class _TopNavigationBarState extends State<TopNavigationBar> {
+  late DateTime _currentTime;
+
+  @override
+  void initState() {
+    super.initState();
+    _updateTime();
+  }
+
+  void _updateTime() {
+    setState(() {
+      _currentTime = DateTime.now();
+    });
+    // Update time every second
+    Future.delayed(const Duration(seconds: 1), _updateTime);
+  }
 
   @override
   Widget build(BuildContext context) {
+    String formattedDate = '${_currentTime.day}/${_currentTime.month}/${_currentTime.year}';
+    String formattedTime =
+        '${_currentTime.hour}:${_currentTime.minute.toString().padLeft(2, '0')}:${_currentTime.second.toString().padLeft(2, '0')} ${_formatAmPm(_currentTime)}';
+
     return AppBar(
       automaticallyImplyLeading: false,
       backgroundColor: Colors.white,
@@ -45,11 +72,39 @@ class TopNavigationBar extends StatelessWidget implements PreferredSizeWidget {
               ],
             ),
           ),
-          Expanded(child: Container()), // To push items to the right side
+
+          Expanded(child: Container()),
+          const SizedBox(width: 8), // Space between profile and date/time
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                formattedDate,
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontFamily: 'Poppins',
+                  fontSize: 12, // Adjust the font size as needed
+                ),
+              ),
+              Text(
+                formattedTime,
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontFamily: 'Poppins',
+                  fontSize: 12, // Adjust the font size as needed
+                ),
+              ),
+            ],
+          ),
           InkWell(
             onTap: () {
-              // Navigate to profile page logic here
-              Navigator.of(context).pushNamed('/profile');
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ProfilePage(),
+                ),
+              );
             },
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -88,7 +143,6 @@ class TopNavigationBar extends StatelessWidget implements PreferredSizeWidget {
               color: Colors.black, // Customize the color as needed
             ),
             onPressed: () {
-              // Implement settings functionality here
             },
           ),
           Stack(
@@ -123,5 +177,9 @@ class TopNavigationBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       iconTheme: const IconThemeData(color: Colors.grey), // Customize icon color
     );
+  }
+
+  String _formatAmPm(DateTime time) {
+    return time.hour < 12 ? 'AM' : 'PM';
   }
 }
