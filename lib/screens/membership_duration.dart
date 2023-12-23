@@ -94,7 +94,10 @@ class _MembershipDurationPageState extends State<MembershipDurationPage> {
                       // Handle cancellation logic here
                       Navigator.pop(context); // Go back to the previous page
                     },
-                    child: const Text('Cancel'),
+                    style: TextButton.styleFrom(
+                      side: BorderSide(color: Colors.black), // Set border color to black
+                    ),
+                    child: const Text('Cancel', style: TextStyle(color: Colors.black, fontFamily: 'Poppins')),
                   ),
                   const SizedBox(width: 40),
                   ElevatedButton(
@@ -121,32 +124,57 @@ class _MembershipDurationPageState extends State<MembershipDurationPage> {
                           context: context,
                           builder: (BuildContext context) {
                             return AlertDialog(
-                              title: const Text('Confirm Payment'),
+                              title:  Text('Confirm Payment', textAlign: TextAlign.center,
+                                style: TextStyle(color: Colors.black,fontFamily: 'Poppins', fontWeight: FontWeight.bold
+                                ),),
                               content: const Text(
-                                  'Did you receive the payment for this membership?'),
-                              actions: <Widget>[
-                                TextButton(
-                                  child: const Text('No'),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
-                                TextButton(
-                                  child: const Text('Yes'),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                    widget.onSaveMember(newMember);
+                                  'Did you receive the payment for this membership?',
+                                style: TextStyle(color: Colors.black,fontFamily: 'Poppins'),
 
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => CameraPage(
-                                            newMember: newMember,
-                                            selectedMembershipType:
-                                                widget.selectedMembershipType),
+                              ),
+                              actions: [
+                                Center(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        style: TextButton.styleFrom(
+                                          side: BorderSide(color: Colors.black), // Set border color to black
+                                        ),
+                                        child: Text(
+                                          'No',
+                                          style: TextStyle(color: Colors.black,fontFamily: 'Poppins'),
+                                        ),
                                       ),
-                                    );
-                                  },
+                                      SizedBox(width: 16), // Add some space between buttons
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                          widget.onSaveMember(newMember);
+
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => CameraPage(
+                                                newMember: newMember,
+                                                selectedMembershipType: widget.selectedMembershipType,
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                        style: TextButton.styleFrom(
+                                          backgroundColor: Colors.black,
+                                        ),
+                                        child: Text(
+                                          'Yes',
+                                          style: TextStyle(color: Colors.white, fontFamily: 'Poppins'),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ],
                             );
@@ -154,7 +182,10 @@ class _MembershipDurationPageState extends State<MembershipDurationPage> {
                         );
                       }
                     },
-                    child: const Text('Confirm'),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.black, // Set background color to black
+                    ),
+                    child: const Text('Confirm', style: TextStyle(color: Colors.white, fontFamily: 'Poppins')),
                   ),
                 ],
               ),

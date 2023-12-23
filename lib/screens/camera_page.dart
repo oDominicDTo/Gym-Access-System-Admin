@@ -153,18 +153,36 @@ class _CameraPageState extends State<CameraPage> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: const Text('Take Photo'),
-            content: const Text('Please take a photo before proceeding.'),
+            title: const Text('Take Photo',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold),
+            ),
+            content: const Text('Please take a photo before proceeding.',
+              style: TextStyle(color: Colors.black,fontFamily: 'Poppins'),
+            ),
             actions: <Widget>[
-              TextButton(
-                child: const Text('OK'),
+              Center(
+              child: Row (
+            mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            TextButton(
+                child: const Text('OK', style: TextStyle(color: Colors.white)),
+                style: TextButton.styleFrom(
+                  backgroundColor: Colors.black, // Set background color to black
+                ),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
+            ),
+          ],
               ),
+
+              ),
+
             ],
           );
         },
+
       );
     }
   }
@@ -230,7 +248,10 @@ class _CameraPageState extends State<CameraPage> {
           const SizedBox(height: 16),
           ElevatedButton(
             onPressed: _photoTaken ? _retakePhoto : _takePhoto,
-            child: Text(_photoTaken ? 'Retake' : 'Take Photo'),
+            style: ElevatedButton.styleFrom(
+              primary: Colors.black, // Set background color to black
+            ),
+            child: Text(_photoTaken ? 'Retake' : 'Take Photo', style: TextStyle(color: Colors.white,fontFamily: 'Poppins')),
           ),
           const SizedBox(height: 16),
           Row(
@@ -242,12 +263,18 @@ class _CameraPageState extends State<CameraPage> {
                   _disposeCamera();
                   Navigator.pop(context);
                 },
-                child: const Text('Previous'),
+                style: TextButton.styleFrom(
+                  side: BorderSide(color: Colors.black), // Set border color to black
+                ),
+                child: const Text('Previous', style: TextStyle(color: Colors.black, fontFamily: 'Poppins')),
               ),
               const SizedBox(width: 20),
               ElevatedButton(
                 onPressed: _navigateToNextPage,
-                child: const Text('Next'),
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.black, // Set background color to black
+                ),
+                child: const Text('Next', style: TextStyle(color: Colors.white, fontFamily: 'Poppins')),
               ),
             ],
           ),
