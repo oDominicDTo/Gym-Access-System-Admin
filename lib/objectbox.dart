@@ -1,8 +1,10 @@
 import 'dart:io';
+import 'package:faker/faker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 import 'models/model.dart';
 import 'objectbox.g.dart'; // Assuming Member entity is defined in model.dart
+import 'package:gym_kiosk_admin/services/nfc_service.dart';
 
 class ObjectBox {
   late final Store _store;
@@ -12,6 +14,7 @@ class ObjectBox {
   late final Box<Member> _memberBox;
   late final Box<Attendance> _attendanceBox;
   late final Box<MembershipType> _membershipTypeBox;
+  late final NFCService _nfcService;
 
   ObjectBox._create(this._store) {
     // Optional: enable ObjectBox Admin on debug builds.
@@ -24,7 +27,9 @@ class ObjectBox {
     _memberBox = Box<Member>(_store);
     _attendanceBox = Box<Attendance>(_store);
     _membershipTypeBox = Box<MembershipType>(_store);
-
+    _nfcService = NFCService();
+    // Start NFC event listener
+    _startNFCListener();
     // Add some demo data if the box is empty.
     if (_memberBox.isEmpty()) {
       _putDemoData();
@@ -47,61 +52,90 @@ class ObjectBox {
 
     return ObjectBox._create(store);
   }
+  void _startNFCListener() {
+    _nfcService.onNFCEvent.listen((tagId) {
+      if (tagId != 'Error') {
+        // Fetch member by NFC tag ID
+        Member? member = getMemberByNfcTag(tagId);
+
+        if (member != null) {
+          logAttendance(member, checkInTime: DateTime.now());
+        } else {
+          // Handle case when the member with the NFC tag is not found
+          // or any other error scenario
+          print("Member not found or error in NFC scanning.");
+        }
+      }
+    });
+  }
+
+  void logAttendance(Member member, {required DateTime checkInTime, DateTime? checkOutTime}) {
+    _recordAttendance(member, checkInTime, checkOutTime: checkOutTime);
+  }
+
+  void _recordAttendance(Member member, DateTime checkInTime, {DateTime? checkOutTime}) {
+    final attendance = Attendance(
+      member: ToOne<Member>()..target = member,
+      checkInTime: checkInTime,
+      checkOutTime: checkOutTime ?? DateTime.now(), // Use DateTime.now() as a default if checkOutTime is null
+    );
+    _attendanceBox.put(attendance);
+  }
+
+  Member? getMemberByNfcTag(String tagId) {
+    final query = _memberBox.query(Member_.nfcTagID.equals(tagId)).build();
+    final members = query.find();
+    return members.isNotEmpty ? members.first : null;
+  }
 
   void _putDemoData() async {
-    MembershipType type1 = MembershipType(
-      typeName: 'VIP',
-      fee: 100.0,
-      discount: 0,
-      isLifetime: true,
-    );
-    MembershipType type2 = MembershipType(
-      typeName: 'Athlete',
-      fee: 250.0,
-      discount: 0,
-      isLifetime: false,
-    );
+    Faker faker = Faker();
 
-    MembershipType type3 = MembershipType(
-      typeName: 'Standard',
-      fee: 500.0,
-      discount: 0,
-      isLifetime: false,
-    );
+    // Array of membership types
+    List<MembershipType> membershipTypes = [
+      MembershipType(
+        typeName: 'VIP',
+        fee: 100.0,
+        discount: 0,
+        isLifetime: true,
+      ),
+      MembershipType(
+        typeName: 'Athlete',
+        fee: 250.0,
+        discount: 0,
+        isLifetime: false,
+      ),
+      MembershipType(
+        typeName: 'Standard',
+        fee: 500.0,
+        discount: 0,
+        isLifetime: false,
+      ),
+    ];
 
     // Add the MembershipType objects to the _membershipTypeBox
-    _membershipTypeBox.putMany([type1, type2, type3]);
+    _membershipTypeBox.putMany(membershipTypes);
 
-    Member member1 = Member(
-      firstName: 'Dominic John',
-      lastName: 'Tanas',
-      contactNumber: '09178701138',
-      nfcTagID: 'c3ff9310',
-      dateOfBirth: DateTime(2001, 04, 29),
-      address: 'Zapote',
-      email: 'dominic@example.com',
-      membershipStartDate: DateTime.now(),
-      membershipEndDate: DateTime.now().add(const Duration(days: 365)),
-      photoPath: 'dom.jpg',
-    );
-    member1.membershipType.target = type1;
+    for (int i = 0; i < 100; i++) {
+      Member member = Member(
+        firstName: faker.person.firstName(),
+        lastName: faker.person.lastName(),
+        contactNumber: faker.phoneNumber.us(),
+        nfcTagID: faker.guid.guid(),
+        dateOfBirth: faker.date.dateTime(minYear: 1950, maxYear: 2005),
+        address: faker.address.streetAddress(),
+        email: faker.internet.email(),
+        membershipStartDate: DateTime.now(),
+        membershipEndDate: DateTime.now().add(const Duration(days: 365)),
+        photoPath: faker.image.image(),
+      );
 
-    Member member2 = Member(
-      firstName: 'Jay Ann',
-      lastName: 'Garcia',
-      contactNumber: '09672182672',
-      nfcTagID: 'b385aafd',
-      dateOfBirth: DateTime(2001, 7, 14),
-      address: 'Bungahan',
-      email: 'jay@example.com',
-      membershipStartDate: DateTime.now(),
-      membershipEndDate: DateTime.now().add(const Duration(days: 0)),
-      photoPath: 'jayan.jpg',
-    );
-    member2.membershipType.target = type2;
+      // Assign a random membership type to the member
+      member.membershipType.target = membershipTypes[faker.randomGenerator.integer(membershipTypes.length)];
 
-    // When the Member is put, its MembershipType will automatically be put into the MembershipType Box.
-    _memberBox.putMany([member1, member2]);
+      // When the Member is put, its MembershipType will automatically be put into the MembershipType Box.
+      _memberBox.put(member);
+    }
   }
 
   void _putAdminData() async {
@@ -202,5 +236,4 @@ class ObjectBox {
     final List<Administrator> admins = query.find();
     return admins.isNotEmpty ? admins.first : null;
   }
-
 }

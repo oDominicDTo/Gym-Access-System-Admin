@@ -120,7 +120,7 @@ class Attendance {
   Attendance({
     this.id = 0,
     required this.checkInTime,
-    required this.checkOutTime,
+    required this.checkOutTime, required ToOne<Member> member,
   });
 }
 

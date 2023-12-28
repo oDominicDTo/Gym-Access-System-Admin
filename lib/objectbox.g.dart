@@ -369,9 +369,10 @@ ModelDefinition getObjectBoxModel() {
               checkInTime: DateTime.fromMillisecondsSinceEpoch(
                   const fb.Int64Reader().vTableGet(buffer, rootOffset, 8, 0)),
               checkOutTime: DateTime.fromMillisecondsSinceEpoch(
-                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 10, 0)));
-          object.member.targetId =
-              const fb.Int64Reader().vTableGet(buffer, rootOffset, 14, 0);
+                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 10, 0)),
+              member: ToOne(
+                  targetId: const fb.Int64Reader()
+                      .vTableGet(buffer, rootOffset, 14, 0)));
           object.member.attach(store);
           return object;
         }),

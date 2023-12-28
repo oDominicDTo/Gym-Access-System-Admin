@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gym_kiosk_admin/screens/add_member.dart';
+import 'package:gym_kiosk_admin/screens/home_page.dart';
 import 'package:gym_kiosk_admin/screens/member_list_screen.dart';
 import 'package:gym_kiosk_admin/widgets/top_navigation_bar.dart';
 
@@ -14,7 +15,7 @@ class _HomeAdminPageState extends State<HomeAdminPage> {
   int _selectedIndex = 0;
 
   final List<Widget> _screens = [
-    const Center(child: Text('Welcome to Home!')),
+    const HomePage(),
     const Center(child: Text('Welcome to Overview!')),
     const MemberInput(),
     const MemberListScreen(),
