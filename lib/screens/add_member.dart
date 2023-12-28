@@ -111,6 +111,7 @@ class _MemberInputState extends State<MemberInput> {
               ),
             ),
           ),
+          const SizedBox(height: 50),
           Center(
             child: Padding(
               padding: const EdgeInsets.all(5),
@@ -120,10 +121,13 @@ class _MemberInputState extends State<MemberInput> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
+
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
+
                           _buildTextFormField(
+
                             labelText: 'First Name',
                             controller: firstNameController,
                             validator: (value) {
@@ -141,7 +145,7 @@ class _MemberInputState extends State<MemberInput> {
                             isNameField:
                                 true, // Set the flag for the First Name field
                           ),
-                          const SizedBox(width: 20),
+                          const SizedBox(width: 15),
                           _buildTextFormField(
                             labelText: 'Last Name',
                             controller: lastNameController,
@@ -163,7 +167,7 @@ class _MemberInputState extends State<MemberInput> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 5),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -182,7 +186,7 @@ class _MemberInputState extends State<MemberInput> {
                             },
                             keyboardType: TextInputType.phone,
                           ),
-                          const SizedBox(width: 20),
+                          const SizedBox(width: 15),
                           _buildTextFormField(
                             labelText: 'Email',
                             controller: emailController,
@@ -200,23 +204,23 @@ class _MemberInputState extends State<MemberInput> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 5),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           _buildDOBFormField(),
-                          const SizedBox(width: 20),
+                          const SizedBox(width: 10),
                           _buildAddressDropdown(),
-                          const SizedBox(width: 20),
+                          const SizedBox(width: 10),
                           if (selectedAddress == AddressSelection.binan)
                             _buildBinanBarangayDropdown(),
                           if (selectedAddress == AddressSelection.other)
                             _buildOtherAddressFields(),
                         ],
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 5),
                       _buildDropdownMembershipType(),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 5),
                       ElevatedButton(
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
@@ -258,7 +262,10 @@ class _MemberInputState extends State<MemberInput> {
                             }
                           }
                         },
-                        child: const Text('Next'),
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.black, // Set background color to black
+                        ),
+                        child: const Text('Next', style: TextStyle(color: Colors.white)),
                       ),
                     ],
                   ),
