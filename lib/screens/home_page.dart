@@ -1,8 +1,21 @@
-import 'package:flutter/material.dart'; // Import your ObjectBox class
-import 'package:gym_kiosk_admin/models/model.dart'; // Import your models
-import 'package:gym_kiosk_admin/services/nfc_service.dart';
+import 'package:flutter/material.dart';
+import 'package:gym_kiosk_admin/models/model.dart';
 import 'package:intl/intl.dart';
-import '../main.dart'; // Import your NFCService
+
+import '../main.dart';
+import '../services/nfc_service.dart';
+
+class Attendance {
+  final Member member;
+  final DateTime checkInTime;
+  final DateTime? checkOutTime;
+
+  Attendance({
+    required this.member,
+    required this.checkInTime,
+    this.checkOutTime,
+  });
+}
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -12,21 +25,18 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final List<Attendance> _memberAttendanceList = [];
   late NFCService _nfcService;
-  final List<MemberAttendance> _memberAttendanceList = [];
-  bool _mounted = false; // Track the state
 
   @override
   void initState() {
     super.initState();
-    _mounted = true;
     _nfcService = NFCService();
     _startNFCListener();
   }
 
   @override
   void dispose() {
-    _mounted = false;
     _nfcService.disposeNFCListener();
     super.dispose();
   }
@@ -39,50 +49,47 @@ class _HomePageState extends State<HomePage> {
 
   void _handleNFCScan(String tagId) {
     Member? member = objectbox.getMemberByNfcTag(tagId);
-    if (member != null && _mounted) {
+    if (member != null) {
       DateTime currentTime = DateTime.now();
-      String formattedTime = DateFormat('h:mm a').format(currentTime);
 
-      // Check if the member was already checked-in
-      bool alreadyCheckedIn = _memberAttendanceList.any((attendance) => attendance.member.id == member.id);
-
-      if (alreadyCheckedIn) {
-        try {
-          MemberAttendance existingAttendance = _memberAttendanceList.firstWhere((attendance) => attendance.member.id == member.id);
-          existingAttendance.checkOutTime = formattedTime; // Assign String to checkOutTime
-
-          // Log the attendance with check-out time
-          objectbox.logAttendance(
-            member,
-            checkInTime: DateTime.parse(existingAttendance.checkInTime),
-            checkOutTime: DateTime.parse(existingAttendance.checkOutTime ?? formattedTime),
-          );
-
-          // Update the UI
+      // Find if the member has an existing check-in entry that hasn't checked out
+      int index = 0;
+      for (var attendance in _memberAttendanceList) {
+        if (attendance.member.id == member.id && attendance.checkOutTime == null) {
+          objectbox.logCheckOut(member, checkOutTime: currentTime);
           setState(() {
-            // Replace the existing record with the updated check-out time
-            _memberAttendanceList.removeWhere((attendance) => attendance.member.id == member.id);
-            _memberAttendanceList.add(existingAttendance);
+            _memberAttendanceList[index] = Attendance(
+              member: member,
+              checkInTime: attendance.checkInTime,
+              checkOutTime: currentTime,
+            );
           });
-        } catch (e) {
-          // Handle scenario when the attendance record is not found
-          print('Attendance record not found for check-out: $e');
+          break;
         }
-      } else {
-        // Member is checking in
-        objectbox.logAttendance(member, checkInTime: currentTime);
+        index++;
+      }
+
+      // If no existing check-in entry, create a new check-in entry
+      bool alreadyCheckedIn = _memberAttendanceList.any((attendance) =>
+      attendance.member.id == member.id && attendance.checkOutTime == null);
+
+      if (!alreadyCheckedIn) {
+        objectbox.logCheckIn(member, checkInTime: currentTime);
         setState(() {
           _memberAttendanceList.insert(
             0,
-            MemberAttendance(member: member, checkInTime: formattedTime, checkOutTime: null),
+            Attendance(
+              member: member,
+              checkInTime: currentTime,
+              checkOutTime: null,
+            ),
           );
         });
       }
     } else {
-      // Handle the case where the widget is not mounted or member is not found
+      // Handle the case where the member is not found
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -112,8 +119,8 @@ class _HomePageState extends State<HomePage> {
                   return DataRow(
                     cells: [
                       DataCell(Text('${attendance.member.firstName} ${attendance.member.lastName}')),
-                      DataCell(Text(attendance.checkInTime.toString())),
-                      DataCell(Text(attendance.checkOutTime ?? '---')),
+                      DataCell(Text(DateFormat('h:mm a').format(attendance.checkInTime))),
+                      DataCell(Text(attendance.checkOutTime != null ? DateFormat('h:mm a').format(attendance.checkOutTime!) : '---')),
                     ],
                   );
                 }).toList(),
@@ -130,16 +137,4 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-}
-
-class MemberAttendance {
-  final Member member;
-  final String checkInTime; // Changed to String from DateTime
-  String? checkOutTime; // Changed to String from DateTime
-
-  MemberAttendance({
-    required this.member,
-    required this.checkInTime,
-    this.checkOutTime,
-  });
 }

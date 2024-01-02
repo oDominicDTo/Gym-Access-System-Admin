@@ -106,23 +106,43 @@ class Member {
 }
 
 @Entity()
-class Attendance {
+class CheckIn {
+  @Id()
   int id;
 
-  final member = ToOne<Member>();
+  final member = ToOne<Member>(); // Define the ToOne relation to Member
 
   @Property(type: PropertyType.date)
   DateTime checkInTime;
 
+  CheckIn({
+    this.id = 0,
+    required this.checkInTime,
+    required ToOne<Member>? member,
+  }) {
+    this.member.target = member?.target;
+  }
+}
+
+@Entity()
+class CheckOut {
+  @Id()
+  int id;
+
+  final member = ToOne<Member>(); // Define the ToOne relation to Member
+
   @Property(type: PropertyType.date)
   DateTime checkOutTime;
 
-  Attendance({
+  CheckOut({
     this.id = 0,
-    required this.checkInTime,
-    required this.checkOutTime, required ToOne<Member> member,
-  });
+    required this.checkOutTime,
+    required ToOne<Member>? member,
+  }) {
+    this.member.target = member?.target;
+  }
 }
+
 
 @Entity()
 class MembershipType {

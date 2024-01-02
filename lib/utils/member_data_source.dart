@@ -4,7 +4,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:gym_kiosk_admin/models/model.dart';
 
 class MemberDataSource extends DataTableSource {
-  final List<Member> _members;
+  late List<Member> _members;
   final bool _sortAscending = true; // Initially sorting in ascending order
   late int _sortColumnIndex = 1; // Initial sort column index (considering Name column)
 
@@ -131,5 +131,15 @@ class MemberDataSource extends DataTableSource {
         return '';
     }
   }
-
+  void updateDataSource(List<Member> updatedMembers) {
+    _members.clear(); // Clear existing content if you want to modify the same list
+    _members.addAll(updatedMembers); // Add new content to the existing list
+    notifyListeners(); // Notify listeners after updating data
+  }
+  List<Member> getFilteredMembers(String suggestion) {
+    return _members.where((member) =>
+        '${member.firstName} ${member.lastName}'.toLowerCase().contains(suggestion.toLowerCase())
+    ).toList();
+  }
 }
+

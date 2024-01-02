@@ -52,6 +52,7 @@ dependencies:
   camera_windows: ^0.2.1+8
   animated_text_kit: ^4.2.2
   faker: ^2.1.0
+  flutter_typeahead: ^5.0.1
 
 
 dev_dependencies:

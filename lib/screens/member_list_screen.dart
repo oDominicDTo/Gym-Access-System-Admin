@@ -3,6 +3,8 @@ import 'package:gym_kiosk_admin/main.dart';
 import 'package:gym_kiosk_admin/models/model.dart';
 import 'package:gym_kiosk_admin/utils/member_data_source.dart';
 
+import '../widgets/member_search_bar.dart';
+
 class MemberListScreen extends StatefulWidget {
   const MemberListScreen({Key? key}) : super(key: key);
 
@@ -14,7 +16,7 @@ class _MemberListScreenState extends State<MemberListScreen> {
   bool _sortAscending = true;
   int _sortColumnIndex =
       1; // Initial sort column index (considering Name column)
-
+  late String _searchQuery = '';
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
@@ -28,11 +30,21 @@ class _MemberListScreenState extends State<MemberListScreen> {
     } else {
       rowsPerPage = 10; // Default value for other resolutions
     }
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Member List'),
-        automaticallyImplyLeading: false,
+        flexibleSpace: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: MemberSearchBar(
+              onChanged: (value) {
+                setState(() {
+                  _searchQuery = value.toLowerCase();
+                });
+              },
+            ),
+          ),
+        ),
       ),
       body: StreamBuilder<List<Member>>(
         stream: objectbox.getAllMembersAsync().asStream(),
@@ -46,8 +58,16 @@ class _MemberListScreenState extends State<MemberListScreen> {
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return const Center(child: Text('No members available'));
           } else {
-            // Sort members based on different columns (if required)
-            final sortedMembers = _sortMembers(snapshot.data!);
+            final filteredMembers = _searchQuery.isEmpty
+                ? snapshot.data! // Show all members if no search query
+                : snapshot.data!
+                .where((member) =>
+                '${member.firstName} ${member.lastName}'
+                    .toLowerCase()
+                    .contains(_searchQuery))
+                .toList();
+
+            final sortedMembers = _sortMembers(filteredMembers);
 
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30),

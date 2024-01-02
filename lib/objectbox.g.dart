@@ -91,37 +91,6 @@ final _entities = <ModelEntity>[
       relations: <ModelRelation>[],
       backlinks: <ModelBacklink>[]),
   ModelEntity(
-      id: const IdUid(2, 8465745737525015078),
-      name: 'Attendance',
-      lastPropertyId: const IdUid(6, 4869879890159906831),
-      flags: 0,
-      properties: <ModelProperty>[
-        ModelProperty(
-            id: const IdUid(1, 8210820910057928503),
-            name: 'id',
-            type: 6,
-            flags: 1),
-        ModelProperty(
-            id: const IdUid(3, 3092609652524573519),
-            name: 'checkInTime',
-            type: 10,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(4, 3983741942389938392),
-            name: 'checkOutTime',
-            type: 10,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(6, 4869879890159906831),
-            name: 'memberId',
-            type: 11,
-            flags: 520,
-            indexId: const IdUid(5, 6947746077445817224),
-            relationTarget: 'Member')
-      ],
-      relations: <ModelRelation>[],
-      backlinks: <ModelBacklink>[]),
-  ModelEntity(
       id: const IdUid(5, 2984732517655358409),
       name: 'MembershipType',
       lastPropertyId: const IdUid(5, 6288213097031078528),
@@ -220,6 +189,58 @@ final _entities = <ModelEntity>[
             relationTarget: 'Member')
       ],
       relations: <ModelRelation>[],
+      backlinks: <ModelBacklink>[]),
+  ModelEntity(
+      id: const IdUid(10, 4250344304555983422),
+      name: 'CheckIn',
+      lastPropertyId: const IdUid(3, 959515500019605461),
+      flags: 0,
+      properties: <ModelProperty>[
+        ModelProperty(
+            id: const IdUid(1, 3589808727678625238),
+            name: 'id',
+            type: 6,
+            flags: 1),
+        ModelProperty(
+            id: const IdUid(2, 2130941890027434785),
+            name: 'memberId',
+            type: 11,
+            flags: 520,
+            indexId: const IdUid(10, 6979038591882905776),
+            relationTarget: 'Member'),
+        ModelProperty(
+            id: const IdUid(3, 959515500019605461),
+            name: 'checkInTime',
+            type: 10,
+            flags: 0)
+      ],
+      relations: <ModelRelation>[],
+      backlinks: <ModelBacklink>[]),
+  ModelEntity(
+      id: const IdUid(11, 6200012836170653188),
+      name: 'CheckOut',
+      lastPropertyId: const IdUid(3, 7584122991086285350),
+      flags: 0,
+      properties: <ModelProperty>[
+        ModelProperty(
+            id: const IdUid(1, 6234137489678793912),
+            name: 'id',
+            type: 6,
+            flags: 1),
+        ModelProperty(
+            id: const IdUid(2, 8510225582063035397),
+            name: 'memberId',
+            type: 11,
+            flags: 520,
+            indexId: const IdUid(11, 9021452178579632282),
+            relationTarget: 'Member'),
+        ModelProperty(
+            id: const IdUid(3, 7584122991086285350),
+            name: 'checkOutTime',
+            type: 10,
+            flags: 0)
+      ],
+      relations: <ModelRelation>[],
       backlinks: <ModelBacklink>[])
 ];
 
@@ -243,15 +264,22 @@ Future<Store> openStore(
 ModelDefinition getObjectBoxModel() {
   final model = ModelInfo(
       entities: _entities,
-      lastEntityId: const IdUid(7, 788978535339810145),
-      lastIndexId: const IdUid(8, 1991822988256613916),
-      lastRelationId: const IdUid(0, 0),
+      lastEntityId: const IdUid(11, 6200012836170653188),
+      lastIndexId: const IdUid(11, 9021452178579632282),
+      lastRelationId: const IdUid(2, 3094033825849941879),
       lastSequenceId: const IdUid(0, 0),
-      retiredEntityUids: const [2820634563096386653, 4791937999762440180],
+      retiredEntityUids: const [
+        2820634563096386653,
+        4791937999762440180,
+        94537486811857848,
+        1500853826776324486,
+        8465745737525015078
+      ],
       retiredIndexUids: const [
         5016079819760097089,
         1031270484984883474,
-        2120226973327850613
+        2120226973327850613,
+        6947746077445817224
       ],
       retiredPropertyUids: const [
         7215617545020444247,
@@ -275,9 +303,24 @@ ModelDefinition getObjectBoxModel() {
         5541981984867774193,
         4136168887959246208,
         2981336468151332057,
-        8440122022333707946
+        8440122022333707946,
+        3092609652524573519,
+        3983741942389938392,
+        2787234717695244036,
+        6580537644837925493,
+        7602121418930220813,
+        3047784573000814593,
+        1164576801395953825,
+        6592798801754862354,
+        3271993741847166389,
+        8916212275688911714,
+        4869879890159906831,
+        8210820910057928503,
+        8639423661332126905,
+        7898786416960736453,
+        5721533878214496513
       ],
-      retiredRelationUids: const [],
+      retiredRelationUids: const [337373602936818043, 3094033825849941879],
       modelVersion: 5,
       modelVersionParserMinimum: 5,
       version: 1);
@@ -343,41 +386,8 @@ ModelDefinition getObjectBoxModel() {
           object.membershipType.attach(store);
           return object;
         }),
-    Attendance: EntityDefinition<Attendance>(
-        model: _entities[1],
-        toOneRelations: (Attendance object) => [object.member],
-        toManyRelations: (Attendance object) => {},
-        getId: (Attendance object) => object.id,
-        setId: (Attendance object, int id) {
-          object.id = id;
-        },
-        objectToFB: (Attendance object, fb.Builder fbb) {
-          fbb.startTable(7);
-          fbb.addInt64(0, object.id);
-          fbb.addInt64(2, object.checkInTime.millisecondsSinceEpoch);
-          fbb.addInt64(3, object.checkOutTime.millisecondsSinceEpoch);
-          fbb.addInt64(5, object.member.targetId);
-          fbb.finish(fbb.endTable());
-          return object.id;
-        },
-        objectFromFB: (Store store, ByteData fbData) {
-          final buffer = fb.BufferContext(fbData);
-          final rootOffset = buffer.derefObject(0);
-
-          final object = Attendance(
-              id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
-              checkInTime: DateTime.fromMillisecondsSinceEpoch(
-                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 8, 0)),
-              checkOutTime: DateTime.fromMillisecondsSinceEpoch(
-                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 10, 0)),
-              member: ToOne(
-                  targetId: const fb.Int64Reader()
-                      .vTableGet(buffer, rootOffset, 14, 0)));
-          object.member.attach(store);
-          return object;
-        }),
     MembershipType: EntityDefinition<MembershipType>(
-        model: _entities[2],
+        model: _entities[1],
         toOneRelations: (MembershipType object) => [],
         toManyRelations: (MembershipType object) => {},
         getId: (MembershipType object) => object.id,
@@ -412,7 +422,7 @@ ModelDefinition getObjectBoxModel() {
           return object;
         }),
     Administrator: EntityDefinition<Administrator>(
-        model: _entities[3],
+        model: _entities[2],
         toOneRelations: (Administrator object) => [],
         toManyRelations: (Administrator object) => {},
         getId: (Administrator object) => object.id,
@@ -455,7 +465,7 @@ ModelDefinition getObjectBoxModel() {
           return object;
         }),
     RenewalLog: EntityDefinition<RenewalLog>(
-        model: _entities[4],
+        model: _entities[3],
         toOneRelations: (RenewalLog object) => [object.member],
         toManyRelations: (RenewalLog object) => {},
         getId: (RenewalLog object) => object.id,
@@ -480,6 +490,66 @@ ModelDefinition getObjectBoxModel() {
                   const fb.Int64Reader().vTableGet(buffer, rootOffset, 8, 0)));
           object.member.targetId =
               const fb.Int64Reader().vTableGet(buffer, rootOffset, 10, 0);
+          object.member.attach(store);
+          return object;
+        }),
+    CheckIn: EntityDefinition<CheckIn>(
+        model: _entities[4],
+        toOneRelations: (CheckIn object) => [object.member],
+        toManyRelations: (CheckIn object) => {},
+        getId: (CheckIn object) => object.id,
+        setId: (CheckIn object, int id) {
+          object.id = id;
+        },
+        objectToFB: (CheckIn object, fb.Builder fbb) {
+          fbb.startTable(4);
+          fbb.addInt64(0, object.id);
+          fbb.addInt64(1, object.member.targetId);
+          fbb.addInt64(2, object.checkInTime.millisecondsSinceEpoch);
+          fbb.finish(fbb.endTable());
+          return object.id;
+        },
+        objectFromFB: (Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+
+          final object = CheckIn(
+              id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
+              checkInTime: DateTime.fromMillisecondsSinceEpoch(
+                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 8, 0)),
+              member: ToOne(
+                  targetId: const fb.Int64Reader()
+                      .vTableGet(buffer, rootOffset, 6, 0)));
+          object.member.attach(store);
+          return object;
+        }),
+    CheckOut: EntityDefinition<CheckOut>(
+        model: _entities[5],
+        toOneRelations: (CheckOut object) => [object.member],
+        toManyRelations: (CheckOut object) => {},
+        getId: (CheckOut object) => object.id,
+        setId: (CheckOut object, int id) {
+          object.id = id;
+        },
+        objectToFB: (CheckOut object, fb.Builder fbb) {
+          fbb.startTable(4);
+          fbb.addInt64(0, object.id);
+          fbb.addInt64(1, object.member.targetId);
+          fbb.addInt64(2, object.checkOutTime.millisecondsSinceEpoch);
+          fbb.finish(fbb.endTable());
+          return object.id;
+        },
+        objectFromFB: (Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+
+          final object = CheckOut(
+              id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
+              checkOutTime: DateTime.fromMillisecondsSinceEpoch(
+                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 8, 0)),
+              member: ToOne(
+                  targetId: const fb.Int64Reader()
+                      .vTableGet(buffer, rootOffset, 6, 0)));
           object.member.attach(store);
           return object;
         })
@@ -537,86 +607,95 @@ class Member_ {
       QueryStringProperty<Member>(_entities[0].properties[11]);
 }
 
-/// [Attendance] entity fields to define ObjectBox queries.
-class Attendance_ {
-  /// see [Attendance.id]
-  static final id =
-      QueryIntegerProperty<Attendance>(_entities[1].properties[0]);
-
-  /// see [Attendance.checkInTime]
-  static final checkInTime =
-      QueryIntegerProperty<Attendance>(_entities[1].properties[1]);
-
-  /// see [Attendance.checkOutTime]
-  static final checkOutTime =
-      QueryIntegerProperty<Attendance>(_entities[1].properties[2]);
-
-  /// see [Attendance.member]
-  static final member =
-      QueryRelationToOne<Attendance, Member>(_entities[1].properties[3]);
-}
-
 /// [MembershipType] entity fields to define ObjectBox queries.
 class MembershipType_ {
   /// see [MembershipType.id]
   static final id =
-      QueryIntegerProperty<MembershipType>(_entities[2].properties[0]);
+      QueryIntegerProperty<MembershipType>(_entities[1].properties[0]);
 
   /// see [MembershipType.typeName]
   static final typeName =
-      QueryStringProperty<MembershipType>(_entities[2].properties[1]);
+      QueryStringProperty<MembershipType>(_entities[1].properties[1]);
 
   /// see [MembershipType.fee]
   static final fee =
-      QueryDoubleProperty<MembershipType>(_entities[2].properties[2]);
+      QueryDoubleProperty<MembershipType>(_entities[1].properties[2]);
 
   /// see [MembershipType.discount]
   static final discount =
-      QueryDoubleProperty<MembershipType>(_entities[2].properties[3]);
+      QueryDoubleProperty<MembershipType>(_entities[1].properties[3]);
 
   /// see [MembershipType.isLifetime]
   static final isLifetime =
-      QueryBooleanProperty<MembershipType>(_entities[2].properties[4]);
+      QueryBooleanProperty<MembershipType>(_entities[1].properties[4]);
 }
 
 /// [Administrator] entity fields to define ObjectBox queries.
 class Administrator_ {
   /// see [Administrator.id]
   static final id =
-      QueryIntegerProperty<Administrator>(_entities[3].properties[0]);
+      QueryIntegerProperty<Administrator>(_entities[2].properties[0]);
 
   /// see [Administrator.username]
   static final username =
-      QueryStringProperty<Administrator>(_entities[3].properties[1]);
+      QueryStringProperty<Administrator>(_entities[2].properties[1]);
 
   /// see [Administrator.password]
   static final password =
-      QueryStringProperty<Administrator>(_entities[3].properties[2]);
+      QueryStringProperty<Administrator>(_entities[2].properties[2]);
 
   /// see [Administrator.nfcTagID]
   static final nfcTagID =
-      QueryStringProperty<Administrator>(_entities[3].properties[3]);
+      QueryStringProperty<Administrator>(_entities[2].properties[3]);
 
   /// see [Administrator.name]
   static final name =
-      QueryStringProperty<Administrator>(_entities[3].properties[4]);
+      QueryStringProperty<Administrator>(_entities[2].properties[4]);
 
   /// see [Administrator.type]
   static final type =
-      QueryStringProperty<Administrator>(_entities[3].properties[5]);
+      QueryStringProperty<Administrator>(_entities[2].properties[5]);
 }
 
 /// [RenewalLog] entity fields to define ObjectBox queries.
 class RenewalLog_ {
   /// see [RenewalLog.id]
   static final id =
-      QueryIntegerProperty<RenewalLog>(_entities[4].properties[0]);
+      QueryIntegerProperty<RenewalLog>(_entities[3].properties[0]);
 
   /// see [RenewalLog.renewalDate]
   static final renewalDate =
-      QueryIntegerProperty<RenewalLog>(_entities[4].properties[1]);
+      QueryIntegerProperty<RenewalLog>(_entities[3].properties[1]);
 
   /// see [RenewalLog.member]
   static final member =
-      QueryRelationToOne<RenewalLog, Member>(_entities[4].properties[2]);
+      QueryRelationToOne<RenewalLog, Member>(_entities[3].properties[2]);
+}
+
+/// [CheckIn] entity fields to define ObjectBox queries.
+class CheckIn_ {
+  /// see [CheckIn.id]
+  static final id = QueryIntegerProperty<CheckIn>(_entities[4].properties[0]);
+
+  /// see [CheckIn.member]
+  static final member =
+      QueryRelationToOne<CheckIn, Member>(_entities[4].properties[1]);
+
+  /// see [CheckIn.checkInTime]
+  static final checkInTime =
+      QueryIntegerProperty<CheckIn>(_entities[4].properties[2]);
+}
+
+/// [CheckOut] entity fields to define ObjectBox queries.
+class CheckOut_ {
+  /// see [CheckOut.id]
+  static final id = QueryIntegerProperty<CheckOut>(_entities[5].properties[0]);
+
+  /// see [CheckOut.member]
+  static final member =
+      QueryRelationToOne<CheckOut, Member>(_entities[5].properties[1]);
+
+  /// see [CheckOut.checkOutTime]
+  static final checkOutTime =
+      QueryIntegerProperty<CheckOut>(_entities[5].properties[2]);
 }

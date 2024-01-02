@@ -12,7 +12,8 @@ class ObjectBox {
   late final Admin _admin;
   late final Box<Administrator> _administratorBox;
   late final Box<Member> _memberBox;
-  late final Box<Attendance> _attendanceBox;
+  late final Box<CheckIn> _checkInBox;
+  late final Box<CheckOut> _checkOutBox;
   late final Box<MembershipType> _membershipTypeBox;
   late final NFCService _nfcService;
 
@@ -25,7 +26,8 @@ class ObjectBox {
     }
     _administratorBox = Box<Administrator>(_store);
     _memberBox = Box<Member>(_store);
-    _attendanceBox = Box<Attendance>(_store);
+    _checkInBox = Box<CheckIn>(_store);
+    _checkOutBox = Box<CheckOut>(_store);
     _membershipTypeBox = Box<MembershipType>(_store);
     _nfcService = NFCService();
     // Start NFC event listener
@@ -55,31 +57,39 @@ class ObjectBox {
   void _startNFCListener() {
     _nfcService.onNFCEvent.listen((tagId) {
       if (tagId != 'Error') {
-        // Fetch member by NFC tag ID
         Member? member = getMemberByNfcTag(tagId);
 
         if (member != null) {
-          logAttendance(member, checkInTime: DateTime.now());
+          logCheckIn(member, checkInTime: DateTime.now());
         } else {
-          // Handle case when the member with the NFC tag is not found
-          // or any other error scenario
           print("Member not found or error in NFC scanning.");
         }
       }
     });
   }
 
-  void logAttendance(Member member, {required DateTime checkInTime, DateTime? checkOutTime}) {
-    _recordAttendance(member, checkInTime, checkOutTime: checkOutTime);
+  void logCheckIn(Member member, {required DateTime checkInTime}) {
+    _recordCheckIn(member, checkInTime);
   }
 
-  void _recordAttendance(Member member, DateTime checkInTime, {DateTime? checkOutTime}) {
-    final attendance = Attendance(
+  void logCheckOut(Member member, {required DateTime checkOutTime}) {
+    _recordCheckOut(member, checkOutTime);
+  }
+
+  void _recordCheckIn(Member member, DateTime checkInTime) {
+    final checkIn = CheckIn(
       member: ToOne<Member>()..target = member,
       checkInTime: checkInTime,
-      checkOutTime: checkOutTime ?? DateTime.now(), // Use DateTime.now() as a default if checkOutTime is null
     );
-    _attendanceBox.put(attendance);
+    _checkInBox.put(checkIn);
+  }
+
+  void _recordCheckOut(Member member, DateTime checkOutTime) {
+    final checkOut = CheckOut(
+      member: ToOne<Member>()..target = member,
+      checkOutTime: checkOutTime,
+    );
+    _checkOutBox.put(checkOut);
   }
 
   Member? getMemberByNfcTag(String tagId) {
@@ -115,6 +125,37 @@ class ObjectBox {
 
     // Add the MembershipType objects to the _membershipTypeBox
     _membershipTypeBox.putMany(membershipTypes);
+    Member member1 = Member(
+      firstName: 'Dominic John',
+      lastName: 'Tanas',
+      contactNumber: '09178701138',
+      nfcTagID: 'c37cd1ec',
+      dateOfBirth: DateTime(2001, 04, 29),
+      address: 'Zapote',
+      email: 'dominic@example.com',
+      membershipStartDate: DateTime.now(),
+      membershipEndDate: DateTime.now().add(const Duration(days: 365)),
+      photoPath: 'dom.jpg',
+    );
+    member1.membershipType.target = membershipTypes[faker.randomGenerator.integer(membershipTypes.length)];
+
+    Member member2 = Member(
+      firstName: 'Jay Ann',
+      lastName: 'Garcia',
+      contactNumber: '09672182672',
+      nfcTagID: 'b385aafd',
+      dateOfBirth: DateTime(2001, 7, 14),
+      address: 'Bungahan',
+      email: 'jay@example.com',
+      membershipStartDate: DateTime.now(),
+      membershipEndDate: DateTime.now().add(const Duration(days: 365)),
+      photoPath: 'jayan.jpg',
+    );
+    member2.membershipType.target = membershipTypes[faker.randomGenerator.integer(membershipTypes.length)];
+
+    // When the Member is put, its MembershipType will automatically be put into the MembershipType Box.
+    _memberBox.putMany([member1, member2]);
+
 
     for (int i = 0; i < 100; i++) {
       Member member = Member(
@@ -136,6 +177,7 @@ class ObjectBox {
       // When the Member is put, its MembershipType will automatically be put into the MembershipType Box.
       _memberBox.put(member);
     }
+
   }
 
   void _putAdminData() async {
@@ -188,6 +230,11 @@ class ObjectBox {
     return _memberBox.getAllAsync();
   }
 
+  List<String> getAllMemberNames() {
+    final members = _memberBox.getAll();
+    return members.map((member) => '${member.firstName} ${member.lastName}').toList();
+  }
+
   // Example method to get Members with a specific name
   List<Member> getMembersByName(String name) {
     // Create a query to find members with a specific first name
@@ -236,4 +283,7 @@ class ObjectBox {
     final List<Administrator> admins = query.find();
     return admins.isNotEmpty ? admins.first : null;
   }
+
+
+
 }

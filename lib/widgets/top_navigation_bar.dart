@@ -1,9 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import '../screens/profile_page.dart';
 
 class TopNavigationBar extends StatefulWidget implements PreferredSizeWidget {
-  const TopNavigationBar({super.key});
+  const TopNavigationBar({Key? key});
 
   @override
   State createState() => _TopNavigationBarState();
@@ -14,26 +16,36 @@ class TopNavigationBar extends StatefulWidget implements PreferredSizeWidget {
 
 class _TopNavigationBarState extends State<TopNavigationBar> {
   late DateTime _currentTime;
+  late Timer _timer;
 
   @override
   void initState() {
     super.initState();
-    _updateTime();
+    _currentTime = DateTime.now();
+    _timer = Timer.periodic(const Duration(seconds: 1), (_) => _updateTime());
   }
 
   void _updateTime() {
     setState(() {
       _currentTime = DateTime.now();
     });
-    // Update time every second
-    Future.delayed(const Duration(seconds: 1), _updateTime);
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel(); // Cancel the timer when the widget is disposed
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    String formattedDate = '${_currentTime.day}/${_currentTime.month}/${_currentTime.year}';
+    String formattedDate = '${_currentTime.day}/${_currentTime
+        .month}/${_currentTime.year}';
     String formattedTime =
-        '${_currentTime.hour}:${_currentTime.minute.toString().padLeft(2, '0')}:${_currentTime.second.toString().padLeft(2, '0')} ${_formatAmPm(_currentTime)}';
+        '${_get12HourFormat(_currentTime.hour)}:${_currentTime.minute.toString()
+        .padLeft(2, '0')}:${_currentTime.second.toString().padLeft(
+        2, '0')} ${_formatAmPm(_currentTime)}';
+
 
     return AppBar(
       automaticallyImplyLeading: false,
@@ -109,7 +121,8 @@ class _TopNavigationBarState extends State<TopNavigationBar> {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                padding: const EdgeInsets.symmetric(
+                    vertical: 8, horizontal: 12),
                 decoration: BoxDecoration(
                   color: Colors.white.withOpacity(0.3),
                   borderRadius: BorderRadius.circular(20),
@@ -129,7 +142,8 @@ class _TopNavigationBarState extends State<TopNavigationBar> {
                       backgroundColor: Colors.white,
                       child: Icon(
                         Icons.person_outline,
-                        color: Colors.black, // Customize the icon color as needed
+                        color: Colors
+                            .black, // Customize the icon color as needed
                       ),
                     ),
                   ],
@@ -142,8 +156,7 @@ class _TopNavigationBarState extends State<TopNavigationBar> {
               Icons.settings,
               color: Colors.black, // Customize the color as needed
             ),
-            onPressed: () {
-            },
+            onPressed: () {},
           ),
           Stack(
             children: [
@@ -175,11 +188,20 @@ class _TopNavigationBarState extends State<TopNavigationBar> {
           const SizedBox(width: 16), // Adjust the spacing as needed
         ],
       ),
-      iconTheme: const IconThemeData(color: Colors.grey), // Customize icon color
+      iconTheme: const IconThemeData(
+          color: Colors.grey), // Customize icon color
     );
   }
 
   String _formatAmPm(DateTime time) {
-    return time.hour < 12 ? 'AM' : 'PM';
+    if (time.hour >= 12) {
+      return 'PM';
+    } else {
+      return 'AM';
+    }
+  }
+
+  int _get12HourFormat(int hour) {
+    return hour > 12 ? hour - 12 : hour;
   }
 }
