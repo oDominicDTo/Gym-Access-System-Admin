@@ -4,6 +4,8 @@
 
 list(APPEND FLUTTER_PLUGIN_LIST
   camera_windows
+  file_saver
+  file_selector_windows
   objectbox_flutter_libs
   screen_retriever
   window_manager

@@ -1,12 +1,11 @@
 import 'dart:io';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
-import 'package:path/path.dart' as p;
 import 'member_data_source.dart';
 
 class PDFExporter {
-  static Future<void> exportToPDF(MemberDataSource dataSource) async {
+  static Future<String?> exportToPDF(MemberDataSource dataSource) async {
     final PdfDocument document = PdfDocument();
     final PdfGrid grid = PdfGrid();
 
@@ -44,19 +43,21 @@ class PDFExporter {
       format: PdfLayoutFormat(layoutType: PdfLayoutType.paginate),
     );
 
+
     final List<int> bytes = await document.save();
     document.dispose();
 
-    final String dir = p.join((await getApplicationDocumentsDirectory()).path, "Kiosk");
-    final Directory directory = Directory(dir);
-    if (!(await directory.exists())) {
-      await directory.create(recursive: true);
+    String? filePath = await FilePicker.platform.saveFile(
+      allowedExtensions: ['pdf'],
+      fileName: 'member_data.pdf',
+      dialogTitle: 'Save PDF',
+    );
+
+    if (filePath != null) {
+      final File file = File(filePath);
+      await file.writeAsBytes(bytes, flush: true);
     }
 
-    final DateTime now = DateTime.now();
-    final String formattedDateTime = '${now.year}${now.month}${now.day}_${now.hour}${now.minute}${now.second}';
-
-    final File file = File(p.join(dir, "member_data_$formattedDateTime.pdf"));
-    await file.writeAsBytes(bytes, flush: true);
+    return filePath;
   }
 }

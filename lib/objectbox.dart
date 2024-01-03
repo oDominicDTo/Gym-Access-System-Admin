@@ -134,7 +134,7 @@ class ObjectBox {
       address: 'Zapote',
       email: 'dominic@example.com',
       membershipStartDate: DateTime.now(),
-      membershipEndDate: DateTime.now().add(const Duration(days: 365)),
+      membershipEndDate: DateTime.now().add(const Duration(days: 30)),
       photoPath: 'dom.jpg',
     );
     member1.membershipType.target = membershipTypes[faker.randomGenerator.integer(membershipTypes.length)];
@@ -148,7 +148,7 @@ class ObjectBox {
       address: 'Bungahan',
       email: 'jay@example.com',
       membershipStartDate: DateTime.now(),
-      membershipEndDate: DateTime.now().add(const Duration(days: 365)),
+      membershipEndDate: DateTime.now().add(const Duration(days: 30)),
       photoPath: 'jayan.jpg',
     );
     member2.membershipType.target = membershipTypes[faker.randomGenerator.integer(membershipTypes.length)];
