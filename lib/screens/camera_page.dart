@@ -166,13 +166,13 @@ class _CameraPageState extends State<CameraPage> {
             mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TextButton(
-                child: const Text('OK', style: TextStyle(color: Colors.white)),
                 style: TextButton.styleFrom(
                   backgroundColor: Colors.black, // Set background color to black
                 ),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
+                child: const Text('OK', style: TextStyle(color: Colors.white)),
             ),
           ],
               ),
@@ -249,9 +249,9 @@ class _CameraPageState extends State<CameraPage> {
           ElevatedButton(
             onPressed: _photoTaken ? _retakePhoto : _takePhoto,
             style: ElevatedButton.styleFrom(
-              primary: Colors.black, // Set background color to black
+              backgroundColor: Colors.black, // Set background color to black
             ),
-            child: Text(_photoTaken ? 'Retake' : 'Take Photo', style: TextStyle(color: Colors.white,fontFamily: 'Poppins')),
+            child: Text(_photoTaken ? 'Retake' : 'Take Photo', style: const TextStyle(color: Colors.white,fontFamily: 'Poppins')),
           ),
           const SizedBox(height: 16),
           Row(
@@ -264,7 +264,7 @@ class _CameraPageState extends State<CameraPage> {
                   Navigator.pop(context);
                 },
                 style: TextButton.styleFrom(
-                  side: BorderSide(color: Colors.black), // Set border color to black
+                  side: const BorderSide(color: Colors.black), // Set border color to black
                 ),
                 child: const Text('Previous', style: TextStyle(color: Colors.black, fontFamily: 'Poppins')),
               ),
@@ -272,7 +272,7 @@ class _CameraPageState extends State<CameraPage> {
               ElevatedButton(
                 onPressed: _navigateToNextPage,
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.black, // Set background color to black
+                  backgroundColor: Colors.black, // Set background color to black
                 ),
                 child: const Text('Next', style: TextStyle(color: Colors.white, fontFamily: 'Poppins')),
               ),

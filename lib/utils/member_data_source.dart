@@ -37,24 +37,10 @@ class MemberDataSource extends DataTableSource {
           },
         ),
       ),
-      DataCell(
-        GestureDetector(
-          onTap: () {
-            _sortByName(); // Call method to perform sorting by name
-          },
-          child: Text('${member.firstName} ${member.lastName}'),
-        ),
-      ),
+      DataCell(Text('${member.firstName} ${member.lastName}')),
       DataCell(Text(member.contactNumber)),
-      DataCell(Text(member.membershipType.target!.typeName)),
-      DataCell(
-        GestureDetector(
-          onTap: () {
-            _sortByStatus; // Call method to perform sorting by status
-          },
-          child: Text(_getMembershipStatus(member)),
-        ),
-      ),
+      DataCell(Text(member.membershipType.target?.typeName ?? '')),
+      DataCell(Text(_getMembershipStatus(member))),
       DataCell(Text(_getRemainingMembershipDuration(member))),
       DataCell(Text(member.address)),
     ]);

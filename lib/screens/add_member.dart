@@ -263,7 +263,7 @@ class _MemberInputState extends State<MemberInput> {
                           }
                         },
                         style: ElevatedButton.styleFrom(
-                          primary: Colors.black, // Set background color to black
+                          backgroundColor: Colors.black, // Set background color to black
                         ),
                         child: const Text('Next', style: TextStyle(color: Colors.white)),
                       ),

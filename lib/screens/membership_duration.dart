@@ -95,7 +95,7 @@ class _MembershipDurationPageState extends State<MembershipDurationPage> {
                       Navigator.pop(context); // Go back to the previous page
                     },
                     style: TextButton.styleFrom(
-                      side: BorderSide(color: Colors.black), // Set border color to black
+                      side: const BorderSide(color: Colors.black), // Set border color to black
                     ),
                     child: const Text('Cancel', style: TextStyle(color: Colors.black, fontFamily: 'Poppins')),
                   ),
@@ -124,7 +124,7 @@ class _MembershipDurationPageState extends State<MembershipDurationPage> {
                           context: context,
                           builder: (BuildContext context) {
                             return AlertDialog(
-                              title:  Text('Confirm Payment', textAlign: TextAlign.center,
+                              title:  const Text('Confirm Payment', textAlign: TextAlign.center,
                                 style: TextStyle(color: Colors.black,fontFamily: 'Poppins', fontWeight: FontWeight.bold
                                 ),),
                               content: const Text(
@@ -142,14 +142,14 @@ class _MembershipDurationPageState extends State<MembershipDurationPage> {
                                           Navigator.of(context).pop();
                                         },
                                         style: TextButton.styleFrom(
-                                          side: BorderSide(color: Colors.black), // Set border color to black
+                                          side: const BorderSide(color: Colors.black), // Set border color to black
                                         ),
-                                        child: Text(
+                                        child: const Text(
                                           'No',
                                           style: TextStyle(color: Colors.black,fontFamily: 'Poppins'),
                                         ),
                                       ),
-                                      SizedBox(width: 16), // Add some space between buttons
+                                      const SizedBox(width: 16), // Add some space between buttons
                                       TextButton(
                                         onPressed: () {
                                           Navigator.of(context).pop();
@@ -168,7 +168,7 @@ class _MembershipDurationPageState extends State<MembershipDurationPage> {
                                         style: TextButton.styleFrom(
                                           backgroundColor: Colors.black,
                                         ),
-                                        child: Text(
+                                        child: const Text(
                                           'Yes',
                                           style: TextStyle(color: Colors.white, fontFamily: 'Poppins'),
                                         ),
@@ -183,7 +183,7 @@ class _MembershipDurationPageState extends State<MembershipDurationPage> {
                       }
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.black, // Set background color to black
+                      backgroundColor: Colors.black, // Set background color to black
                     ),
                     child: const Text('Confirm', style: TextStyle(color: Colors.white, fontFamily: 'Poppins')),
                   ),

@@ -53,6 +53,7 @@ dependencies:
   animated_text_kit: ^4.2.2
   faker: ^2.1.0
   flutter_typeahead: ^5.0.1
+  syncfusion_flutter_pdf: ^24.1.44
 
 
 dev_dependencies:

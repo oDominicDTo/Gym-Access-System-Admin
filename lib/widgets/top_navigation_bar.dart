@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import '../screens/profile_page.dart';
 
 class TopNavigationBar extends StatefulWidget implements PreferredSizeWidget {
-  const TopNavigationBar({Key? key});
+  const TopNavigationBar({super.key});
 
   @override
   State createState() => _TopNavigationBarState();

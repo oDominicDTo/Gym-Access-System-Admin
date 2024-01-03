@@ -10,14 +10,14 @@ class MemberSearchBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 400, // Set the width of the search bar
+    return SizedBox(
+      width: 100, // Set the width of the search bar
       height: 40, // Set the height of the search bar
       child: TextField(
-        decoration: const InputDecoration(
+        decoration:  const InputDecoration(
           hintText: 'Search by name...',
-          prefixIcon: Icon(Icons.search),
-          border: OutlineInputBorder(),
+          prefixIcon: Icon(Icons.search,color: Colors.black),
+          border: OutlineInputBorder( borderSide: BorderSide(color: Colors.black),),
         ),
         onChanged: onChanged,
       ),
