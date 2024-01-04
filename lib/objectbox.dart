@@ -257,7 +257,14 @@ class ObjectBox {
   }
 
   void updateMembershipType(MembershipType updatedMembershipType) {
-    _membershipTypeBox.put(updatedMembershipType);
+    final existingType = _membershipTypeBox.get(updatedMembershipType.id);
+    if (existingType != null) {
+      existingType.typeName = updatedMembershipType.typeName;
+      existingType.fee = updatedMembershipType.fee;
+      existingType.discount = updatedMembershipType.discount;
+      existingType.isLifetime = updatedMembershipType.isLifetime;
+      _membershipTypeBox.put(existingType);
+    }
   }
 
   void deleteMembershipType(int id) {

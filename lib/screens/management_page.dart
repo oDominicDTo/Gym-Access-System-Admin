@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gym_kiosk_admin/widgets/card_button.dart';
 
+import '../dialog/list_membership_type_dialog.dart';
+import '../main.dart';
+
 class ManagementPage extends StatelessWidget {
   const ManagementPage({super.key});
 
@@ -53,7 +56,10 @@ class ManagementPage extends StatelessWidget {
                             child: CardButton(
                               title: 'Edit Membership Types',
                               onPressed: () {
-                                // Action for button 2
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => const ListMembershipTypeDialog(),
+                                );
                               },
                             ),
                           ),
