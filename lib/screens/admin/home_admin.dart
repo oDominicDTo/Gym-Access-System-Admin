@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gym_kiosk_admin/screens/add_member.dart';
 import 'package:gym_kiosk_admin/screens/home_page.dart';
+import 'package:gym_kiosk_admin/screens/management_page.dart';
 import 'package:gym_kiosk_admin/screens/member_list_screen.dart';
 import 'package:gym_kiosk_admin/widgets/top_navigation_bar.dart';
 
@@ -20,7 +21,7 @@ class _HomeAdminPageState extends State<HomeAdminPage> {
     const MemberInput(),
     const MemberListScreen(),
     const Center(child: Text('Welcome to Renew')),
-    const Center(child: Text('Welcome to Management')),
+    ManagementPage(),
     const Center(child: Text('Welcome to Feedback')),
   ];
 
