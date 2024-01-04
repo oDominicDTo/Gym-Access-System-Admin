@@ -162,13 +162,10 @@ class _FilterDialogState extends State<FilterDialog> {
           onPressed: () {
             setState(() {
               // Preserve the selected status
-              String? currentStatus = _selectedStatus;
 
               // Toggle the selection
               _isSelected[index] = !_isSelected[index];
 
-              // ApplyFilters callback with selected membership types and status
-              widget.onApplyFilters(_getSelectedMembershipTypes(), currentStatus);
             });
           },
           style: ButtonStyle(

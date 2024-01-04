@@ -3,6 +3,7 @@ import 'package:gym_kiosk_admin/main.dart';
 import 'package:gym_kiosk_admin/models/model.dart';
 import 'package:gym_kiosk_admin/utils/member_data_source.dart';
 import 'package:gym_kiosk_admin/utils/pdf_export.dart';
+import '../dialog/profile_dialog.dart';
 import '../widgets/member_search_bar.dart';
 import 'package:gym_kiosk_admin/widgets/filter_dialog.dart';
 
@@ -22,6 +23,7 @@ class _MemberListScreenState extends State<MemberListScreen> {
   List<Member> _displayedMembers = [];
   late List<String> _appliedFilters = [];
   String? _selectedStatus;
+
 
   @override
   void initState() {
@@ -99,6 +101,9 @@ class _MemberListScreenState extends State<MemberListScreen> {
       _displayedMembers = _sortMembers(_displayedMembers);
     });
   }
+  void _openProfileDialog(Member member) {
+    ProfileDialog().open(context, member);
+  }
 
   void showFilterDialog() {
     showDialog(
@@ -118,7 +123,7 @@ class _MemberListScreenState extends State<MemberListScreen> {
     );
   }
   void exportPDF() {
-    final dataSource = MemberDataSource(_displayedMembers);
+    final dataSource = MemberDataSource(_displayedMembers,openProfileDialog: (_) {},);
     PDFExporter.exportToPDF(dataSource);
   }
 
@@ -229,37 +234,21 @@ class _MemberListScreenState extends State<MemberListScreen> {
                       arrowHeadColor: Colors.black,
                       dataRowMaxHeight: 60,
                       headingRowHeight: 40,
-                      columns: [
-                        const DataColumn(label: Text('')),
-                        DataColumn(
-                          label: const Text('Name'),
-                          onSort: (columnIndex, ascending) {
-                            setState(() {
-                              _sortColumnIndex = columnIndex;
-                              _sortAscending = ascending;
-                            });
-                            _sortByName(filteredData, ascending);
-
-                          },
-                        ),
-                        const DataColumn(label: Text('Contact Number')),
-                        const DataColumn(label: Text('Type')),
-                        DataColumn(
-                          label: const Text('Status'),
-                          onSort: (columnIndex, ascending) {
-                            setState(() {
-                              _sortColumnIndex = columnIndex;
-                              _sortAscending = ascending;
-                            });
-                            _sortByStatus(filteredData, ascending);
-
-                          },
-                        ),
-                        const DataColumn(label: Text('Membership Duration')),
-                        const DataColumn(label: Text('Address')),
+                      showCheckboxColumn: false,
+                      columns: const [
+                        DataColumn(label: Text('')),
+                        DataColumn(label: Text('Name')),
+                        DataColumn(label: Text('Contact Number')),
+                        DataColumn(label: Text('Type')),
+                        DataColumn(label: Text('Status')),
+                        DataColumn(label: Text('Membership Duration')),
+                        DataColumn(label: Text('Address')),
                       ],
                       rowsPerPage: rowsPerPage,
-                      source: MemberDataSource(_displayedMembers),
+                      source: MemberDataSource(
+                        _displayedMembers,
+                        openProfileDialog: _openProfileDialog, // Pass the function to the data source
+                      ),
                     ),
                   ),
                 ),

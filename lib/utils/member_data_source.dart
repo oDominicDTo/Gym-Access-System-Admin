@@ -5,16 +5,24 @@ import 'package:gym_kiosk_admin/models/model.dart';
 
 class MemberDataSource extends DataTableSource {
   late List<Member> _members;
-  final bool _sortAscending = true; // Initially sorting in ascending order
-  late int _sortColumnIndex = 1; // Initial sort column index (considering Name column)
+  final Function(Member) openProfileDialog;
+  int? _selectedRowIndex;
 
-  MemberDataSource(this._members);
+  MemberDataSource(this._members, {required this.openProfileDialog});
 
   @override
   DataRow getRow(int index) {
     final member = _members[index];
-    return DataRow(cells: [
-      DataCell(
+    return DataRow.byIndex(
+        index: index,
+        selected: _selectedRowIndex == index,
+        onSelectChanged: (isSelected) {
+          if (isSelected != null && isSelected) {
+            openProfileDialog(member); // Call the method to open the profile dialog
+          }
+        },
+        cells: [
+          DataCell(
         FutureBuilder<String>(
           future: _getLocalImagePath(member.photoPath),
           builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
@@ -36,6 +44,7 @@ class MemberDataSource extends DataTableSource {
             }
           },
         ),
+
       ),
       DataCell(Text('${member.firstName} ${member.lastName}')),
       DataCell(Text(member.contactNumber)),
@@ -54,27 +63,6 @@ class MemberDataSource extends DataTableSource {
 
   @override
   int get selectedRowCount => 0;
-
-  // Add a method to sort by name
-  void _sortByName() {
-    _sortColumnIndex = 1; // Set the sort column index for Name
-    _members.sort((a, b) {
-      final nameA = '${a.firstName} ${a.lastName}';
-      final nameB = '${b.firstName} ${b.lastName}';
-      return _sortAscending ? nameA.compareTo(nameB) : nameB.compareTo(nameA);
-    });
-
-    notifyListeners(); // Notify listeners after sorting
-  }
-
-  void _sortByStatus(bool ascending) {
-    _members.sort((a, b) {
-      final statusA = _getMembershipStatus(a);
-      final statusB = _getMembershipStatus(b);
-      return ascending ? statusA.compareTo(statusB) : statusB.compareTo(statusA);
-    });
-    notifyListeners();
-  }
 
 
   Future<String> _getLocalImagePath(String imagePath) async {
