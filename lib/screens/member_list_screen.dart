@@ -42,6 +42,7 @@ class _MemberListScreenState extends State<MemberListScreen> {
   void _applyFilters(List<String> selectedFilters, String? selectedStatus) {
     setState(() {
       _appliedFilters = selectedFilters;
+      _selectedStatus = selectedStatus;
 
       _displayedMembers = List.from(_membersData);
 
@@ -53,43 +54,44 @@ class _MemberListScreenState extends State<MemberListScreen> {
       }
 
       // Apply status filter
-      if (selectedStatus != null && selectedStatus.isNotEmpty) {
-        filterMembersByStatus(selectedStatus);
-      }
-
-      // Apply search query to the displayed members
-      _displayedMembers = _displayedMembers.where((member) =>
-          '${member.firstName} ${member.lastName}'
-              .toLowerCase()
-              .contains(_searchQuery)).toList();
-
-      _displayedMembers = _sortMembers(_displayedMembers);
-    });
-  }
-
-  void filterMembersByStatus(String selectedStatus) {
-    setState(() {
-      if (_appliedFilters.isNotEmpty) {
+      if (_selectedStatus != null && _selectedStatus!.isNotEmpty) {
         _displayedMembers = _displayedMembers.where((member) {
-          return _appliedFilters.contains(member.membershipType.target?.typeName);
+          switch (_selectedStatus) {
+            case 'Active':
+              return member.getMembershipStatus() == MembershipStatus.active;
+            case 'Inactive':
+              return member.getMembershipStatus() == MembershipStatus.inactive;
+            case 'Expired':
+              return member.getMembershipStatus() == MembershipStatus.expired;
+            default:
+              return true; // Return all members if no status filter is applied
+          }
         }).toList();
-      } else {
-        _displayedMembers = List.from(_membersData);
-      }
 
-      // Apply status filter to the currently displayed members
-      if (selectedStatus == 'Active') {
-        _displayedMembers = _displayedMembers
-            .where((member) => member.getMembershipStatus() == MembershipStatus.active)
-            .toList();
-      } else if (selectedStatus == 'Inactive') {
-        _displayedMembers = _displayedMembers
-            .where((member) => member.getMembershipStatus() == MembershipStatus.inactive)
-            .toList();
-      } else if (selectedStatus == 'Expired') {
-        _displayedMembers = _displayedMembers
-            .where((member) => member.getMembershipStatus() == MembershipStatus.expired)
-            .toList();
+        // Check if there are no members with the selected status
+        final hasMembersWithStatus = _displayedMembers.any((member) {
+          switch (_selectedStatus) {
+            case 'Active':
+              return member.getMembershipStatus() == MembershipStatus.active;
+            case 'Inactive':
+              return member.getMembershipStatus() == MembershipStatus.inactive;
+            case 'Expired':
+              return member.getMembershipStatus() == MembershipStatus.expired;
+            default:
+              return true; // Return true for other statuses
+          }
+        });
+
+        // If no members with the selected status, show a Snackbar
+        if (!hasMembersWithStatus) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                'No members found with $_selectedStatus status',
+              ),
+            ),
+          );
+        }
       }
 
       // Apply search query to the displayed members
@@ -101,6 +103,7 @@ class _MemberListScreenState extends State<MemberListScreen> {
       _displayedMembers = _sortMembers(_displayedMembers);
     });
   }
+
   void _openProfileDialog(Member member) {
     ProfileDialog().open(context, member);
   }
@@ -218,6 +221,7 @@ class _MemberListScreenState extends State<MemberListScreen> {
               return fullName.contains(_searchQuery);
             }).toList();
 
+            _displayedMembers = filteredData;
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30),
               child: SizedBox(
