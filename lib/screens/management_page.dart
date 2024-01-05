@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../dialog/list_membership_type_dialog.dart';
+import 'package:gym_kiosk_admin/dialog/staff/list_staff.dart';
+import '../dialog/membership_type/list_membership_type_dialog.dart';
 
 class ManagementPage extends StatelessWidget {
   const ManagementPage({super.key});
@@ -29,7 +30,10 @@ class ManagementPage extends StatelessWidget {
                               title: 'Edit Staff',
                               icon: Icons.person,
                               onPressed: () {
-                                // Action for Edit Staff button
+                                showDialog(
+                                    context: context,
+                                    builder: (context) => const ListStaffDialog(),
+                                );
                               },
                             ),
                           ),
@@ -92,14 +96,14 @@ class CustomCardButton extends StatefulWidget {
   final IconData icon;
   final VoidCallback onPressed;
 
-  const CustomCardButton({
+  const CustomCardButton({super.key,
     required this.title,
     required this.icon,
     required this.onPressed,
   });
 
   @override
-  _CustomCardButtonState createState() => _CustomCardButtonState();
+  State createState() => _CustomCardButtonState();
 }
 
 class _CustomCardButtonState extends State<CustomCardButton> {
@@ -116,7 +120,7 @@ class _CustomCardButtonState extends State<CustomCardButton> {
       },
       child: Card(
         child: AnimatedContainer(
-          duration: Duration(milliseconds: 500),
+          duration: const Duration(milliseconds: 500),
           width: 500,
           height: 120,
           decoration: BoxDecoration(

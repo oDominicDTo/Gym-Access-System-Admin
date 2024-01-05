@@ -190,7 +190,7 @@ class ObjectBox {
 
     Administrator member2 = Administrator(
         name: 'Jay Ann Garcia',
-        type: 'admin',
+        type: 'staff',
         username: 'jayanngarcia',
         password: '042323',
         nfcTagID: 'b385aafd');
@@ -281,6 +281,7 @@ class ObjectBox {
     // Return whether any administrator with the tag ID exists
     return admins.isNotEmpty;
   }
+// CRUD methods for Administrator entity
 
   Future<Administrator?> getAdministratorByTagId(String tagId) async {
     // Create a query to find an administrator with the given NFC tag ID
@@ -292,5 +293,35 @@ class ObjectBox {
   }
 
 
+  Future<int> addAdministrator(Administrator admin) async {
+    return _administratorBox.put(admin);
+  }
 
+  Administrator getAdministrator(int id) {
+    return _administratorBox.get(id)!;
+  }
+
+  void deleteAdministrator(int id) {
+    _administratorBox.remove(id);
+  }
+
+  List<Administrator> getAllAdministrators() {
+    return _administratorBox.getAll();
+  }
+  List<Administrator> getStaffAdministrators() {
+    final query = _administratorBox.query(Administrator_.type.equals('staff')).build();
+    return query.find();
+  }
+  void updateAdministrator(Administrator updatedAdmin) {
+    final existingAdmin = _administratorBox.get(updatedAdmin.id);
+    if (existingAdmin != null) {
+      existingAdmin.name = updatedAdmin.name;
+      existingAdmin.username = updatedAdmin.username;
+      existingAdmin.password = updatedAdmin.password;
+      existingAdmin.nfcTagID = updatedAdmin.nfcTagID;
+      existingAdmin.type = updatedAdmin.type;
+
+      _administratorBox.put(existingAdmin);
+    }
+  }
 }
