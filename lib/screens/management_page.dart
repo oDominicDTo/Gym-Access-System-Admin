@@ -35,6 +35,7 @@ class ManagementPage extends StatelessWidget {
                                     builder: (context) => const ListStaffDialog(),
                                 );
                               },
+                              iconColor: Colors.blue, // Set icon color
                             ),
                           ),
                           const SizedBox(height: 16.0),
@@ -45,6 +46,7 @@ class ManagementPage extends StatelessWidget {
                               onPressed: () {
                                 // Action for Edit Membership Duration button
                               },
+                              iconColor: Colors.pink, // Set icon color
                             ),
                           ),
                         ],
@@ -65,6 +67,7 @@ class ManagementPage extends StatelessWidget {
                                   builder: (context) => const ListMembershipTypeDialog(),
                                 );
                               },
+                              iconColor: Colors.orange, // Set icon color
                             ),
                           ),
                           const SizedBox(height: 16.0),
@@ -75,6 +78,7 @@ class ManagementPage extends StatelessWidget {
                               onPressed: () {
                                 // Action for button 4
                               },
+                              iconColor: Colors.green, // Set icon color
                             ),
                           ),
                         ],
@@ -95,11 +99,13 @@ class CustomCardButton extends StatefulWidget {
   final String title;
   final IconData icon;
   final VoidCallback onPressed;
+  final Color iconColor;
 
   const CustomCardButton({super.key,
     required this.title,
     required this.icon,
     required this.onPressed,
+    required this.iconColor,
   });
 
   @override
@@ -130,6 +136,14 @@ class _CustomCardButtonState extends State<CustomCardButton> {
               width: isHovered ? 2.0 : 1.0, // Border width
             ),
             borderRadius: BorderRadius.circular(8),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 5,
+                blurRadius: 7,
+                offset: Offset(0, 3),
+              ),
+            ],
           ),
           child: Padding(
             padding: const EdgeInsets.all(16.0),
@@ -139,7 +153,7 @@ class _CustomCardButtonState extends State<CustomCardButton> {
                 Icon(
                   widget.icon,
                   size: 40,
-                  color: isHovered ? Colors.blue : Colors.black,
+                  color: isHovered ? Colors.blue : widget.iconColor,
                 ),
                 const SizedBox(height: 10),
                 Text(

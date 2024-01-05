@@ -37,12 +37,58 @@ class PDFExporter {
     }
 
     final PdfPage page = document.pages.add();
-    grid.draw(
-      page: page,
-      bounds: Rect.fromLTWH(0, 0, page.getClientSize().width, page.getClientSize().height),
-      format: PdfLayoutFormat(layoutType: PdfLayoutType.paginate),
+    final double headerHeight = 20.0; // Adjust this value based on your header height
+
+    // Draw the header text at the top
+    final String headerText =
+        'OFFICE OF THE CITY YOUTH AND SPORTS DEVELOPMENT\n'
+        'Northgate, Alonte Sports Arena Compound, City of Biñan, Laguna\n'
+        'binanysdo16@gmail.com | (049) 513-5254 | https://facebook.com/bcysdo/\n'
+        'BIÑAN CITY FITNESS AND GYM CENTER LOGBOOK';
+
+    final PdfStringFormat format = PdfStringFormat(
+      alignment: PdfTextAlignment.center,
+      lineAlignment: PdfVerticalAlignment.middle,
     );
 
+    List<String> lines = headerText.split('\n');
+    double lineHeight = 10; // Adjust this value based on your font size and spacing
+
+    for (int i = 0; i < lines.length; i++) {
+      page.graphics.drawString(
+        lines[i],
+        PdfStandardFont(PdfFontFamily.helvetica, 10),
+        brush: PdfSolidBrush(PdfColor(0, 0, 0)),
+        bounds: Rect.fromLTWH(
+          0,
+          i * lineHeight,
+          page.getClientSize().width,
+          headerHeight,
+        ),
+        format: format,
+      );
+    }
+
+    // Add a 2-line spacing
+    page.graphics.drawString(
+      ' ',
+      PdfStandardFont(PdfFontFamily.helvetica, 10),
+      bounds: Rect.fromLTWH(
+        0,
+        lines.length * lineHeight,
+        page.getClientSize().width,
+        lineHeight * 1,
+      ),
+      format: format,
+    );
+
+    // Draw the grid below the header text
+    grid.draw(
+      page: page,
+      bounds: Rect.fromLTWH(0, lines.length * lineHeight + headerHeight, page.getClientSize().width,
+          page.getClientSize().height - headerHeight),
+      format: PdfLayoutFormat(layoutType: PdfLayoutType.paginate),
+    );
 
     final List<int> bytes = await document.save();
     document.dispose();

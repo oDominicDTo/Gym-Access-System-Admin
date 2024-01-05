@@ -27,75 +27,80 @@ class ProfileDialog {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              FutureBuilder<String>(
-                future: _getLocalImagePath(member.photoPath),
-                builder: (BuildContext context,
-                    AsyncSnapshot<String> snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const CircularProgressIndicator();
-                  } else if (snapshot.hasError || snapshot.data == null) {
-                    return const Icon(Icons.person,
-                        size: 120); // Placeholder icon if image not found
-                  } else {
-                    final file = File(snapshot.data!);
-                    if (!file.existsSync()) {
-                      return const Icon(Icons.person,
-                          size: 120); // Placeholder icon if image file doesn't exist
-                    }
-                    return Image.file(
-                      file,
-                      width: 200,
-                      height: 200,
-                      fit: BoxFit.cover,
-                    );
-                  }
-                },
+              Container(
+                height: 150,
+                decoration: BoxDecoration(
+                  color: Colors.blue, // Use your desired color
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(16.0)),
+                ),
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Positioned(
+                      top: 20,
+                      child: FutureBuilder<String>(
+                        future: _getLocalImagePath(member.photoPath),
+                        builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+                          if (snapshot.connectionState == ConnectionState.waiting) {
+                            return CircularProgressIndicator();
+                          } else if (snapshot.hasError || snapshot.data == null) {
+                            return Icon(Icons.person, size: 120, color: Colors.white);
+                          } else {
+                            final file = File(snapshot.data!);
+                            if (!file.existsSync()) {
+                              return Icon(Icons.person, size: 120, color: Colors.white);
+                            }
+                            return CircleAvatar(
+                              radius: 60,
+                              backgroundImage: FileImage(file),
+                            );
+                          }
+                        },
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              const SizedBox(height: 16),
-              Text('${member.firstName} ${member.lastName}',
-                style: const TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold, fontSize: 25),
-              ),
-              Text(member.email,
-                style: const TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold),
-              ),
-              Text(member.contactNumber,
-                style: const TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold),
-              ),
-              Text(' ${member.dateOfBirthFormat}',
-                style: const TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold),
-              ),
-              Text(member.address,
-                style: const TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 16),
-
-              const Divider(
-                height: 3,
-                thickness: 2,
-                indent: 40,
-                endIndent: 40,
-                color: Colors.black26,
-              ),
-              const SizedBox(height: 16),
-              Center(
+              Padding(
+                padding: const EdgeInsets.all(16.0),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      'Membership Status: ${_getMembershipStatus(member)}',
-                      style: const TextStyle(fontFamily: 'Poppins'),
+                      '${member.firstName} ${member.lastName}',
+                      style: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold, fontSize: 25),
                     ),
-                    Text(
-                      'Membership Start Date: ${member.membershipStartDateFormat}',
-                      style: const TextStyle(fontFamily: 'Poppins'),
+                    const SizedBox(height: 8),
+                    Text('${member.email}', style: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold)),
+                    Text('${member.contactNumber}', style: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold)),
+                    Text(' ${member.dateOfBirthFormat}', style: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold)),
+                    Text('${member.address}', style: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold)),
+                    const SizedBox(height: 16),
+                    const Divider(
+                      height: 3,
+                      thickness: 2,
+                      indent: 40,
+                      endIndent: 40,
+                      color: Colors.black26,
                     ),
-                    Text(
-                      'Membership End Date: ${member.membershipEndDateFormat}',
-                      style: const TextStyle(fontFamily: 'Poppins'),
-                    ),
-                    Text(
-                      'Membership Duration: ${_getRemainingMembershipDuration(member)}',
-                      style: const TextStyle(fontFamily: 'Poppins'),
+                    const SizedBox(height: 16),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildMembershipStatusWidget(member),
+                        Text(
+                          'Membership Start Date: ${member.membershipStartDateFormat}',
+                          style: TextStyle(fontFamily: 'Poppins'),
+                        ),
+                        Text(
+                          'Membership End Date: ${member.membershipEndDateFormat}',
+                          style: TextStyle(fontFamily: 'Poppins'),
+                        ),
+                        Text(
+                          'Membership Duration: ${_getRemainingMembershipDuration(member)}',
+                          style: TextStyle(fontFamily: 'Poppins'),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -108,6 +113,30 @@ class ProfileDialog {
     );
   }
 
+  Widget _buildMembershipStatusWidget(Member member) {
+    String statusText = '';
+    Color statusColor = Colors.black; // Default color for expired
+
+    switch (member.getMembershipStatus()) {
+      case MembershipStatus.active:
+        statusText = 'Active';
+        statusColor = Colors.green;
+        break;
+      case MembershipStatus.inactive:
+        statusText = 'Inactive';
+        statusColor = Colors.red;
+        break;
+      case MembershipStatus.expired:
+        statusText = 'Expired';
+        statusColor = Colors.black;
+        break;
+    }
+
+    return Text(
+      'Membership Status: $statusText',
+      style: TextStyle(fontFamily: 'Poppins', color: statusColor),
+    );
+  }
 
   String _getRemainingMembershipDuration(Member member) {
     final membershipDays = member.getRemainingMembershipDays();
