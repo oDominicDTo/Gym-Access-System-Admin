@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gym_kiosk_admin/widgets/card_button.dart';
-
 import '../dialog/list_membership_type_dialog.dart';
-import '../main.dart';
 
 class ManagementPage extends StatelessWidget {
   const ManagementPage({super.key});
@@ -11,7 +8,7 @@ class ManagementPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Center(child: Text('Management Page')),
+        title: const Center(child: Text('Management Page', style: TextStyle(color: Colors.black, fontFamily: 'Poppins'))),
       ),
       body: Center(
         child: Padding(
@@ -28,19 +25,21 @@ class ManagementPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Expanded(
-                            child: CardButton(
+                            child: CustomCardButton(
                               title: 'Edit Staff',
+                              icon: Icons.person,
                               onPressed: () {
-                                // Action for button 1
+                                // Action for Edit Staff button
                               },
                             ),
                           ),
                           const SizedBox(height: 16.0),
                           Expanded(
-                            child: CardButton(
+                            child: CustomCardButton(
                               title: 'Edit Membership Duration',
+                              icon: Icons.access_time,
                               onPressed: () {
-                                // Action for button 3
+                                // Action for Edit Membership Duration button
                               },
                             ),
                           ),
@@ -53,8 +52,9 @@ class ManagementPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Expanded(
-                            child: CardButton(
+                            child: CustomCardButton(
                               title: 'Edit Membership Types',
+                              icon: Icons.category,
                               onPressed: () {
                                 showDialog(
                                   context: context,
@@ -65,8 +65,9 @@ class ManagementPage extends StatelessWidget {
                           ),
                           const SizedBox(height: 16.0),
                           Expanded(
-                            child: CardButton(
+                            child: CustomCardButton(
                               title: 'Button 4',
+                              icon: Icons.category,
                               onPressed: () {
                                 // Action for button 4
                               },
@@ -79,6 +80,75 @@ class ManagementPage extends StatelessWidget {
                 ),
               ),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class CustomCardButton extends StatefulWidget {
+  final String title;
+  final IconData icon;
+  final VoidCallback onPressed;
+
+  const CustomCardButton({
+    required this.title,
+    required this.icon,
+    required this.onPressed,
+  });
+
+  @override
+  _CustomCardButtonState createState() => _CustomCardButtonState();
+}
+
+class _CustomCardButtonState extends State<CustomCardButton> {
+  bool isHovered = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: widget.onPressed,
+      onHover: (hovered) {
+        setState(() {
+          isHovered = hovered;
+        });
+      },
+      child: Card(
+        child: AnimatedContainer(
+          duration: Duration(milliseconds: 500),
+          width: 500,
+          height: 120,
+          decoration: BoxDecoration(
+            color: isHovered ? Colors.blue.withOpacity(0.1) : Colors.white,
+            border: Border.all(
+              color: Colors.blueGrey, // Border color
+              width: isHovered ? 2.0 : 1.0, // Border width
+            ),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  widget.icon,
+                  size: 40,
+                  color: isHovered ? Colors.blue : Colors.black,
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  widget.title,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontFamily: 'Poppins',
+                    fontSize: 16,
+                    color: isHovered ? Colors.blue : Colors.black,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

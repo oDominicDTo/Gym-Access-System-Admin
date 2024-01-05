@@ -29,15 +29,18 @@ class ProfileDialog {
             children: [
               FutureBuilder<String>(
                 future: _getLocalImagePath(member.photoPath),
-                builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+                builder: (BuildContext context,
+                    AsyncSnapshot<String> snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const CircularProgressIndicator();
                   } else if (snapshot.hasError || snapshot.data == null) {
-                    return const Icon(Icons.person, size: 120); // Placeholder icon if image not found
+                    return const Icon(Icons.person,
+                        size: 120); // Placeholder icon if image not found
                   } else {
                     final file = File(snapshot.data!);
                     if (!file.existsSync()) {
-                      return const Icon(Icons.person, size: 120); // Placeholder icon if image file doesn't exist
+                      return const Icon(Icons.person,
+                          size: 120); // Placeholder icon if image file doesn't exist
                     }
                     return Image.file(
                       file,
@@ -49,15 +52,54 @@ class ProfileDialog {
                 },
               ),
               const SizedBox(height: 16),
-              Text('Name: ${member.firstName} ${member.lastName}'),
-              Text('Email: ${member.email}'),
-              Text('Contact Number: ${member.contactNumber}'),
-              Text('Date of Birth: ${member.dateOfBirthFormat}'),
-              Text('Membership Start Date: ${member.membershipStartDateFormat}'),
-              Text('Membership End Date: ${member.membershipEndDateFormat}'),
-              Text('Address: ${member.address}'),
-              Text('Remaining Membership Duration: ${_getRemainingMembershipDuration(member)}'),
-              Text('Membership Status: ${_getMembershipStatus(member)}'),
+              Text('${member.firstName} ${member.lastName}',
+                style: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold, fontSize: 25),
+              ),
+              Text('${member.email}',
+                style: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold),
+              ),
+              Text('${member.contactNumber}',
+                style: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold),
+              ),
+              Text(' ${member.dateOfBirthFormat}',
+                style: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold),
+              ),
+              Text('${member.address}',
+                style: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 16),
+
+              const Divider(
+                height: 3,
+                thickness: 2,
+                indent: 40,
+                endIndent: 40,
+                color: Colors.black26,
+              ),
+              const SizedBox(height: 16),
+              Center(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Membership Status: ${_getMembershipStatus(member)}',
+                      style: TextStyle(fontFamily: 'Poppins'),
+                    ),
+                    Text(
+                      'Membership Start Date: ${member.membershipStartDateFormat}',
+                      style: TextStyle(fontFamily: 'Poppins'),
+                    ),
+                    Text(
+                      'Membership End Date: ${member.membershipEndDateFormat}',
+                      style: TextStyle(fontFamily: 'Poppins'),
+                    ),
+                    Text(
+                      'Membership Duration: ${_getRemainingMembershipDuration(member)}',
+                      style: TextStyle(fontFamily: 'Poppins'),
+                    ),
+                  ],
+                ),
+              ),
               // Add other member details as needed
             ],
           ),
@@ -65,9 +107,9 @@ class ProfileDialog {
       ),
     );
   }
-}
 
- String _getRemainingMembershipDuration(Member member) {
+
+  String _getRemainingMembershipDuration(Member member) {
     final membershipDays = member.getRemainingMembershipDays();
 
     if (membershipDays >= 365) {
@@ -76,12 +118,16 @@ class ProfileDialog {
       if (remainingDays > 30) {
         return '$years year${years > 1 ? 's' : ''}';
       } else {
-        return '$years year${years > 1 ? 's' : ''} and $remainingDays day${remainingDays > 1 ? 's' : ''}';
+        return '$years year${years > 1
+            ? 's'
+            : ''} and $remainingDays day${remainingDays > 1 ? 's' : ''}';
       }
     } else if (membershipDays > 30) {
       final months = membershipDays ~/ 30;
       final remainingDays = membershipDays % 30;
-      return '$months month${months > 1 ? 's' : ''} and $remainingDays day${remainingDays > 1 ? 's' : ''}';
+      return '$months month${months > 1
+          ? 's'
+          : ''} and $remainingDays day${remainingDays > 1 ? 's' : ''}';
     } else {
       return '$membershipDays day${membershipDays > 1 ? 's' : ''}';
     }
@@ -102,8 +148,9 @@ class ProfileDialog {
     }
   }
 
-Future<String> _getLocalImagePath(String imagePath) async {
-  Directory appDocDir = await getApplicationDocumentsDirectory();
-  String localPath = '${appDocDir.path}/Kiosk/Photos/$imagePath';
-  return localPath.replaceAll(r'\', '/'); // Ensure correct separators
+  Future<String> _getLocalImagePath(String imagePath) async {
+    Directory appDocDir = await getApplicationDocumentsDirectory();
+    String localPath = '${appDocDir.path}/Kiosk/Photos/$imagePath';
+    return localPath.replaceAll(r'\', '/'); // Ensure correct separators
+  }
 }

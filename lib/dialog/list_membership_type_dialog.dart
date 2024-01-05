@@ -31,7 +31,7 @@ class _ListMembershipTypeDialogState extends State<ListMembershipTypeDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Center(child: Text('Membership Types')),
+      title: const Center(child: Text('Membership Types', style: TextStyle(color: Colors.black, fontFamily: 'Poppins'))),
       contentPadding:
           const EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
       content: SizedBox(
@@ -87,6 +87,7 @@ class _ListMembershipTypeDialogState extends State<ListMembershipTypeDialog> {
                         child: Text(
                           type.typeName,
                           style: const TextStyle(
+                            fontFamily: 'Poppins',
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                           ),
@@ -97,6 +98,7 @@ class _ListMembershipTypeDialogState extends State<ListMembershipTypeDialog> {
                           const Text(
                             'Fee:',
                             style: TextStyle(
+                              fontFamily: 'Poppins',
                               fontWeight: FontWeight.bold,
                               color: Colors.grey,
                             ),
@@ -105,6 +107,7 @@ class _ListMembershipTypeDialogState extends State<ListMembershipTypeDialog> {
                           Text(
                             type.fee.toString(),
                             style: const TextStyle(
+                              fontFamily: 'Poppins',
                               fontSize: 16,
                             ),
                           ),
@@ -112,6 +115,7 @@ class _ListMembershipTypeDialogState extends State<ListMembershipTypeDialog> {
                           const Text(
                             'PHP',
                             style: TextStyle(
+                              fontFamily: 'Poppins',
                               fontSize: 14,
                               color: Colors.grey,
                             ),
@@ -142,10 +146,10 @@ class _ListMembershipTypeDialogState extends State<ListMembershipTypeDialog> {
               },
             );
           },
-          label: const Text('Add'),
-          foregroundColor: Colors.black,
+          label: const Text('Add', style: TextStyle(color: Colors.white, fontFamily: 'Poppins')),
+          backgroundColor: Colors.black,
           shape: const StadiumBorder(),
-          icon: const Icon(Icons.add, color: Colors.black),
+          icon: const Icon(Icons.add, color: Colors.white),
           elevation: 5,
           highlightElevation: 5,
         ),

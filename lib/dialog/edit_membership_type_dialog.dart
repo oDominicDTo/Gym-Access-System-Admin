@@ -36,7 +36,7 @@ class _EditMembershipTypeDetailsDialogState extends State<EditMembershipTypeDeta
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Edit Membership Type'),
+      title: const Text('Edit Membership Type', style: TextStyle(color: Colors.black, fontFamily: 'Poppins')),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -47,7 +47,7 @@ class _EditMembershipTypeDetailsDialogState extends State<EditMembershipTypeDeta
                 typeName = value;
               });
             },
-            decoration: const InputDecoration(labelText: 'Type Name'),
+            decoration: const InputDecoration(labelText: 'Type Name', labelStyle: TextStyle(color: Colors.black, fontFamily: 'Poppins')),
           ),
           TextFormField(
             initialValue: fee.toString(),
@@ -57,7 +57,7 @@ class _EditMembershipTypeDetailsDialogState extends State<EditMembershipTypeDeta
               });
             },
             keyboardType: TextInputType.number,
-            decoration: const InputDecoration(labelText: 'Fee'),
+            decoration: const InputDecoration(labelText: 'Fee', labelStyle: TextStyle(color: Colors.black, fontFamily: 'Poppins')),
           ),
         ],
       ),
@@ -71,7 +71,10 @@ class _EditMembershipTypeDetailsDialogState extends State<EditMembershipTypeDeta
                 widget.onRemove(widget.type.id);
                 Navigator.of(context).pop(); // Close the dialog
               },
-              child: const Text('Remove'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.black, // Set background color to black
+              ),
+              child: const Text('Remove', style: TextStyle(color: Colors.white, fontFamily: 'Poppins')),
             ),
             TextButton(
               onPressed: () {
@@ -85,7 +88,10 @@ class _EditMembershipTypeDetailsDialogState extends State<EditMembershipTypeDeta
                 widget.onUpdate(updatedType);
                 Navigator.of(context).pop(); // Close the dialog
               },
-              child: const Text('Save'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.black, // Set background color to black
+              ),
+              child: const Text('Save', style: TextStyle(color: Colors.white, fontFamily: 'Poppins')),
             ),
           ],
         ),
