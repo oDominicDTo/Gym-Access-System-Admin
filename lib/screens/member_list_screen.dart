@@ -168,6 +168,11 @@ class _MemberListScreenState extends State<MemberListScreen> {
                     onChanged: (value) {
                       setState(() {
                         _searchQuery = value.toLowerCase();
+                        // Apply search query to the displayed members whenever the text changes
+                        _displayedMembers = _membersData.where((member) =>
+                            '${member.firstName} ${member.lastName}'
+                                .toLowerCase()
+                                .contains(_searchQuery)).toList();
                       });
                   },
                 ),
