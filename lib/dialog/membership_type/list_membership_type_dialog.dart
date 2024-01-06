@@ -13,8 +13,8 @@ class ListMembershipTypeDialog extends StatefulWidget {
 }
 
 class _ListMembershipTypeDialogState extends State<ListMembershipTypeDialog> {
-  late List<MembershipType> membershipTypes =
-      []; // Declare membershipTypes here
+  late List<MembershipType> membershipTypes = [];
+  int hoveredIndex = -1; // Track the index of the hovered card
 
   @override
   void initState() {
@@ -23,7 +23,6 @@ class _ListMembershipTypeDialogState extends State<ListMembershipTypeDialog> {
   }
 
   Future<void> _fetchMembershipTypes() async {
-    // Accessing the globally available objectbox instance
     membershipTypes = await objectbox.getAllMembershipTypes();
     setState(() {});
   }
@@ -31,9 +30,13 @@ class _ListMembershipTypeDialogState extends State<ListMembershipTypeDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Center(child: Text('Membership Types', style: TextStyle(color: Colors.black, fontFamily: 'Poppins'))),
-      contentPadding:
-          const EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
+      title: const Center(
+        child: Text(
+          'Membership Types',
+          style: TextStyle(color: Colors.black, fontFamily: 'Poppins'),
+        ),
+      ),
+      contentPadding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
       content: SizedBox(
         width: 500, // Expand horizontally
         height: 400.0, // Adjust the height as needed
@@ -49,28 +52,30 @@ class _ListMembershipTypeDialogState extends State<ListMembershipTypeDialog> {
                     return EditMembershipTypeDetailsDialog(
                       type: type,
                       onUpdate: (MembershipType updatedType) {
-                        // Update the existing type in the list
                         setState(() {
-                          int index = membershipTypes.indexWhere(
-                              (element) => element.id == updatedType.id);
+                          int index = membershipTypes
+                              .indexWhere((element) => element.id == updatedType.id);
                           if (index != -1) {
                             membershipTypes[index] = updatedType;
                           }
                         });
-                        // Perform the update in ObjectBox or any storage mechanism
                         objectbox.updateMembershipType(updatedType);
                       },
                       onRemove: (int typeId) {
                         setState(() {
-                          membershipTypes
-                              .removeWhere((element) => element.id == typeId);
+                          membershipTypes.removeWhere((element) => element.id == typeId);
                         });
-                        // Perform the removal in ObjectBox or any storage mechanism
                         objectbox.deleteMembershipType(typeId);
                       },
                     );
                   },
                 );
+              },
+              onHover: (isHovered) {
+                // Update the hovered index when the card is hovered or not hovered
+                setState(() {
+                  hoveredIndex = isHovered ? index : -1;
+                });
               },
               child: Card(
                 margin: const EdgeInsets.all(8.0),
@@ -78,6 +83,7 @@ class _ListMembershipTypeDialogState extends State<ListMembershipTypeDialog> {
                   side: const BorderSide(color: Colors.black, width: 1.0),
                   borderRadius: BorderRadius.circular(8.0),
                 ),
+                color: hoveredIndex == index ? Colors.blue.withOpacity(0.5) : Colors.white,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
@@ -100,7 +106,7 @@ class _ListMembershipTypeDialogState extends State<ListMembershipTypeDialog> {
                             style: TextStyle(
                               fontFamily: 'Poppins',
                               fontWeight: FontWeight.bold,
-                              color: Colors.grey,
+                              color: Colors.orange,
                             ),
                           ),
                           const SizedBox(width: 4),
@@ -137,11 +143,10 @@ class _ListMembershipTypeDialogState extends State<ListMembershipTypeDialog> {
               context: context,
               builder: (BuildContext context) {
                 return AddMembershipTypeDialog(onAdd: (MembershipType newType) {
-                  // Add the new type to the list and update
                   setState(() {
                     membershipTypes.add(newType);
                   });
-                  objectbox.addMembershipType(newType); // Add to ObjectBox
+                  objectbox.addMembershipType(newType);
                 });
               },
             );

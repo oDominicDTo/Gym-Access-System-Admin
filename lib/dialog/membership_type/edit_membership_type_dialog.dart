@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gym_kiosk_admin/models/model.dart';
 
-
 class EditMembershipTypeDetailsDialog extends StatefulWidget {
   final MembershipType type;
   final Function(MembershipType) onUpdate;
@@ -21,22 +20,18 @@ class EditMembershipTypeDetailsDialog extends StatefulWidget {
 class _EditMembershipTypeDetailsDialogState extends State<EditMembershipTypeDetailsDialog> {
   late String typeName;
   late double fee;
-  late double discount;
-  late bool isLifetime;
 
   @override
   void initState() {
     super.initState();
     typeName = widget.type.typeName;
     fee = widget.type.fee;
-    discount = widget.type.discount;
-    isLifetime = widget.type.isLifetime;
   }
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Edit Membership Type', style: TextStyle(color: Colors.black, fontFamily: 'Poppins')),
+      title: Text('Edit Membership Type', style: TextStyle(color: Colors.black, fontFamily: 'Poppins')),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -47,8 +42,15 @@ class _EditMembershipTypeDetailsDialogState extends State<EditMembershipTypeDeta
                 typeName = value;
               });
             },
-            decoration: const InputDecoration(labelText: 'Type Name', labelStyle: TextStyle(color: Colors.black, fontFamily: 'Poppins')),
+            decoration: InputDecoration(
+              labelText: 'Type Name',
+              labelStyle: TextStyle(color: Colors.black, fontFamily: 'Poppins', fontWeight: FontWeight.bold), // Set fontWeight to bold
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.black),
+              ),
+            ),
           ),
+          const SizedBox(height: 16),
           TextFormField(
             initialValue: fee.toString(),
             onChanged: (value) {
@@ -57,7 +59,13 @@ class _EditMembershipTypeDetailsDialogState extends State<EditMembershipTypeDeta
               });
             },
             keyboardType: TextInputType.number,
-            decoration: const InputDecoration(labelText: 'Fee', labelStyle: TextStyle(color: Colors.black, fontFamily: 'Poppins')),
+            decoration: InputDecoration(
+              labelText: 'Fee',
+              labelStyle: TextStyle(color: Colors.black, fontFamily: 'Poppins', fontWeight: FontWeight.bold), // Set fontWeight to bold
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.black),
+              ),
+            ),
           ),
         ],
       ),
@@ -72,7 +80,7 @@ class _EditMembershipTypeDetailsDialogState extends State<EditMembershipTypeDeta
                 Navigator.of(context).pop(); // Close the dialog
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.black, // Set background color to black
+                backgroundColor: Colors.red, // Set background color to red for removal
               ),
               child: const Text('Remove', style: TextStyle(color: Colors.white, fontFamily: 'Poppins')),
             ),
@@ -82,14 +90,14 @@ class _EditMembershipTypeDetailsDialogState extends State<EditMembershipTypeDeta
                   id: widget.type.id,
                   typeName: typeName,
                   fee: fee,
-                  discount: discount,
-                  isLifetime: isLifetime,
+                  discount: widget.type.discount,
+                  isLifetime: widget.type.isLifetime,
                 );
                 widget.onUpdate(updatedType);
                 Navigator.of(context).pop(); // Close the dialog
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.black, // Set background color to black
+                backgroundColor: Colors.blue, // Set background color to blue for save
               ),
               child: const Text('Save', style: TextStyle(color: Colors.white, fontFamily: 'Poppins')),
             ),

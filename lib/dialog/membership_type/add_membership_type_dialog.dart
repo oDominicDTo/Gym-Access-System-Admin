@@ -20,27 +20,43 @@ class _AddMembershipTypeDialogState extends State<AddMembershipTypeDialog> {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: const Text('Add Membership Type', style: TextStyle(color: Colors.black, fontFamily: 'Poppins')),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          TextFormField(
-            onChanged: (value) {
-              setState(() {
-                typeName = value;
-              });
-            },
-            decoration: const InputDecoration(labelText: 'Type Name', labelStyle: TextStyle(color: Colors.black, fontFamily: 'Poppins')),
-          ),
-          TextFormField(
-            onChanged: (value) {
-              setState(() {
-                fee = double.tryParse(value) ?? 0.0;
-              });
-            },
-            keyboardType: TextInputType.number,
-            decoration: const InputDecoration(labelText: 'Fee', labelStyle: TextStyle(color: Colors.black, fontFamily: 'Poppins')),
-          ),
-        ],
+      content: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: TextFormField(
+                onChanged: (value) {
+                  setState(() {
+                    typeName = value;
+                  });
+                },
+                style: TextStyle(color: Colors.black, fontFamily: 'Poppins', fontSize: 16.0), // Adjust font size
+                decoration: const InputDecoration(
+                  labelText: 'Type Name',
+                  labelStyle: TextStyle(color: Colors.black, fontFamily: 'Poppins', fontSize: 14.0, fontWeight: FontWeight.bold), // Bold label
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: TextFormField(
+                onChanged: (value) {
+                  setState(() {
+                    fee = double.tryParse(value) ?? 0.0;
+                  });
+                },
+                keyboardType: TextInputType.number,
+                style: TextStyle(color: Colors.black, fontFamily: 'Poppins', fontSize: 16.0), // Adjust font size
+                decoration: const InputDecoration(
+                  labelText: 'Fee',
+                  labelStyle: TextStyle(color: Colors.black, fontFamily: 'Poppins', fontSize: 14.0, fontWeight: FontWeight.bold), // Bold label
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
       actions: [
         TextButton(
@@ -55,7 +71,7 @@ class _AddMembershipTypeDialogState extends State<AddMembershipTypeDialog> {
             Navigator.of(context).pop(); // Close the dialog
           },
           style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.black, // Set background color to black
+            primary: Colors.black, // Set background color to black
           ),
           child: const Text('Add', style: TextStyle(color: Colors.white, fontFamily: 'Poppins')),
         ),
