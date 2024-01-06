@@ -256,6 +256,38 @@ class ObjectBox {
     return _membershipTypeBox.get(id)!;
   }
 
+  void updateMembershipDuration(int memberId, int additionalDays) {
+    final member = _memberBox.get(memberId);
+    if (member != null) {
+      // To add days to the membership duration
+      member.extendMembership(additionalDays);
+
+      // To subtract days from the membership duration
+      // member.extendMembership(-additionalDays);
+
+      _memberBox.put(member);
+    }
+  }
+
+  void updateMembershipDurationForAllMembers(int days) {
+    final members = _memberBox.getAll(); // Retrieve all members
+
+    for (final member in members) {
+      member.extendMembership(days); // Extend membership duration for each member
+      _memberBox.put(member); // Update the member in the database
+    }
+  }
+  void updateMembershipDurationForSelectedMembers(List<int> selectedMemberIds, int days) {
+    for (final memberId in selectedMemberIds) {
+      final member = _memberBox.get(memberId);
+
+      if (member != null) {
+        member.extendMembership(days); // Extend membership duration for each selected member
+        _memberBox.put(member); // Update the member in the database
+      }
+    }
+  }
+
   void updateMembershipType(MembershipType updatedMembershipType) {
     final existingType = _membershipTypeBox.get(updatedMembershipType.id);
     if (existingType != null) {

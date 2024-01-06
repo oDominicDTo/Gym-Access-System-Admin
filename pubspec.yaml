@@ -93,7 +93,6 @@ flutter:
       - assets/images/gym_login.png
       - assets/animation/scan_nfc.json
       - assets/animation/insert_card.json
-      -
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

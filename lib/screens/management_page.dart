@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gym_kiosk_admin/dialog/membership_duration/initial_dialog.dart';
 import 'package:gym_kiosk_admin/dialog/staff/list_staff.dart';
 import '../dialog/membership_type/list_membership_type_dialog.dart';
 
@@ -44,7 +45,14 @@ class ManagementPage extends StatelessWidget {
                               title: 'Edit Membership Duration',
                               icon: Icons.access_time,
                               onPressed: () {
-                                // Action for Edit Membership Duration button
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      content: InitialMembershipDialog(),
+                                    );
+                                  },
+                                );
                               },
                               iconColor: Colors.pink, // Set icon color
                             ),
