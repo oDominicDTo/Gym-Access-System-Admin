@@ -90,6 +90,7 @@ flutter:
       - assets/images/whole_logo.png
       - assets/images/gym_logo.png
       - assets/images/logo_1.png
+      - assets/images/gym_login.png
       - assets/animation/scan_nfc.json
       - assets/animation/insert_card.json
       -

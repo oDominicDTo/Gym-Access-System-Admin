@@ -66,12 +66,12 @@ class _FilterDialogState extends State<FilterDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Filter Options'),
+      title: const Text('Filter Options', style: TextStyle(color: Colors.black, fontFamily: 'Poppins')),
       content: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Membership Type:'),
+            const Text('Membership Type:', style: TextStyle(color: Colors.black, fontFamily: 'Poppins')),
             if (_membershipTypes.isNotEmpty)
               ToggleButtons(
                 isSelected: _isSelected,
@@ -81,9 +81,10 @@ class _FilterDialogState extends State<FilterDialog> {
                   });
                 },
                 children: _buildMembershipTypeButtons(),
+
               ),
             const SizedBox(height: 20),
-            const Text('Status:'),
+            const Text('Status:', style: TextStyle(color: Colors.black, fontFamily: 'Poppins')),
             _buildStatusSegmentedControl(),
           ],
         ),
@@ -96,7 +97,10 @@ class _FilterDialogState extends State<FilterDialog> {
               _selectedStatus = null; // Reset status to null
             });
           },
-          child: const Text('Reset'),
+          style: TextButton.styleFrom(
+            side: const BorderSide(color: Colors.black), // Set border color to black
+          ),
+          child: const Text('Reset', style: TextStyle(color: Colors.black, fontFamily: 'Poppins')),
         ),
         TextButton(
           onPressed: () {
@@ -104,7 +108,10 @@ class _FilterDialogState extends State<FilterDialog> {
             widget.onApplyFilters(selectedMembershipTypes, _selectedStatus); // Pass status as the second argument
             Navigator.of(context).pop();
           },
-          child: const Text('Apply'),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.black, // Set background color to black
+          ),
+          child: const Text('Apply', style: TextStyle(color: Colors.white, fontFamily: 'Poppins')),
         ),
       ],
     );
@@ -122,13 +129,8 @@ class _FilterDialogState extends State<FilterDialog> {
 
   Widget _buildStatusButton(String status, int index) {
     return Container(
-      padding: const EdgeInsets.all(8.0), // Add padding inside the box
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: Colors.grey,
-          width: 0.2,
-        ),
-      ),
+      padding: const EdgeInsets.all(5.0), // Add padding inside the box
+
       child: TextButton(
         onPressed: () {
           setState(() {
