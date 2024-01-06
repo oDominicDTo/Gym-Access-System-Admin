@@ -38,8 +38,8 @@ class _ListMembershipTypeDialogState extends State<ListMembershipTypeDialog> {
       ),
       contentPadding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
       content: SizedBox(
-        width: 500, // Expand horizontally
-        height: 400.0, // Adjust the height as needed
+        width: 300, // Expand horizontally
+        height: 300.0, // Adjust the height as needed
         child: ListView.builder(
           itemCount: membershipTypes.length,
           itemBuilder: (context, index) {
