@@ -28,7 +28,7 @@ class RenewMemberPage extends StatelessWidget {
                   ),
                 );
               },
-              iconColor: Colors.blue,
+              iconColor: Colors.black54,
             ),
             const SizedBox(height: 16.0),
             CustomCardButton(
