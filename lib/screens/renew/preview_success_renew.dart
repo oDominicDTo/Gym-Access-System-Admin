@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gym_kiosk_admin/screens/renew/renewal_page.dart';
 import 'package:gym_kiosk_admin/widgets/custom_card_button.dart';
 import 'package:path_provider/path_provider.dart';
-import '../../models/model.dart';
+import '../../../models/model.dart';
 
 
 class SuccessPage extends StatelessWidget {
@@ -33,7 +33,7 @@ class SuccessPage extends StatelessWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(
+      appBar: AppBar(automaticallyImplyLeading: false,
       ),
       body: SingleChildScrollView(
         child: Row(

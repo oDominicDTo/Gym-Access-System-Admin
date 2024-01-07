@@ -69,7 +69,7 @@ class ObjectBox {
       }
     });
   }
-  
+
   void logCheckIn(Member member, {required DateTime checkInTime}) {
     _recordCheckIn(member, checkInTime);
   }

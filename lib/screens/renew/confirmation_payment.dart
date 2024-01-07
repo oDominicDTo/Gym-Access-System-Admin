@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../dialog/preview_success_renew.dart';
+import 'preview_success_renew.dart';
 import '../../models/model.dart';
 
 class ConfirmationPaymentPage extends StatefulWidget {
