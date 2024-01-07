@@ -72,12 +72,12 @@ class _MemberSelectionPageState extends State<MemberSelectionPage> {
               controller: _searchController,
               decoration: InputDecoration(
                 labelText: 'Search Members',
-                prefixIcon: Icon(Icons.search, color: Colors.purple),
+                prefixIcon: const Icon(Icons.search, color: Colors.purple),
                 filled: true,
                 fillColor: Colors.white,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10.0),
-                  borderSide: BorderSide(color: Colors.grey),
+                  borderSide: const BorderSide(color: Colors.grey),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10.0),

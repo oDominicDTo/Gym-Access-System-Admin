@@ -179,7 +179,7 @@ class _MemberListScreenState extends State<MemberListScreen> {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 100.0),
-                child: Search_Bar(
+                child: SearchBarWidget(
                     onChanged: (value) {
                       setState(() {
                         _searchQuery = value.toLowerCase();

@@ -4,6 +4,8 @@ import '../../screens/management_page.dart';
 import 'all_members_content.dart';
 
 class InitialMembershipDialog extends StatefulWidget {
+  const InitialMembershipDialog({super.key});
+
   @override
   State createState() => _InitialMembershipDialogState();
 }

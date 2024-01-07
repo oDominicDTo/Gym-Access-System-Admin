@@ -48,7 +48,7 @@ class ManagementPage extends StatelessWidget {
                                 showDialog(
                                   context: context,
                                   builder: (BuildContext context) {
-                                    return AlertDialog(
+                                    return const AlertDialog(
                                       content: InitialMembershipDialog(),
                                     );
                                   },

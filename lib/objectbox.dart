@@ -192,7 +192,7 @@ class ObjectBox {
 
     Administrator member2 = Administrator(
         name: 'Jay Ann Garcia',
-        type: 'staff',
+        type: 'admin',
         username: 'jayanngarcia',
         password: '042323',
         nfcTagID: 'b385aafd');
@@ -402,6 +402,15 @@ class ObjectBox {
 
     final renewalLogs = query.find();
     return renewalLogs;
+  }
+
+  Administrator? authenticateAdmin(String username, String password) {
+    final query = _administratorBox.query(Administrator_.username.equals(username)).build();
+    final List<Administrator> admins = query.find();
+    if (admins.isNotEmpty && admins.first.password == password) {
+      return admins.first; // Return the authenticated administrator
+    }
+    return null; // Return null if authentication fails
   }
 }
 

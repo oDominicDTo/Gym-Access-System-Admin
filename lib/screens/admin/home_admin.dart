@@ -25,6 +25,7 @@ class _HomeAdminPageState extends State<HomeAdminPage> {
     const MemberListScreen(),
     const RenewalPage(),
     const ManagementPage(),
+    const Center(child: Text('Welcome to Feedback!')),
     const LoginScreen(),
   ];
 

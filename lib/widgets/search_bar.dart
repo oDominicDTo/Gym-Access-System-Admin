@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class Search_Bar extends StatelessWidget {
+class SearchBarWidget extends StatelessWidget {
   final ValueChanged<String> onChanged;
 
-  const Search_Bar({
+  const SearchBarWidget({
     Key? key,
     required this.onChanged,
   }) : super(key: key);

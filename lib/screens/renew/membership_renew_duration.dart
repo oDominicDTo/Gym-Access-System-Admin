@@ -149,7 +149,7 @@ class _MembershipDurationPageState extends State<MembershipDurationPage> {
                         ),
                       ],
                     ),
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                     child: Text(
                       'Confirm',
                       style: TextStyle(
