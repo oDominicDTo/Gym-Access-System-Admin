@@ -106,27 +106,47 @@ class _RenewalLogPageState extends State<RenewalLogPage> {
                     });
                   },
                 ),
-                IconButton(
-                  icon: const Icon(Icons.save), // Add an export icon in the app bar
-                  onPressed: () async {
-                    // Call the export PDF function without using context directly
-                    String? filePath = await RenewalPDFExporter.exportToPDF(displayedMembers, renewalLogs);
-                    if (filePath != null) {
-                      // File saved successfully
-                      scaffoldMessenger.showSnackBar(
-                        SnackBar(
-                          content: Text('PDF saved at $filePath'),
+                Padding(
+                  padding: const EdgeInsets.only(right: 50),
+                  child: TextButton.icon(
+                    onPressed: () async {
+                      String? filePath = await RenewalPDFExporter.exportToPDF(displayedMembers, renewalLogs);
+                      if (filePath != null) {
+                        // File saved successfully
+                        scaffoldMessenger.showSnackBar(
+                          SnackBar(
+                            content: Text('PDF saved at $filePath'),
+                          ),
+                        );
+                      } else {
+                        // Error while saving file
+                        scaffoldMessenger.showSnackBar(
+                          const SnackBar(
+                            content: Text('Failed to save PDF'),
+                          ),
+                        );
+                      }
+                    },
+                    icon: const Icon(
+                      Icons.file_download,
+                      color: Colors.black,
+                    ),
+                    label: const Text(
+                      'Export',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                    style: ButtonStyle(
+                      shape: MaterialStateProperty.all<OutlinedBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                          side: const BorderSide(color: Colors.black),
                         ),
-                      );
-                    } else {
-                      // Error while saving file
-                      scaffoldMessenger.showSnackBar(
-                        const SnackBar(
-                          content: Text('Failed to save PDF'),
-                        ),
-                      );
-                    }
-                  },
+                      ),
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                        Colors.transparent,
+                      ),
+                    ),
+                  ),
                 ),
               ],
             ),

@@ -23,7 +23,7 @@ class _MemberListScreenState extends State<MemberListScreen> {
   List<Member> _displayedMembers = [];
   late List<String> _appliedFilters = [];
   String? _selectedStatus;
-
+  final GlobalKey<ScaffoldMessengerState> _scaffoldMessengerKey = GlobalKey();
 
   @override
   void initState() {
@@ -33,7 +33,7 @@ class _MemberListScreenState extends State<MemberListScreen> {
   }
 
   Future<void> _loadMembersData() async {
-    _membersData = objectbox.getAllMembers();
+    _membersData = objectbox.getMembersSortedByStartDate();
     _displayedMembers =
         List.from(_membersData); // Initial display will show all members
     setState(() {});
@@ -125,9 +125,24 @@ class _MemberListScreenState extends State<MemberListScreen> {
       },
     );
   }
-  void exportPDF() {
-    final dataSource = MemberDataSource(_displayedMembers,openProfileDialog: (_) {},);
-    PDFExporter.exportToPDF(dataSource);
+  void exportPDF() async {
+    final dataSource = MemberDataSource(_displayedMembers, openProfileDialog: (_) {});
+
+    String? filePath = await PDFExporter.exportToPDF(dataSource, _scaffoldMessengerKey.currentState!.context);
+
+    if (filePath != null) {
+      _scaffoldMessengerKey.currentState!.showSnackBar(
+        SnackBar(
+          content: Text('PDF saved at $filePath'),
+        ),
+      );
+    } else {
+      _scaffoldMessengerKey.currentState!.showSnackBar(
+        const SnackBar(
+          content: Text('Failed to save PDF'),
+        ),
+      );
+    }
   }
 
   @override

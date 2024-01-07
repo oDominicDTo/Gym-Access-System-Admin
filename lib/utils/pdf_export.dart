@@ -6,7 +6,9 @@ import 'member_data_source.dart';
 import 'package:intl/intl.dart';
 
 class PDFExporter {
-  static Future<String?> exportToPDF(MemberDataSource dataSource) async {
+
+  static Future<String?> exportToPDF(MemberDataSource dataSource,
+      BuildContext context) async {
     final PdfDocument document = PdfDocument();
     final PdfGrid grid = PdfGrid();
 
@@ -24,7 +26,8 @@ class PDFExporter {
       final DataRow row = dataSource.getRow(i);
       final List<String> rowData = List<String>.generate(
         row.cells.length,
-            (index) => row.cells[index].child is Text
+            (index) =>
+        row.cells[index].child is Text
             ? (row.cells[index].child as Text).data ?? ''
             : '',
       );
@@ -63,7 +66,9 @@ class PDFExporter {
         bounds: Rect.fromLTWH(
           0,
           i * lineHeight,
-          page.getClientSize().width,
+          page
+              .getClientSize()
+              .width,
           headerHeight,
         ),
         format: format,
@@ -77,7 +82,9 @@ class PDFExporter {
       bounds: Rect.fromLTWH(
         0,
         lines.length * lineHeight,
-        page.getClientSize().width,
+        page
+            .getClientSize()
+            .width,
         lineHeight * 1,
       ),
       format: format,
@@ -86,15 +93,20 @@ class PDFExporter {
     // Draw the grid below the header text
     grid.draw(
       page: page,
-      bounds: Rect.fromLTWH(0, lines.length * lineHeight + headerHeight, page.getClientSize().width,
-          page.getClientSize().height - headerHeight),
+      bounds: Rect.fromLTWH(0, lines.length * lineHeight + headerHeight, page
+          .getClientSize()
+          .width,
+          page
+              .getClientSize()
+              .height - headerHeight),
       format: PdfLayoutFormat(layoutType: PdfLayoutType.paginate),
     );
 
     final List<int> bytes = await document.save();
     document.dispose();
 
-    final String formattedDateTime = DateFormat('MM_dd_yyyy').format(DateTime.now());
+    final String formattedDateTime = DateFormat('MM_dd_yyyy').format(
+        DateTime.now());
     final String fileName = 'Member_Data_$formattedDateTime.pdf'; // Construct filename with current date and time
 
     String? filePath = await FilePicker.platform.saveFile(
@@ -106,8 +118,9 @@ class PDFExporter {
     if (filePath != null) {
       final File file = File(filePath);
       await file.writeAsBytes(bytes, flush: true);
-    }
 
-    return filePath;
+      return filePath;
+    }
+    return null;
   }
 }

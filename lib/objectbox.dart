@@ -237,13 +237,15 @@ class ObjectBox {
     return members.map((member) => '${member.firstName} ${member.lastName}').toList();
   }
 
-  // Example method to get Members with a specific name
-  List<Member> getMembersByName(String name) {
-    // Create a query to find members with a specific first name
-    final query = _memberBox.query(Member_.firstName.equals(name)).build();
+  // Assuming you have a Box<Member> instance named 'box'
+  List<Member> getMembersSortedByStartDate() {
+    final query = _memberBox.query(Member_.membershipStartDate.notNull()).build();
+    final members = query.find();
+    query.close();
 
-    // Find and return matching members
-    return query.find();
+    members.sort((a, b) => b.membershipStartDate.compareTo(a.membershipStartDate));
+
+    return members;
   }
 
   Future<List<MembershipType>> getAllMembershipTypes() async {
