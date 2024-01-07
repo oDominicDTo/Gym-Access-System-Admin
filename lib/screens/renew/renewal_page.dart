@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gym_kiosk_admin/screens/renew/renew_log.dart';
 import 'package:gym_kiosk_admin/widgets/custom_card_button.dart';
 import 'member_renew.dart';
 
@@ -10,6 +11,7 @@ class RenewalPage extends StatefulWidget {
 }
 
 class _RenewalPageState extends State<RenewalPage> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,16 +23,13 @@ class _RenewalPageState extends State<RenewalPage> {
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 50.0, vertical: 120.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Expanded(
-              child: SizedBox(
-                width: 200,
-                height: 300,
-                child: CustomCardButton(
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+                CustomCardButton(
                   title: 'Renew Member',
                   icon: Icons.refresh,
                   onPressed: () {
@@ -41,27 +40,25 @@ class _RenewalPageState extends State<RenewalPage> {
                       ),
                     );
                   },
-                  iconColor: Colors.green, // Set icon color to green
+                  iconColor: Colors.blue, // Set icon color
                 ),
-              ),
-            ),
-            const SizedBox(width: 16), // Add spacing between buttons
-            Expanded(
-              child: SizedBox(
-                width: 200,
-                height: 300,
-                child: CustomCardButton(
+                CustomCardButton(
                   title: 'View Renewal Log',
                   icon: Icons.history,
                   onPressed: () {
-                    setState(() {});
-                    // Handle view renewal log action
+                    setState(() {
+                    });
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const RenewalLogPage(),
+                      ),
+                    );
                   },
-                  iconColor: Colors.pink,
+                  iconColor: Colors.pink, // Set icon color
                 ),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

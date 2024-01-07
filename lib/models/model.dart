@@ -172,9 +172,13 @@ class RenewalLog {
   @Property(type: PropertyType.date)
   DateTime renewalDate; // Date of renewal
 
+  @Property()
+  int addedDurationDays;
+
   RenewalLog({
     this.id = 0,
     required this.renewalDate,
+    required this.addedDurationDays,
   });
 
   String getFormattedRenewalDate() {

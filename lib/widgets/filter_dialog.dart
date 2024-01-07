@@ -128,9 +128,14 @@ class _FilterDialogState extends State<FilterDialog> {
   }
 
   Widget _buildStatusButton(String status, int index) {
-    return Container(
-      padding: const EdgeInsets.all(5.0), // Add padding inside the box
-
+      return Container(
+        padding: const EdgeInsets.all(8.0), // Add padding inside the box
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: Colors.grey,
+            width: 0.2,
+          ),
+        ),
       child: TextButton(
         onPressed: () {
           setState(() {

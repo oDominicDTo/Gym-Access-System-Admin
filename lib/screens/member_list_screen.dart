@@ -4,7 +4,7 @@ import 'package:gym_kiosk_admin/models/model.dart';
 import 'package:gym_kiosk_admin/utils/member_data_source.dart';
 import 'package:gym_kiosk_admin/utils/pdf_export.dart';
 import '../dialog/profile_dialog.dart';
-import '../widgets/member_search_bar.dart';
+import '../widgets/search_bar.dart';
 import 'package:gym_kiosk_admin/widgets/filter_dialog.dart';
 
 class MemberListScreen extends StatefulWidget {
@@ -164,7 +164,7 @@ class _MemberListScreenState extends State<MemberListScreen> {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 100.0),
-                child: MemberSearchBar(
+                child: Search_Bar(
                     onChanged: (value) {
                       setState(() {
                         _searchQuery = value.toLowerCase();
@@ -270,30 +270,6 @@ class _MemberListScreenState extends State<MemberListScreen> {
     );
   }
 
-  void _sortByStatus(List<Member> members, bool ascending) {
-    members.sort((a, b) {
-      final statusA = _getMembershipStatus(a);
-      final statusB = _getMembershipStatus(b);
-      return ascending
-          ? statusA.compareTo(statusB)
-          : statusB.compareTo(statusA);
-    });
-    setState(() {});
-  }
-
-  String _getMembershipStatus(Member member) {
-    final membershipStatus = member.getMembershipStatus();
-    switch (membershipStatus) {
-      case MembershipStatus.active:
-        return 'Active';
-      case MembershipStatus.inactive:
-        return 'Inactive';
-      case MembershipStatus.expired:
-        return 'Expired';
-      default:
-        return '';
-    }
-  }
 
   // Sorting function by Name
   void _sortByName(List<Member> members, bool ascending) {

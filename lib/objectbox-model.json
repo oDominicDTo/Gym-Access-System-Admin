@@ -152,7 +152,7 @@
     },
     {
       "id": "7:788978535339810145",
-      "lastPropertyId": "4:654207595721476097",
+      "lastPropertyId": "5:3083483458353823720",
       "name": "RenewalLog",
       "properties": [
         {
@@ -173,6 +173,11 @@
           "flags": 520,
           "indexId": "7:1735341259590220276",
           "relationTarget": "Member"
+        },
+        {
+          "id": "5:3083483458353823720",
+          "name": "addedDurationDays",
+          "type": 6
         }
       ],
       "relations": []

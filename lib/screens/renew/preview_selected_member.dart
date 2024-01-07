@@ -34,6 +34,10 @@ class PreviewMemberPage extends StatelessWidget {
                     const SizedBox(height: 50.0),
                     _buildMembershipStatusWidget(member),
                     const SizedBox(height: 16.0),
+                    Text(
+                      'Name: ${member.firstName} ${member.lastName}',
+                      style: const TextStyle(fontFamily: 'Poppins', fontSize: 24),
+                    ),
 
                     Text(
                       'Start Date: ${member.membershipStartDateFormat}',

@@ -167,7 +167,7 @@ final _entities = <ModelEntity>[
   ModelEntity(
       id: const IdUid(7, 788978535339810145),
       name: 'RenewalLog',
-      lastPropertyId: const IdUid(4, 654207595721476097),
+      lastPropertyId: const IdUid(5, 3083483458353823720),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
@@ -186,7 +186,12 @@ final _entities = <ModelEntity>[
             type: 11,
             flags: 520,
             indexId: const IdUid(7, 1735341259590220276),
-            relationTarget: 'Member')
+            relationTarget: 'Member'),
+        ModelProperty(
+            id: const IdUid(5, 3083483458353823720),
+            name: 'addedDurationDays',
+            type: 6,
+            flags: 0)
       ],
       relations: <ModelRelation>[],
       backlinks: <ModelBacklink>[]),
@@ -473,10 +478,11 @@ ModelDefinition getObjectBoxModel() {
           object.id = id;
         },
         objectToFB: (RenewalLog object, fb.Builder fbb) {
-          fbb.startTable(5);
+          fbb.startTable(6);
           fbb.addInt64(0, object.id);
           fbb.addInt64(2, object.renewalDate.millisecondsSinceEpoch);
           fbb.addInt64(3, object.member.targetId);
+          fbb.addInt64(4, object.addedDurationDays);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -487,7 +493,9 @@ ModelDefinition getObjectBoxModel() {
           final object = RenewalLog(
               id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
               renewalDate: DateTime.fromMillisecondsSinceEpoch(
-                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 8, 0)));
+                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 8, 0)),
+              addedDurationDays:
+                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 12, 0));
           object.member.targetId =
               const fb.Int64Reader().vTableGet(buffer, rootOffset, 10, 0);
           object.member.attach(store);
@@ -670,6 +678,10 @@ class RenewalLog_ {
   /// see [RenewalLog.member]
   static final member =
       QueryRelationToOne<RenewalLog, Member>(_entities[3].properties[2]);
+
+  /// see [RenewalLog.addedDurationDays]
+  static final addedDurationDays =
+      QueryIntegerProperty<RenewalLog>(_entities[3].properties[3]);
 }
 
 /// [CheckIn] entity fields to define ObjectBox queries.

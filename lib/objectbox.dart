@@ -389,4 +389,17 @@ class ObjectBox {
   Future<List<RenewalLog>> getAllRenewalLogsAsync() async {
     return _renewalLogBox.getAllAsync();
   }
+  Future<List<RenewalLog>> getRenewalLogsForYear(int year) async {
+    final startOfYear = DateTime(year, 1, 1);
+    final endOfYear = DateTime(year, 12, 31, 23, 59, 59, 999);
+
+    final query = _renewalLogBox.query(
+        RenewalLog_.renewalDate.greaterThan(startOfYear.millisecondsSinceEpoch) &
+        RenewalLog_.renewalDate.lessThan(endOfYear.millisecondsSinceEpoch)
+    ).build();
+
+    final renewalLogs = query.find();
+    return renewalLogs;
+  }
 }
+

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../main.dart';
 import 'preview_success_renew.dart';
 import '../../models/model.dart';
 
@@ -78,10 +79,14 @@ class _ConfirmationPaymentPageState extends State<ConfirmationPaymentPage> {
                   widget.selectedMember.membershipEndDate = updatedEndDate;
                   // Assuming objectbox methods are being handled elsewhere
 
-                  // Log renewal in RenewalLog entity
-                  final newRenewalLog = RenewalLog(renewalDate: currentDate);
+                  // Log renewal in RenewalLog entity with added duration days
+                  final addedDurationDays = 30 * widget.months; // Calculate the added duration
+                  final newRenewalLog = RenewalLog(
+                    renewalDate: currentDate,
+                    addedDurationDays: addedDurationDays,
+                  );
                   newRenewalLog.member.target = widget.selectedMember;
-                  // Assuming objectbox methods are being handled elsewhere
+                  objectbox.addRenewalLog(newRenewalLog);
 
                   Navigator.push(
                     context,
@@ -92,6 +97,7 @@ class _ConfirmationPaymentPageState extends State<ConfirmationPaymentPage> {
                 },
                 child: const Text('Yes'),
               ),
+
             ],
           ),
         ],
