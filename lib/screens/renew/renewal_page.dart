@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gym_kiosk_admin/screens/renew/renew_log.dart';
 import 'package:gym_kiosk_admin/widgets/custom_card_button.dart';
 import 'member_renew.dart';
 
@@ -54,10 +55,16 @@ class _RenewalPageState extends State<RenewalPage> {
                   title: 'View Renewal Log',
                   icon: Icons.history,
                   onPressed: () {
-                    setState(() {});
-                    // Handle view renewal log action
+                    setState(() {
+                    });
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const RenewalLogPage(),
+                      ),
+                    );
                   },
-                  iconColor: Colors.pink,
+                  iconColor: Colors.pink, // Set icon color
                 ),
               ),
             ),

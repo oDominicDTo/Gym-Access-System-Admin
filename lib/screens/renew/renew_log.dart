@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:gym_kiosk_admin/main.dart';
 import 'package:gym_kiosk_admin/models/model.dart';
-
-import '../../widgets/search_bar.dart';
+import '../../main.dart';
+import 'package:gym_kiosk_admin/utils/pdf_export_renew.dart'; // Import the PDF exporter
 
 class RenewalLogPage extends StatefulWidget {
   const RenewalLogPage({Key? key}) : super(key: key);
@@ -16,6 +15,7 @@ class _RenewalLogPageState extends State<RenewalLogPage> {
   List<Member> filteredMembers = [];
   String searchQuery = '';
   List<RenewalLog> renewalLogs = []; // Declare renewalLogs here
+  late ScaffoldMessengerState scaffoldMessenger;
 
   @override
   void initState() {
@@ -23,7 +23,11 @@ class _RenewalLogPageState extends State<RenewalLogPage> {
     selectedYear = DateTime.now().year; // Set initial year to current year
     fetchMembersAndRenewalLogs();
   }
-
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    scaffoldMessenger = ScaffoldMessenger.of(context);
+  }
   Future<void> fetchMembersAndRenewalLogs() async {
     final List<dynamic> data = await Future.wait([
       fetchMembers(),
@@ -68,13 +72,16 @@ class _RenewalLogPageState extends State<RenewalLogPage> {
             const SizedBox(width: 20),
             SizedBox(
               width: 300,
-              child: Search_Bar(
+              child: TextField(
                 onChanged: (value) {
                   setState(() {
                     searchQuery = value; // Update searchQuery on input change
                     displayedMembers = _performSearch(searchQuery, filteredMembers); // Update displayedMembers
                   });
                 },
+                decoration: const InputDecoration(
+                  hintText: 'Search',
+                ),
               ),
             ),
             const SizedBox(width: 150),
@@ -99,12 +106,34 @@ class _RenewalLogPageState extends State<RenewalLogPage> {
                     });
                   },
                 ),
+                IconButton(
+                  icon: const Icon(Icons.save), // Add an export icon in the app bar
+                  onPressed: () async {
+                    // Call the export PDF function without using context directly
+                    String? filePath = await RenewalPDFExporter.exportToPDF(displayedMembers, renewalLogs);
+                    if (filePath != null) {
+                      // File saved successfully
+                      scaffoldMessenger.showSnackBar(
+                        SnackBar(
+                          content: Text('PDF saved at $filePath'),
+                        ),
+                      );
+                    } else {
+                      // Error while saving file
+                      scaffoldMessenger.showSnackBar(
+                        const SnackBar(
+                          content: Text('Failed to save PDF'),
+                        ),
+                      );
+                    }
+                  },
+                ),
               ],
             ),
           ],
         ),
       ),
-      body: _buildDataTable(months, displayedMembers, context),
+      body: _buildDataTable(months, displayedMembers),
     );
   }
 
@@ -120,15 +149,15 @@ class _RenewalLogPageState extends State<RenewalLogPage> {
     }
   }
 
-  Widget _buildDataTable(List<String> months, List<Member> displayedMembers, BuildContext context) {
+  Widget _buildDataTable(List<String> months, List<Member> displayedMembers) {
     return SizedBox(
-      width: MediaQuery.of(context).size.width,
+      width: double.infinity,
       child: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: DataTable(
           columnSpacing: 40,
           columns: _buildColumns(months),
-          rows: _buildRows(months, displayedMembers, renewalLogs), // Pass renewalLogs here
+          rows: _buildRows(months, displayedMembers), // Pass renewalLogs here
         ),
       ),
     );
@@ -138,7 +167,7 @@ class _RenewalLogPageState extends State<RenewalLogPage> {
     return months.map((month) => DataColumn(label: Text(month))).toList();
   }
 
-  List<DataRow> _buildRows(List<String> months, List<Member> displayedMembers, List<RenewalLog> renewalLogs) {
+  List<DataRow> _buildRows(List<String> months, List<Member> displayedMembers) {
     displayedMembers.sort((a, b) => ('${a.firstName} ${a.lastName}').compareTo('${b.firstName} ${b.lastName}'));
 
     List<DataRow> rows = [];
@@ -147,8 +176,6 @@ class _RenewalLogPageState extends State<RenewalLogPage> {
       List<DataCell> cells = [
         DataCell(Text('${member.firstName} ${member.lastName}')),
         ...List.generate(12, (index) {
-          // Assuming the logic for renewalLogs remains the same
-          // (retrieving logs based on member and month)
           var renewalDate = renewalLogs.firstWhere(
                   (log) => log.member.target!.id == member.id && log.renewalDate.month == index + 1,
               orElse: () => RenewalLog(id: 0, renewalDate: DateTime(1900), addedDurationDays: 0)
