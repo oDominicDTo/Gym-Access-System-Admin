@@ -3,6 +3,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'member_data_source.dart';
+import 'package:intl/intl.dart';
 
 class PDFExporter {
   static Future<String?> exportToPDF(MemberDataSource dataSource) async {
@@ -93,9 +94,12 @@ class PDFExporter {
     final List<int> bytes = await document.save();
     document.dispose();
 
+    final String formattedDateTime = DateFormat('MM_dd_yyyy').format(DateTime.now());
+    final String fileName = 'Member_Data_$formattedDateTime.pdf'; // Construct filename with current date and time
+
     String? filePath = await FilePicker.platform.saveFile(
       allowedExtensions: ['pdf'],
-      fileName: 'member_data.pdf',
+      fileName: fileName,
       dialogTitle: 'Save PDF',
     );
 
