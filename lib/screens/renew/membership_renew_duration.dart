@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:gym_kiosk_admin/models/model.dart';
 import 'confirmation_payment.dart';
+import 'package:gym_kiosk_admin/models/model.dart';
 
 class MembershipDurationPage extends StatefulWidget {
   final Member selectedMember;
@@ -15,8 +15,11 @@ class MembershipDurationPage extends StatefulWidget {
 }
 
 class _MembershipDurationPageState extends State<MembershipDurationPage> {
-  int months = 1; // Initial value for the membership duration
-  double? membershipFee; // Variable to hold membership fee
+  int months = 1;
+  double? membershipFee;
+  bool isMinusButtonHovered = false;
+  bool isPlusButtonHovered = false;
+  bool isConfirmButtonHovered = false;
 
   @override
   void initState() {
@@ -25,10 +28,8 @@ class _MembershipDurationPageState extends State<MembershipDurationPage> {
   }
 
   void fetchMembershipType() {
-    // Accessing the membership type relation of the selected member
     final membershipType = widget.selectedMember.membershipType.target;
 
-    // If the membership type is not null, set the membership fee
     if (membershipType != null) {
       setState(() {
         membershipFee = membershipType.fee;
@@ -54,31 +55,56 @@ class _MembershipDurationPageState extends State<MembershipDurationPage> {
               width: 400,
               height: 200,
               decoration: BoxDecoration(
+                color: const Color(0xFFF5F5F5), // Set color to #f5f5f5
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 2,
+                    blurRadius: 5,
+                    offset: const Offset(0, 3),
+                  ),
+                ],
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  IconButton(
-                    onPressed: () {
+                  InkWell(
+                    onTap: () {
                       setState(() {
                         if (months > 1) months--;
                       });
                     },
-                    icon: const Icon(Icons.remove),
+                    onHover: (hovering) {
+                      setState(() {
+                        isMinusButtonHovered = hovering;
+                      });
+                    },
+                    child: Icon(
+                      Icons.remove,
+                      color: isMinusButtonHovered ? Colors.purple : Colors.black,
+                    ),
                   ),
                   Text(
                     months == 1 ? '1 month' : '$months months',
                     style: const TextStyle(fontSize: 48),
                   ),
-                  IconButton(
-                    onPressed: () {
+                  InkWell(
+                    onTap: () {
                       setState(() {
                         months++;
                       });
                     },
-                    icon: const Icon(Icons.add),
+                    onHover: (hovering) {
+                      setState(() {
+                        isPlusButtonHovered = hovering;
+                      });
+                    },
+                    child: Icon(
+                      Icons.add,
+                      color: isPlusButtonHovered ? Colors.purple : Colors.black,
+                    ),
                   ),
                 ],
               ),
@@ -86,28 +112,51 @@ class _MembershipDurationPageState extends State<MembershipDurationPage> {
             const SizedBox(height: 20),
             Text(
               'Total Price: PHP ${totalPrice.toStringAsFixed(2)}',
-              style: const TextStyle(fontSize: 18),
+              style: const TextStyle(fontSize: 20),
             ),
             const SizedBox(height: 100),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                ElevatedButton(
-                  onPressed: () async {
+                InkWell(
+                  onTap: () async {
                     Navigator.push(
-                        context,
+                      context,
                       MaterialPageRoute(
                         builder: (context) => ConfirmationPaymentPage(
                           selectedMember: widget.selectedMember,
                           months: months,
                         ),
                       ),
-                      );
+                    );
                   },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black,
+                  onHover: (hovering) {
+                    setState(() {
+                      isConfirmButtonHovered = hovering;
+                    });
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: isConfirmButtonHovered ? Colors.white : Colors.black,
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: Colors.black),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 2,
+                          blurRadius: 5,
+                          offset: const Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    child: Text(
+                      'Confirm',
+                      style: TextStyle(
+                        color: isConfirmButtonHovered ? Colors.black : Colors.white,
+                      ),
+                    ),
                   ),
-                  child: const Text('Confirm', style: TextStyle(color: Colors.white)),
                 ),
               ],
             ),
