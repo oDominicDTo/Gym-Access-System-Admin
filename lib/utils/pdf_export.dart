@@ -6,7 +6,6 @@ import 'member_data_source.dart';
 import 'package:intl/intl.dart';
 
 class PDFExporter {
-
   static Future<String?> exportToPDF(MemberDataSource dataSource,
       BuildContext context) async {
     final PdfDocument document = PdfDocument();

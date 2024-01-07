@@ -128,7 +128,7 @@ class _MemberListScreenState extends State<MemberListScreen> {
   void exportPDF() async {
     final dataSource = MemberDataSource(_displayedMembers, openProfileDialog: (_) {});
 
-    String? filePath = await PDFExporter.exportToPDF(dataSource, _scaffoldMessengerKey.currentState!.context);
+    String? filePath = await PDFExporter.exportToPDF(dataSource, context);
 
     if (filePath != null) {
       _scaffoldMessengerKey.currentState!.showSnackBar(
