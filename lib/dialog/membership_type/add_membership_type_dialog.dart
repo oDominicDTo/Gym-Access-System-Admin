@@ -32,7 +32,7 @@ class _AddMembershipTypeDialogState extends State<AddMembershipTypeDialog> {
                     typeName = value;
                   });
                 },
-                style: TextStyle(color: Colors.black, fontFamily: 'Poppins', fontSize: 16.0), // Adjust font size
+                style: const TextStyle(color: Colors.black, fontFamily: 'Poppins', fontSize: 16.0), // Adjust font size
                 decoration: const InputDecoration(
                   labelText: 'Type Name',
                   labelStyle: TextStyle(color: Colors.black, fontFamily: 'Poppins', fontSize: 14.0, fontWeight: FontWeight.bold), // Bold label
@@ -48,7 +48,7 @@ class _AddMembershipTypeDialogState extends State<AddMembershipTypeDialog> {
                   });
                 },
                 keyboardType: TextInputType.number,
-                style: TextStyle(color: Colors.black, fontFamily: 'Poppins', fontSize: 16.0), // Adjust font size
+                style: const TextStyle(color: Colors.black, fontFamily: 'Poppins', fontSize: 16.0), // Adjust font size
                 decoration: const InputDecoration(
                   labelText: 'Fee',
                   labelStyle: TextStyle(color: Colors.black, fontFamily: 'Poppins', fontSize: 14.0, fontWeight: FontWeight.bold), // Bold label
@@ -71,7 +71,7 @@ class _AddMembershipTypeDialogState extends State<AddMembershipTypeDialog> {
             Navigator.of(context).pop(); // Close the dialog
           },
           style: ElevatedButton.styleFrom(
-            primary: Colors.black, // Set background color to black
+            backgroundColor: Colors.black, // Set background color to black
           ),
           child: const Text('Add', style: TextStyle(color: Colors.white, fontFamily: 'Poppins')),
         ),

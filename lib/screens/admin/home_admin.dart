@@ -6,6 +6,8 @@ import 'package:gym_kiosk_admin/screens/management_page.dart';
 import 'package:gym_kiosk_admin/screens/member_list_screen.dart';
 import 'package:gym_kiosk_admin/widgets/top_navigation_bar.dart';
 
+import '../renew/renewal_page.dart';
+
 class HomeAdminPage extends StatefulWidget {
   const HomeAdminPage({super.key});
 
@@ -21,8 +23,8 @@ class _HomeAdminPageState extends State<HomeAdminPage> {
     const Center(child: Text('Welcome to Overview!')),
     const MemberInput(),
     const MemberListScreen(),
-    const Center(child: Text('Welcome to Renew')),
-    ManagementPage(),
+    const RenewalPage(),
+    const ManagementPage(),
     const LoginScreen(),
   ];
 
@@ -35,7 +37,11 @@ class _HomeAdminPageState extends State<HomeAdminPage> {
           NavigationRail(
             selectedIndex: _selectedIndex,
             onDestinationSelected: (int index) {
-              if (index == 7) {
+              if (index == 4) {
+                setState(() {
+                  _selectedIndex = index;
+                });
+              } else if (index == 7) {
                 Navigator.of(context).pushNamedAndRemoveUntil(
                     '/', (Route<dynamic> route) => false);
               } else {
@@ -76,13 +82,17 @@ class _HomeAdminPageState extends State<HomeAdminPage> {
               ),
               NavigationRailDestination(
                 icon: Icon(Icons.person),
-                label: Text('Renew',
-                  style: TextStyle(fontFamily: 'Poppins'),),
+                label: Text(
+                  'Renew',
+                  style: TextStyle(fontFamily: 'Poppins'),
+                ),
               ),
               NavigationRailDestination(
                 icon: Icon(Icons.build_outlined),
-                label: Text('Management',
-                  style: TextStyle(fontFamily: 'Poppins'),),
+                label: Text(
+                  'Management',
+                  style: TextStyle(fontFamily: 'Poppins'),
+                ),
               ),
               NavigationRailDestination(
                 icon: Icon(Icons.feedback_outlined),
@@ -93,17 +103,24 @@ class _HomeAdminPageState extends State<HomeAdminPage> {
               ),
               NavigationRailDestination(
                 icon: Icon(Icons.logout_rounded),
-                label: Text('Log Out',
-                  style: TextStyle(fontFamily: 'Poppins'),),
+                label: Text(
+                  'Log Out',
+                  style: TextStyle(fontFamily: 'Poppins'),
+                ),
               ),
             ],
           ),
           const VerticalDivider(thickness: 1, width: 1),
           Expanded(
-            child: Scaffold(
-               // Using the TopNavigationBar widget here
-              body: _screens[_selectedIndex],
-            ),
+            child: _selectedIndex == 4
+                ? Navigator(
+              onGenerateRoute: (settings) {
+                return MaterialPageRoute(
+                  builder: (_) => const RenewalPage(), // Your RenewalPage widget
+                );
+              },
+            )
+                : _screens[_selectedIndex], // Your other screens
           ),
         ],
       ),

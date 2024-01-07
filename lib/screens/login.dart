@@ -20,7 +20,7 @@ class LoginScreen extends StatelessWidget {
           Expanded(
             flex: 5,
             child: Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage('assets/images/gym_login.png'), // Replace with your image path
                   fit: BoxFit.cover, // Adjust the fit based on your needs
@@ -107,7 +107,7 @@ class LoginScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
-                      Text(
+                      const Text(
                         'Login',
                         style: TextStyle(
                           color: Colors.black, // Change to your desired text color
@@ -118,7 +118,7 @@ class LoginScreen extends StatelessWidget {
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 5.0),
-                      Text(
+                      const Text(
                         'or use NFC',
                         style: TextStyle(
                           color: Colors.black, // Change to your desired text color
@@ -139,9 +139,9 @@ class LoginScreen extends StatelessWidget {
                         child: TextField(
                           decoration: InputDecoration(
 
-                            labelText: 'Username', labelStyle: TextStyle(color: Colors.black38, fontFamily: 'Poppins'),
-                            prefixIcon: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 17.0), // Adjust the padding as needed
+                            labelText: 'Username', labelStyle: const TextStyle(color: Colors.black38, fontFamily: 'Poppins'),
+                            prefixIcon: const Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 17.0), // Adjust the padding as needed
                               child: Icon(
                                 Icons.person, // Change to your desired icon
                                 color: Colors.black38,
@@ -159,9 +159,9 @@ class LoginScreen extends StatelessWidget {
                         child: TextField(
                           obscureText: true,
                           decoration: InputDecoration(
-                            labelText: 'Password', labelStyle: TextStyle(color: Colors.black38, fontFamily: 'Poppins'),
-                            prefixIcon: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 17.0), // Adjust the padding as needed
+                            labelText: 'Password', labelStyle: const TextStyle(color: Colors.black38, fontFamily: 'Poppins'),
+                            prefixIcon: const Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 17.0), // Adjust the padding as needed
                               child: Icon(
                                 Icons.lock, // Change to your desired icon
                                 color: Colors.black38,

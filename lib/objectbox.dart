@@ -16,6 +16,7 @@ class ObjectBox {
   late final Box<CheckOut> _checkOutBox;
   late final Box<MembershipType> _membershipTypeBox;
   late final NFCService _nfcService;
+  late final Box<RenewalLog> _renewalLogBox;
 
   ObjectBox._create(this._store) {
     // Optional: enable ObjectBox Admin on debug builds.
@@ -30,6 +31,7 @@ class ObjectBox {
     _checkOutBox = Box<CheckOut>(_store);
     _membershipTypeBox = Box<MembershipType>(_store);
     _nfcService = NFCService();
+    _renewalLogBox = Box<RenewalLog>(_store);
     // Start NFC event listener
     _startNFCListener();
     // Add some demo data if the box is empty.
@@ -67,7 +69,7 @@ class ObjectBox {
       }
     });
   }
-
+  
   void logCheckIn(Member member, {required DateTime checkInTime}) {
     _recordCheckIn(member, checkInTime);
   }
@@ -355,5 +357,36 @@ class ObjectBox {
 
       _administratorBox.put(existingAdmin);
     }
+  }
+  // CRUD methods for RenewalLog entity
+
+  // Create a new RenewalLog entry
+  Future<int> addRenewalLog(RenewalLog renewalLog) async {
+    return _renewalLogBox.put(renewalLog);
+  }
+
+  // Retrieve a RenewalLog by ID
+  RenewalLog getRenewalLog(int id) {
+    return _renewalLogBox.get(id)!;
+  }
+
+  // Update an existing RenewalLog entry
+  void updateRenewalLog(RenewalLog updatedRenewalLog) {
+    _renewalLogBox.put(updatedRenewalLog);
+  }
+
+  // Delete a RenewalLog entry by ID
+  void deleteRenewalLog(int id) {
+    _renewalLogBox.remove(id);
+  }
+
+  // Retrieve all RenewalLog entries
+  List<RenewalLog> getAllRenewalLogs() {
+    return _renewalLogBox.getAll();
+  }
+
+  // Retrieve all RenewalLog entries asynchronously
+  Future<List<RenewalLog>> getAllRenewalLogsAsync() async {
+    return _renewalLogBox.getAllAsync();
   }
 }

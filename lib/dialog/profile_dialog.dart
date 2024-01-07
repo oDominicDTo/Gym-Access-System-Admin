@@ -29,7 +29,7 @@ class ProfileDialog {
             children: [
               Container(
                 height: 150,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Colors.blue, // Use your desired color
                   borderRadius: BorderRadius.vertical(top: Radius.circular(16.0)),
                 ),
@@ -42,13 +42,13 @@ class ProfileDialog {
                         future: _getLocalImagePath(member.photoPath),
                         builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
                           if (snapshot.connectionState == ConnectionState.waiting) {
-                            return CircularProgressIndicator();
+                            return const CircularProgressIndicator();
                           } else if (snapshot.hasError || snapshot.data == null) {
-                            return Icon(Icons.person, size: 120, color: Colors.white);
+                            return const Icon(Icons.person, size: 120, color: Colors.white);
                           } else {
                             final file = File(snapshot.data!);
                             if (!file.existsSync()) {
-                              return Icon(Icons.person, size: 120, color: Colors.white);
+                              return const Icon(Icons.person, size: 120, color: Colors.white);
                             }
                             return CircleAvatar(
                               radius: 60,
@@ -68,13 +68,13 @@ class ProfileDialog {
                   children: [
                     Text(
                       '${member.firstName} ${member.lastName}',
-                      style: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold, fontSize: 25),
+                      style: const TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold, fontSize: 25),
                     ),
                     const SizedBox(height: 8),
-                    Text('${member.email}', style: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold)),
-                    Text('${member.contactNumber}', style: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold)),
-                    Text(' ${member.dateOfBirthFormat}', style: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold)),
-                    Text('${member.address}', style: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold)),
+                    Text(member.email, style: const TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold)),
+                    Text(member.contactNumber, style: const TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold)),
+                    Text(' ${member.dateOfBirthFormat}', style: const TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold)),
+                    Text(member.address, style: const TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold)),
                     const SizedBox(height: 16),
                     const Divider(
                       height: 3,
@@ -90,15 +90,15 @@ class ProfileDialog {
                         _buildMembershipStatusWidget(member),
                         Text(
                           'Membership Start Date: ${member.membershipStartDateFormat}',
-                          style: TextStyle(fontFamily: 'Poppins'),
+                          style: const TextStyle(fontFamily: 'Poppins'),
                         ),
                         Text(
                           'Membership End Date: ${member.membershipEndDateFormat}',
-                          style: TextStyle(fontFamily: 'Poppins'),
+                          style: const TextStyle(fontFamily: 'Poppins'),
                         ),
                         Text(
                           'Membership Duration: ${_getRemainingMembershipDuration(member)}',
-                          style: TextStyle(fontFamily: 'Poppins'),
+                          style: const TextStyle(fontFamily: 'Poppins'),
                         ),
                       ],
                     ),
@@ -159,21 +159,6 @@ class ProfileDialog {
           : ''} and $remainingDays day${remainingDays > 1 ? 's' : ''}';
     } else {
       return '$membershipDays day${membershipDays > 1 ? 's' : ''}';
-    }
-  }
-
-  String _getMembershipStatus(Member member) {
-    final membershipStatus = member.getMembershipStatus();
-
-    switch (membershipStatus) {
-      case MembershipStatus.active:
-        return 'Active';
-      case MembershipStatus.inactive:
-        return 'Inactive';
-      case MembershipStatus.expired:
-        return 'Expired';
-      default:
-        return '';
     }
   }
 

@@ -37,10 +37,10 @@ class PDFExporter {
     }
 
     final PdfPage page = document.pages.add();
-    final double headerHeight = 20.0; // Adjust this value based on your header height
+    const double headerHeight = 20.0; // Adjust this value based on your header height
 
     // Draw the header text at the top
-    final String headerText =
+    const String headerText =
         'OFFICE OF THE CITY YOUTH AND SPORTS DEVELOPMENT\n'
         'Northgate, Alonte Sports Arena Compound, City of Biñan, Laguna\n'
         'binanysdo16@gmail.com | (049) 513-5254 | https://facebook.com/bcysdo/\n'

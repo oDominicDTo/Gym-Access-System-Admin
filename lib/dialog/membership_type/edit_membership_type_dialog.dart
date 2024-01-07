@@ -31,7 +31,7 @@ class _EditMembershipTypeDetailsDialogState extends State<EditMembershipTypeDeta
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Edit Membership Type', style: TextStyle(color: Colors.black, fontFamily: 'Poppins')),
+      title: const Text('Edit Membership Type', style: TextStyle(color: Colors.black, fontFamily: 'Poppins')),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -42,7 +42,7 @@ class _EditMembershipTypeDetailsDialogState extends State<EditMembershipTypeDeta
                 typeName = value;
               });
             },
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               labelText: 'Type Name',
               labelStyle: TextStyle(color: Colors.black, fontFamily: 'Poppins', fontWeight: FontWeight.bold), // Set fontWeight to bold
               focusedBorder: UnderlineInputBorder(
@@ -59,7 +59,7 @@ class _EditMembershipTypeDetailsDialogState extends State<EditMembershipTypeDeta
               });
             },
             keyboardType: TextInputType.number,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               labelText: 'Fee',
               labelStyle: TextStyle(color: Colors.black, fontFamily: 'Poppins', fontWeight: FontWeight.bold), // Set fontWeight to bold
               focusedBorder: UnderlineInputBorder(

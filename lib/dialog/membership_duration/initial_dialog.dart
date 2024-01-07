@@ -5,7 +5,7 @@ import 'all_members_content.dart';
 
 class InitialMembershipDialog extends StatefulWidget {
   @override
-  _InitialMembershipDialogState createState() => _InitialMembershipDialogState();
+  State createState() => _InitialMembershipDialogState();
 }
 
 class _InitialMembershipDialogState extends State<InitialMembershipDialog> {

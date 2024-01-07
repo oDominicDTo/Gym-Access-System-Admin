@@ -19,7 +19,7 @@ class ConfirmationDialog extends StatelessWidget {
         : 'Are you sure you want $operation $days days $operationType specific members?';
 
     return AlertDialog(
-      title: Text('Confirmation'),
+      title: const Text('Confirmation'),
       content: Text(message),
       actions: [
         TextButton(
@@ -27,14 +27,14 @@ class ConfirmationDialog extends StatelessWidget {
             Navigator.of(context).pop(); // Close the dialog
             onConfirmation(true); // Confirm the action
           },
-          child: Text('Yes'),
+          child: const Text('Yes'),
         ),
         TextButton(
           onPressed: () {
             Navigator.of(context).pop(); // Close the dialog
             onConfirmation(false); // Cancel the action
           },
-          child: Text('No'),
+          child: const Text('No'),
         ),
       ],
     );
