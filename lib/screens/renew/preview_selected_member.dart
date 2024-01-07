@@ -13,8 +13,7 @@ class PreviewMemberPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-      ),
+      appBar: AppBar(),
       body: SingleChildScrollView(
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -35,32 +34,35 @@ class PreviewMemberPage extends StatelessWidget {
                     const SizedBox(height: 50.0),
                     _buildMembershipStatusWidget(member),
                     const SizedBox(height: 16.0),
+
                     Text(
                       'Start Date: ${member.membershipStartDateFormat}',
-                      style: const TextStyle(fontFamily: 'Poppins',fontSize: 24),
-
+                      style: const TextStyle(fontFamily: 'Poppins', fontSize: 24),
                     ),
                     Text(
                       'End Date: ${member.membershipEndDateFormat}',
-                      style: const TextStyle(fontFamily: 'Poppins',fontSize: 24),
+                      style: const TextStyle(fontFamily: 'Poppins', fontSize: 24),
                     ),
                     Text(
                       'Duration: ${_getRemainingMembershipDuration(member)}',
-                      style: const TextStyle(fontFamily: 'Poppins',fontSize: 24),
+                      style: const TextStyle(fontFamily: 'Poppins', fontSize: 24),
                     ),
                     const SizedBox(height: 50.0),
-                    CustomCardButton(
-                      title: 'Proceed',
-                      icon: Icons.navigate_next,
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => MembershipDurationPage(selectedMember: member),
-                          ),
-                        );
-                      },
-                      iconColor: Colors.blue, // Set icon color
+                    SizedBox(
+                      width: 200,
+                      child: CustomCardButton(
+                        title: 'Proceed',
+                        icon: Icons.navigate_next,
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => MembershipDurationPage(selectedMember: member),
+                            ),
+                          );
+                        },
+                        iconColor: Colors.orangeAccent, // Set icon color
+                      ),
                     ),
                   ],
                 ),
@@ -105,14 +107,20 @@ class PreviewMemberPage extends StatelessWidget {
   }
 
   Widget _buildAvatarPlaceholder() {
-    return const SizedBox(
+    return SizedBox(
       width: 300,
       height: 400,
-      child: Center(
-        child: Icon(
-          Icons.person,
-          size: 300,
-          color: Colors.grey, // Change color to black to ensure visibility
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8.0),
+          color: Colors.grey[200], // Placeholder background color
+        ),
+        child: const Center(
+          child: Icon(
+            Icons.person,
+            size: 300,
+            color: Colors.lightBlueAccent, // Change color to black to ensure visibility
+          ),
         ),
       ),
     );
@@ -121,7 +129,6 @@ class PreviewMemberPage extends StatelessWidget {
   Widget _buildMembershipStatusWidget(Member member) {
     String statusText = '';
     Color statusColor = Colors.black; // Default color for expired
-
 
     switch (member.getMembershipStatus()) {
       case MembershipStatus.active:
@@ -140,9 +147,10 @@ class PreviewMemberPage extends StatelessWidget {
 
     return Text(
       'Membership Status: $statusText',
-      style: TextStyle(fontFamily: 'Poppins', color: statusColor,fontSize: 30),
+      style: TextStyle(fontFamily: 'Poppins', color: statusColor, fontSize: 30),
     );
   }
+
   String _getRemainingMembershipDuration(Member member) {
     final membershipDays = member.getRemainingMembershipDays();
 
@@ -169,4 +177,3 @@ class PreviewMemberPage extends StatelessWidget {
     return localPath.replaceAll(r'\', '/'); // Ensure correct separators
   }
 }
-
