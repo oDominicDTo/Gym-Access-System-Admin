@@ -148,7 +148,7 @@ class _MembershipDurationPageState extends State<MembershipDurationPage> {
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: isConfirmButtonHovered ? const Color(0xFF5CC69C) : Colors.black,
+                      backgroundColor: isConfirmButtonHovered ? const Color(0xFF5CC69C) : Colors.black,
                       fixedSize: const Size(120, 50), // Adjust the button size here
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10), // Adjust the radius here

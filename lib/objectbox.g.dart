@@ -246,6 +246,45 @@ final _entities = <ModelEntity>[
             flags: 0)
       ],
       relations: <ModelRelation>[],
+      backlinks: <ModelBacklink>[]),
+  ModelEntity(
+      id: const IdUid(13, 6886693126471221766),
+      name: 'UserFeedback',
+      lastPropertyId: const IdUid(6, 8956989881464025423),
+      flags: 0,
+      properties: <ModelProperty>[
+        ModelProperty(
+            id: const IdUid(1, 4705647527423871332),
+            name: 'id',
+            type: 6,
+            flags: 1),
+        ModelProperty(
+            id: const IdUid(2, 4342998513534389053),
+            name: 'submissionTime',
+            type: 10,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(3, 4622151738921595494),
+            name: 'feedbackText',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(4, 7033015700571339670),
+            name: 'category',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(5, 1145766092219023240),
+            name: 'name',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(6, 8956989881464025423),
+            name: 'title',
+            type: 9,
+            flags: 0)
+      ],
+      relations: <ModelRelation>[],
       backlinks: <ModelBacklink>[])
 ];
 
@@ -269,7 +308,7 @@ Future<Store> openStore(
 ModelDefinition getObjectBoxModel() {
   final model = ModelInfo(
       entities: _entities,
-      lastEntityId: const IdUid(11, 6200012836170653188),
+      lastEntityId: const IdUid(13, 6886693126471221766),
       lastIndexId: const IdUid(11, 9021452178579632282),
       lastRelationId: const IdUid(2, 3094033825849941879),
       lastSequenceId: const IdUid(0, 0),
@@ -278,7 +317,8 @@ ModelDefinition getObjectBoxModel() {
         4791937999762440180,
         94537486811857848,
         1500853826776324486,
-        8465745737525015078
+        8465745737525015078,
+        4878952722867786680
       ],
       retiredIndexUids: const [
         5016079819760097089,
@@ -323,7 +363,12 @@ ModelDefinition getObjectBoxModel() {
         8210820910057928503,
         8639423661332126905,
         7898786416960736453,
-        5721533878214496513
+        5721533878214496513,
+        3461113781989910008,
+        8422020990824527431,
+        2934446171703836321,
+        161082913807456200,
+        3305671715137747278
       ],
       retiredRelationUids: const [337373602936818043, 3094033825849941879],
       modelVersion: 5,
@@ -560,6 +605,49 @@ ModelDefinition getObjectBoxModel() {
                       .vTableGet(buffer, rootOffset, 6, 0)));
           object.member.attach(store);
           return object;
+        }),
+    UserFeedback: EntityDefinition<UserFeedback>(
+        model: _entities[6],
+        toOneRelations: (UserFeedback object) => [],
+        toManyRelations: (UserFeedback object) => {},
+        getId: (UserFeedback object) => object.id,
+        setId: (UserFeedback object, int id) {
+          object.id = id;
+        },
+        objectToFB: (UserFeedback object, fb.Builder fbb) {
+          final feedbackTextOffset = fbb.writeString(object.feedbackText);
+          final categoryOffset = fbb.writeString(object.category);
+          final nameOffset =
+              object.name == null ? null : fbb.writeString(object.name!);
+          final titleOffset = fbb.writeString(object.title);
+          fbb.startTable(7);
+          fbb.addInt64(0, object.id);
+          fbb.addInt64(1, object.submissionTime.millisecondsSinceEpoch);
+          fbb.addOffset(2, feedbackTextOffset);
+          fbb.addOffset(3, categoryOffset);
+          fbb.addOffset(4, nameOffset);
+          fbb.addOffset(5, titleOffset);
+          fbb.finish(fbb.endTable());
+          return object.id;
+        },
+        objectFromFB: (Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+
+          final object = UserFeedback(
+              id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
+              submissionTime: DateTime.fromMillisecondsSinceEpoch(
+                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 6, 0)),
+              feedbackText: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 8, ''),
+              category: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 10, ''),
+              title: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 14, ''),
+              name: const fb.StringReader(asciiOptimization: true)
+                  .vTableGetNullable(buffer, rootOffset, 12));
+
+          return object;
         })
   };
 
@@ -710,4 +798,31 @@ class CheckOut_ {
   /// see [CheckOut.checkOutTime]
   static final checkOutTime =
       QueryIntegerProperty<CheckOut>(_entities[5].properties[2]);
+}
+
+/// [UserFeedback] entity fields to define ObjectBox queries.
+class UserFeedback_ {
+  /// see [UserFeedback.id]
+  static final id =
+      QueryIntegerProperty<UserFeedback>(_entities[6].properties[0]);
+
+  /// see [UserFeedback.submissionTime]
+  static final submissionTime =
+      QueryIntegerProperty<UserFeedback>(_entities[6].properties[1]);
+
+  /// see [UserFeedback.feedbackText]
+  static final feedbackText =
+      QueryStringProperty<UserFeedback>(_entities[6].properties[2]);
+
+  /// see [UserFeedback.category]
+  static final category =
+      QueryStringProperty<UserFeedback>(_entities[6].properties[3]);
+
+  /// see [UserFeedback.name]
+  static final name =
+      QueryStringProperty<UserFeedback>(_entities[6].properties[4]);
+
+  /// see [UserFeedback.title]
+  static final title =
+      QueryStringProperty<UserFeedback>(_entities[6].properties[5]);
 }

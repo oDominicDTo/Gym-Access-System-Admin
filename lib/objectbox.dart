@@ -17,6 +17,7 @@ class ObjectBox {
   late final Box<MembershipType> _membershipTypeBox;
   late final NFCService _nfcService;
   late final Box<RenewalLog> _renewalLogBox;
+  late final Box<UserFeedback> _feedbackBox;
 
   ObjectBox._create(this._store) {
     // Optional: enable ObjectBox Admin on debug builds.
@@ -32,6 +33,8 @@ class ObjectBox {
     _membershipTypeBox = Box<MembershipType>(_store);
     _nfcService = NFCService();
     _renewalLogBox = Box<RenewalLog>(_store);
+    _feedbackBox = Box<UserFeedback>(_store);
+
     // Start NFC event listener
     _startNFCListener();
     // Add some demo data if the box is empty.
@@ -178,6 +181,20 @@ class ObjectBox {
 
       // When the Member is put, its MembershipType will automatically be put into the MembershipType Box.
       _memberBox.put(member);
+    }
+
+    List<String> sentences = faker.lorem.sentences(3);
+    String feedbackText = sentences.join(' ');
+    for (int i = 0; i < 50; i++) {
+      UserFeedback feedback = UserFeedback(
+        submissionTime: faker.date.dateTime(),
+        feedbackText: feedbackText,
+        category: faker.randomGenerator.element(['UI', 'Functionality', 'Performance']),
+        title: faker.lorem.words(3).join(' '), // Generate a title using faker
+        name: faker.randomGenerator.boolean() ? faker.person.firstName() : 'Anonymous',
+      );
+
+      _feedbackBox.put(feedback);
     }
 
   }
@@ -454,6 +471,31 @@ class ObjectBox {
       return admins.first; // Return the authenticated administrator
     }
     return null; // Return null if authentication fails
+  }
+
+  Future<int> addFeedback(UserFeedback feedback) async {
+    return _feedbackBox.put(feedback);
+  }
+
+  UserFeedback getFeedback(int id) {
+    return _feedbackBox.get(id)!;
+  }
+
+  void updateFeedback(UserFeedback updatedFeedback) {
+    _feedbackBox.put(updatedFeedback);
+  }
+
+  void deleteFeedback(int id) {
+    _feedbackBox.remove(id);
+  }
+
+  List<UserFeedback> getAllFeedback() {
+    return _feedbackBox.getAll();
+  }
+
+  // Retrieve all Feedback entries asynchronously
+  Future<List<UserFeedback>> getAllFeedbackAsync() async {
+    return _feedbackBox.getAllAsync();
   }
 }
 

@@ -94,7 +94,7 @@ class _ConfirmationPaymentPageState extends State<ConfirmationPaymentPage> {
                     Navigator.of(context).pop(); // Close the confirmation page
                   },
                   style: ElevatedButton.styleFrom(
-                    primary: isNoButtonHovered ? const Color(0xFFE0ADB0) : Colors.black,
+                    backgroundColor: isNoButtonHovered ? const Color(0xFFE0ADB0) : Colors.black,
                     fixedSize: const Size(120, 50), // Adjust the button size here
                   ),
                   onHover: (hovering) {
@@ -137,7 +137,7 @@ class _ConfirmationPaymentPageState extends State<ConfirmationPaymentPage> {
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    primary: isYesButtonHovered ? const Color(0xFF5CC69C) : Colors.black,
+                    backgroundColor: isYesButtonHovered ? const Color(0xFF5CC69C) : Colors.black,
                     fixedSize: const Size(120, 50), // Adjust the button size here
                   ),
                   onHover: (hovering) {

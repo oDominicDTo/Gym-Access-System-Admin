@@ -185,3 +185,24 @@ class RenewalLog {
     return DateFormat('MMM dd, yyyy').format(renewalDate);
   }
 }
+
+@Entity()
+class UserFeedback {
+  @Id()
+  int id;
+  @Property(type: PropertyType.date)
+  DateTime submissionTime;
+  final String feedbackText;
+  final String category; // Categories could be UI, Functionality, Performance, etc.
+  final String? name; // Optional: User's name
+  final String title;
+
+  UserFeedback({
+    this.id = 0,
+    required this.submissionTime,
+    required this.feedbackText,
+    required this.category,
+    required this.title,
+    this.name,
+  });
+}

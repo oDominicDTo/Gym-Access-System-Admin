@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gym_kiosk_admin/screens/add_member.dart';
+import 'package:gym_kiosk_admin/screens/feedback/feedback_page.dart';
 import 'package:gym_kiosk_admin/screens/home_page.dart';
 import 'package:gym_kiosk_admin/screens/management_page.dart';
 import 'package:gym_kiosk_admin/screens/member_list_screen.dart';
@@ -26,7 +27,7 @@ class _HomeAdminPageState extends State<HomeAdminPage> {
     const MemberListScreen(),
     const RenewalPage(),
     const ManagementPage(),
-    const Center(child: Text('Welcome to Feedback!')),
+    const FeedbackPage(),
   ];
 
   @override
@@ -117,11 +118,19 @@ class _HomeAdminPageState extends State<HomeAdminPage> {
                 ? Navigator(
               onGenerateRoute: (settings) {
                 return MaterialPageRoute(
-                  builder: (_) => const RenewalPage(), // Your RenewalPage widget
+                  builder: (_) => const RenewalPage(),
                 );
               },
             )
-                : _screens[_selectedIndex], // Your other screens
+                : _selectedIndex == 6
+                ? Navigator(
+              onGenerateRoute: (settings) {
+                return MaterialPageRoute(
+                  builder: (_) => const FeedbackPage(),
+                );
+              },
+            )
+                : _screens[_selectedIndex],
           ),
         ],
       ),
