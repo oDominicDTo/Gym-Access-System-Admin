@@ -190,8 +190,10 @@ class RenewalLog {
 class UserFeedback {
   @Id()
   int id;
+
   @Property(type: PropertyType.date)
   DateTime submissionTime;
+
   final String feedbackText;
   final String category; // Categories could be UI, Functionality, Performance, etc.
   final String? name; // Optional: User's name

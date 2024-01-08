@@ -185,9 +185,9 @@ class ObjectBox {
 
     List<String> sentences = faker.lorem.sentences(3);
     String feedbackText = sentences.join(' ');
-    for (int i = 0; i < 50; i++) {
+    for (int i = 0; i < 10; i++) {
       UserFeedback feedback = UserFeedback(
-        submissionTime: faker.date.dateTime(),
+        submissionTime: faker.date.dateTime(minYear: 2022, maxYear: 2024),
         feedbackText: feedbackText,
         category: faker.randomGenerator.element(['UI', 'Functionality', 'Performance']),
         title: faker.lorem.words(3).join(' '), // Generate a title using faker
@@ -497,5 +497,9 @@ class ObjectBox {
   Future<List<UserFeedback>> getAllFeedbackAsync() async {
     return _feedbackBox.getAllAsync();
   }
-}
 
+  Future<List<UserFeedback>> getFeedbackSortedByTime() async {
+    final query = _feedbackBox.query().order(UserFeedback_.submissionTime, flags : Order.descending).build();
+    return query.find();
+  }
+}

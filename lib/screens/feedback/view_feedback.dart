@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../main.dart';
 import '../../models/model.dart';
+import 'package:intl/intl.dart';
 
 class ViewFeedback extends StatefulWidget {
   const ViewFeedback({Key? key}) : super(key: key);
@@ -16,7 +17,7 @@ class _ViewFeedbackState extends State<ViewFeedback> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<UserFeedback>>(
-      future: objectbox.getAllFeedbackAsync(),
+      future: objectbox.getFeedbackSortedByTime(),
       builder: (context, AsyncSnapshot<List<UserFeedback>?> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
@@ -92,24 +93,30 @@ class _ViewFeedbackState extends State<ViewFeedback> {
                         ? Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          'Name: ${selectedFeedback!.name}',
-                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Name: ${selectedFeedback!.name}',
+                              style: const TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              DateFormat('MMMM d, y').format(selectedFeedback!.submissionTime),
+                              style: const TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ],
                         ),
-                        const Divider( color: Colors.black, thickness: 0.5,),
-                        const SizedBox(height: 8.0),
+                        const Divider(color: Colors.black, thickness: 0.5),
                         Text(
                           'Title: ${selectedFeedback!.title}',
                           style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
-                        const SizedBox(height: 8.0),
-                        const Divider( color: Colors.black,thickness: 0.5,),
+                        const Divider(color: Colors.black, thickness: 0.5),
                         Text(
                           'Category: ${selectedFeedback!.category}',
                           style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
-                        const Divider( color: Colors.black,thickness: 0.5,),
-                        const SizedBox(height: 8.0),
+                        const Divider(color: Colors.black, thickness: 0.5),
                         const Text(
                           'Feedback Message:',
                           style: TextStyle(fontWeight: FontWeight.bold),
