@@ -73,7 +73,7 @@ class _AddStaffDialogState extends State<AddStaffDialog> {
   void _submitForm() async {
     final form = _formKey.currentState;
     if (form != null && form.validate()) {
-      final exists = await objectbox.checkTagIdExists(newStaff.nfcTagID);
+      final exists = await objectbox.checkTagIDExists(newStaff.nfcTagID);
       if (!exists) {
         objectbox.addAdministrator(newStaff);
         _showNFCSuccessDialog();

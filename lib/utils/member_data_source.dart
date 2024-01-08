@@ -7,8 +7,9 @@ class MemberDataSource extends DataTableSource {
   late List<Member> _members;
   final Function(Member) openProfileDialog;
   int? _selectedRowIndex;
+  final void Function(int memberId) deleteMemberAndRefresh;
 
-  MemberDataSource(this._members, {required this.openProfileDialog});
+  MemberDataSource(this._members, {required this.openProfileDialog,  required this.deleteMemberAndRefresh,});
 
   @override
   DataRow getRow(int index) {
@@ -106,10 +107,11 @@ class MemberDataSource extends DataTableSource {
     }
   }
   void updateDataSource(List<Member> updatedMembers) {
-    _members.clear(); // Clear existing content if you want to modify the same list
-    _members.addAll(updatedMembers); // Add new content to the existing list
-    notifyListeners(); // Notify listeners after updating data
+    _members.clear();
+    _members.addAll(updatedMembers);
+    notifyListeners();
   }
+
   List<Member> getFilteredMembers(String suggestion) {
     return _members.where((member) =>
         '${member.firstName} ${member.lastName}'.toLowerCase().contains(suggestion.toLowerCase())

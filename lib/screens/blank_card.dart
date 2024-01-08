@@ -39,7 +39,7 @@ class _InsertBlankCardState extends State<InsertBlankCard> {
   }
 
   void _checkAndSaveTagId(String tagId) async {
-    final bool exists = await objectbox.checkTagIdExists(tagId);
+    final bool exists = await objectbox.checkTagIDExists(tagId);
 
     if (!exists) {
       widget.newMember.nfcTagID = tagId;

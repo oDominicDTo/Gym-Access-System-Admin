@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import '../screens/profile_page.dart';
+
 
 class TopNavigationBar extends StatefulWidget implements PreferredSizeWidget {
   const TopNavigationBar({super.key});
@@ -111,12 +111,12 @@ class _TopNavigationBarState extends State<TopNavigationBar> {
           ),
           InkWell(
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const ProfilePage(),
-                ),
-              );
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(
+              //     builder: (context) =>
+              //   ),
+              // );
             },
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),

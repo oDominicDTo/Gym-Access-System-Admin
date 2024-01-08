@@ -40,7 +40,7 @@ class _EditStaffDialogState extends State<EditStaffDialog> {
     });
   }
   Future<void> _checkExistingTag(String tagId) async {
-    final exists = await objectbox.checkTagIdExists(tagId);
+    final exists = await objectbox.checkTagIDExists(tagId);
     if (exists) {
       _showExistingTagDialog();
     } else {

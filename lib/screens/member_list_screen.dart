@@ -3,7 +3,7 @@ import 'package:gym_kiosk_admin/main.dart';
 import 'package:gym_kiosk_admin/models/model.dart';
 import 'package:gym_kiosk_admin/utils/member_data_source.dart';
 import 'package:gym_kiosk_admin/utils/pdf_export.dart';
-import '../dialog/profile_dialog.dart';
+import '../dialog/member_profile_dialog.dart';
 import '../widgets/search_bar.dart';
 import 'package:gym_kiosk_admin/widgets/filter_dialog.dart';
 
@@ -34,8 +34,14 @@ class _MemberListScreenState extends State<MemberListScreen> {
 
   Future<void> _loadMembersData() async {
     _membersData = objectbox.getMembersSortedByStartDate();
-    _displayedMembers =
-        List.from(_membersData); // Initial display will show all members
+    _displayedMembers = List.from(_membersData); // Initial display will show all members
+    setState(() {});
+  }
+
+  void _deleteMemberAndRefresh(int memberId) {
+    objectbox.deleteMember(memberId); // Delete member from ObjectBox
+    _membersData.removeWhere((member) => member.id == memberId);
+    _displayedMembers.removeWhere((member) => member.id == memberId);
     setState(() {});
   }
 
@@ -105,8 +111,9 @@ class _MemberListScreenState extends State<MemberListScreen> {
   }
 
   void _openProfileDialog(Member member) {
-    ProfileDialog().open(context, member);
+    MemberProfileDialog().open(context, member, _deleteMemberAndRefresh);
   }
+
 
   void showFilterDialog() {
     showDialog(
@@ -126,7 +133,7 @@ class _MemberListScreenState extends State<MemberListScreen> {
     );
   }
   void exportPDF() async {
-    final dataSource = MemberDataSource(_displayedMembers, openProfileDialog: (_) {});
+    final dataSource = MemberDataSource(_displayedMembers, openProfileDialog: (_) {}, deleteMemberAndRefresh: (int memberId) {  });
 
     String? filePath = await PDFExporter.exportToPDF(dataSource, context);
 
@@ -271,7 +278,8 @@ class _MemberListScreenState extends State<MemberListScreen> {
                       rowsPerPage: rowsPerPage,
                       source: MemberDataSource(
                         _displayedMembers,
-                        openProfileDialog: _openProfileDialog, // Pass the function to the data source
+                        openProfileDialog: _openProfileDialog,
+                        deleteMemberAndRefresh: _deleteMemberAndRefresh,
                       ),
                     ),
                   ),

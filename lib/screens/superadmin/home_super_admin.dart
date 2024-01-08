@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gym_kiosk_admin/screens/add_member.dart';
 import 'package:gym_kiosk_admin/screens/member_list_screen.dart';
-import 'package:gym_kiosk_admin/screens/profile_page.dart';
 
 class HomeSuperAdminPage extends StatefulWidget {
   const HomeSuperAdminPage({super.key});

@@ -145,7 +145,7 @@ class ObjectBox {
       firstName: 'Jay Ann',
       lastName: 'Garcia',
       contactNumber: '09672182672',
-      nfcTagID: 'b385aafd',
+      nfcTagID: 'd3bcf3ec',
       dateOfBirth: DateTime(2001, 7, 14),
       address: 'Bungahan',
       email: 'jay@example.com',
@@ -307,15 +307,14 @@ class ObjectBox {
     _membershipTypeBox.remove(id);
   }
 
-  Future<bool> checkTagIdExists(String tagId) async {
-    // Create a query to find an administrator with the given NFC tag ID
-    final query = _administratorBox.query(Administrator_.nfcTagID.equals(tagId)).build();
+  Future<bool> checkTagIDExists(String tagId) async {
+    final memberQuery = _memberBox.query(Member_.nfcTagID.equals(tagId)).build();
+    final adminQuery = _administratorBox.query(Administrator_.nfcTagID.equals(tagId)).build();
 
-    // Find administrators with the specified NFC tag ID
-    final List<Administrator> admins = query.find();
+    final List<Member> members = memberQuery.find();
+    final List<Administrator> admins = adminQuery.find();
 
-    // Return whether any administrator with the tag ID exists
-    return admins.isNotEmpty;
+    return (members.isNotEmpty || admins.isNotEmpty);
   }
 // CRUD methods for Administrator entity
 
@@ -348,16 +347,29 @@ class ObjectBox {
     final query = _administratorBox.query(Administrator_.type.equals('staff')).build();
     return query.find();
   }
-  void updateAdministrator(Administrator updatedAdmin) {
+  void updateAdministrator(Administrator updatedAdmin) async {
     final existingAdmin = _administratorBox.get(updatedAdmin.id);
     if (existingAdmin != null) {
       existingAdmin.name = updatedAdmin.name;
       existingAdmin.username = updatedAdmin.username;
       existingAdmin.password = updatedAdmin.password;
-      existingAdmin.nfcTagID = updatedAdmin.nfcTagID;
-      existingAdmin.type = updatedAdmin.type;
 
-      _administratorBox.put(existingAdmin);
+      // Check if the new NFC tag ID exists for any Member or Administrator
+      final isTagIDExists = await checkTagIDExists(updatedAdmin.nfcTagID);
+
+      // Update NFC tag ID only if it doesn't exist for any Member or Administrator
+      if (!isTagIDExists) {
+        existingAdmin.nfcTagID = updatedAdmin.nfcTagID;
+
+        _administratorBox.put(existingAdmin);
+
+        // Update associated Member NFC tag ID if it exists
+        final existingMember = _memberBox.get(existingAdmin.id);
+        if (existingMember != null) {
+          existingMember.nfcTagID = updatedAdmin.nfcTagID;
+          _memberBox.put(existingMember);
+        }
+      }
     }
   }
   // CRUD methods for RenewalLog entity

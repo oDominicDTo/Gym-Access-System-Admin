@@ -65,7 +65,7 @@ class _LoginScreenNfcState extends State<LoginScreenNfc> {
   Future<void> _handleNFCEvent(String cardSerialNumber) async {
     if (!mounted) return; // Check if the widget is disposed
 
-    bool tagExists = await objectbox.checkTagIdExists(cardSerialNumber);
+    bool tagExists = await objectbox.checkTagIDExists(cardSerialNumber);
 
     if (!mounted) return; // Check if the widget is disposed after async operation
 
@@ -131,7 +131,6 @@ class _LoginScreenNfcState extends State<LoginScreenNfc> {
   @override
   void dispose() {
     _nfcSubscription.cancel();
-    super.dispose();
     usernameController.dispose();
     passwordController.dispose();
     super.dispose();

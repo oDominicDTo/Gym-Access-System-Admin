@@ -1,20 +1,21 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import '../models/model.dart'; // Import your Member model here
 import 'package:path_provider/path_provider.dart';
 
-class ProfileDialog {
-  void open(BuildContext context, Member member) {
+class MemberProfileDialog {
+  void open(BuildContext context, Member member,
+      Function(int memberId) deleteMemberAndRefresh) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return _buildProfileDialog(context, member);
+        return _buildProfileDialog(context, member, deleteMemberAndRefresh);
       },
     );
   }
 
-  Widget _buildProfileDialog(BuildContext context, Member member) {
+  Widget _buildProfileDialog(BuildContext context, Member member,
+      Function(int memberId) deleteMemberAndRefresh) {
     return Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16.0),
@@ -31,7 +32,8 @@ class ProfileDialog {
                 height: 150,
                 decoration: const BoxDecoration(
                   color: Colors.blue, // Use your desired color
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(16.0)),
+                  borderRadius:
+                      BorderRadius.vertical(top: Radius.circular(16.0)),
                 ),
                 child: Stack(
                   alignment: Alignment.center,
@@ -40,15 +42,20 @@ class ProfileDialog {
                       top: 20,
                       child: FutureBuilder<String>(
                         future: _getLocalImagePath(member.photoPath),
-                        builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-                          if (snapshot.connectionState == ConnectionState.waiting) {
+                        builder: (BuildContext context,
+                            AsyncSnapshot<String> snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
                             return const CircularProgressIndicator();
-                          } else if (snapshot.hasError || snapshot.data == null) {
-                            return const Icon(Icons.person, size: 120, color: Colors.white);
+                          } else if (snapshot.hasError ||
+                              snapshot.data == null) {
+                            return const Icon(Icons.person,
+                                size: 120, color: Colors.white);
                           } else {
                             final file = File(snapshot.data!);
                             if (!file.existsSync()) {
-                              return const Icon(Icons.person, size: 120, color: Colors.white);
+                              return const Icon(Icons.person,
+                                  size: 120, color: Colors.white);
                             }
                             return CircleAvatar(
                               radius: 60,
@@ -56,6 +63,17 @@ class ProfileDialog {
                             );
                           }
                         },
+                      ),
+                    ),
+                    Positioned(
+                      bottom: 16,
+                      right: 16,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          _showDeleteConfirmationDialog(
+                              context, member, deleteMemberAndRefresh);
+                        },
+                        child: const Text('Delete Member'),
                       ),
                     ),
                   ],
@@ -68,13 +86,28 @@ class ProfileDialog {
                   children: [
                     Text(
                       '${member.firstName} ${member.lastName}',
-                      style: const TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold, fontSize: 25),
+                      style: const TextStyle(
+                          fontFamily: 'Poppins',
+                          fontWeight: FontWeight.bold,
+                          fontSize: 25),
                     ),
                     const SizedBox(height: 8),
-                    Text(member.email, style: const TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold)),
-                    Text(member.contactNumber, style: const TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold)),
-                    Text(' ${member.dateOfBirthFormat}', style: const TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold)),
-                    Text(member.address, style: const TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold)),
+                    Text(member.email,
+                        style: const TextStyle(
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.bold)),
+                    Text(member.contactNumber,
+                        style: const TextStyle(
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.bold)),
+                    Text(' ${member.dateOfBirthFormat}',
+                        style: const TextStyle(
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.bold)),
+                    Text(member.address,
+                        style: const TextStyle(
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.bold)),
                     const SizedBox(height: 16),
                     const Divider(
                       height: 3,
@@ -147,16 +180,12 @@ class ProfileDialog {
       if (remainingDays > 30) {
         return '$years year${years > 1 ? 's' : ''}';
       } else {
-        return '$years year${years > 1
-            ? 's'
-            : ''} and $remainingDays day${remainingDays > 1 ? 's' : ''}';
+        return '$years year${years > 1 ? 's' : ''} and $remainingDays day${remainingDays > 1 ? 's' : ''}';
       }
     } else if (membershipDays > 30) {
       final months = membershipDays ~/ 30;
       final remainingDays = membershipDays % 30;
-      return '$months month${months > 1
-          ? 's'
-          : ''} and $remainingDays day${remainingDays > 1 ? 's' : ''}';
+      return '$months month${months > 1 ? 's' : ''} and $remainingDays day${remainingDays > 1 ? 's' : ''}';
     } else {
       return '$membershipDays day${membershipDays > 1 ? 's' : ''}';
     }
@@ -166,5 +195,36 @@ class ProfileDialog {
     Directory appDocDir = await getApplicationDocumentsDirectory();
     String localPath = '${appDocDir.path}/Kiosk/Photos/$imagePath';
     return localPath.replaceAll(r'\', '/'); // Ensure correct separators
+  }
+
+  void _showDeleteConfirmationDialog(BuildContext context, Member member,
+      Function(int memberId) deleteMemberAndRefresh) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Confirm Deletion'),
+          content: Text(
+              'Are you sure you want to delete ${member.firstName} ${member.lastName}?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                deleteMemberAndRefresh(
+                    member.id); // Delete member and refresh data
+                Navigator.of(context).pop(); // Close confirmation dialog
+                Navigator.of(context).pop(); // Close profile dialog as well
+              },
+              child: const Text('Delete'),
+            ),
+          ],
+        );
+      },
+    );
   }
 }
