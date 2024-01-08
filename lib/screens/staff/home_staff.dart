@@ -3,7 +3,8 @@ import 'package:gym_kiosk_admin/screens/add_member.dart';
 import 'package:gym_kiosk_admin/screens/member_list_screen.dart';
 
 class HomeStaffPage extends StatefulWidget {
-  const HomeStaffPage({super.key});
+  final String adminName;
+  const HomeStaffPage({super.key, required this.adminName});
 
   @override
   State createState() => _HomeStaffPageState();

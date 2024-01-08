@@ -2,10 +2,14 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:gym_kiosk_admin/models/model.dart';
+import 'package:gym_kiosk_admin/screens/staff/home_staff.dart';
+import 'package:gym_kiosk_admin/screens/superadmin/home_super_admin.dart';
 import 'package:lottie/lottie.dart';
 
 import '../../services/nfc_service.dart';
 import '../main.dart';
+import '../widgets/admin_name_provider.dart';
+import 'admin/home_admin.dart';
 
 class LoginScreenNfc extends StatefulWidget {
   const LoginScreenNfc({Key? key}) : super(key: key);
@@ -41,18 +45,35 @@ class _LoginScreenNfcState extends State<LoginScreenNfc> {
     String password = passwordController.text.trim();
 
     if (username.isNotEmpty && password.isNotEmpty) {
-      Administrator? admin = objectbox.authenticateAdmin(username, password);
+      String? adminName = await objectbox.getAdminNameByLoginDetails(
+        username: username,
+        password: password,
+      );
 
-      if (admin != null) {
-        String adminType = admin.type.toLowerCase();
-        if (adminType == 'superadmin') {
-          _handleNavigation('/homeSuperAdmin');
-        } else if (adminType == 'admin') {
-          _handleNavigation('/homeAdmin');
-        } else if (adminType == 'staff') {
-          _handleNavigation('/homeStaff');
+      if (adminName != null) {
+        String adminType = ''; // Define the adminType variable
+
+        Administrator? admin = await objectbox.getAdministratorByUsername(username);
+
+        if (admin != null) {
+          adminType = admin.type.toLowerCase();
         } else {
-          _showErrorDialog('Unknown admin type.');
+          _showErrorDialog('Admin data not found.');
+          return;
+        }
+
+        switch (adminType) {
+          case 'superadmin':
+            _handleNavigation('/homeSuperAdmin', adminName);
+            break;
+          case 'admin':
+            _handleNavigation('/homeAdmin', adminName);
+            break;
+          case 'staff':
+            _handleNavigation('/homeStaff', adminName);
+            break;
+          default:
+            _showErrorDialog('Unknown admin type.');
         }
       } else {
         _showErrorDialog('Invalid username or password.');
@@ -63,28 +84,28 @@ class _LoginScreenNfcState extends State<LoginScreenNfc> {
   }
 
   Future<void> _handleNFCEvent(String cardSerialNumber) async {
-    if (!mounted) return; // Check if the widget is disposed
+    if (!mounted) return;
 
     bool tagExists = await objectbox.checkTagIDExists(cardSerialNumber);
-
-    if (!mounted) return; // Check if the widget is disposed after async operation
 
     if (tagExists) {
       Administrator? admin = await objectbox.getAdministratorByTagId(cardSerialNumber);
 
-      if (!mounted) return; // Check if the widget is disposed after async operation
-
       if (admin != null) {
         String adminType = admin.type.toLowerCase();
 
-        if (adminType == 'superadmin') {
-          _handleNavigation('/homeSuperAdmin');
-        } else if (adminType == 'admin') {
-          _handleNavigation('/homeAdmin');
-        } else if (adminType == 'staff') {
-          _handleNavigation('/homeStaff');
-        } else {
-          _showErrorDialog('Unknown admin type.');
+        switch (adminType) {
+          case 'superadmin':
+            _handleNavigation('/homeSuperAdmin', admin.name);
+            break;
+          case 'admin':
+            _handleNavigation('/homeAdmin', admin.name);
+            break;
+          case 'staff':
+            _handleNavigation('/homeStaff', admin.name);
+            break;
+          default:
+            _showErrorDialog('Unknown admin type.');
         }
       } else {
         _showErrorDialog('Admin data not found.');
@@ -93,6 +114,7 @@ class _LoginScreenNfcState extends State<LoginScreenNfc> {
       _showErrorDialog('Invalid card detected.');
     }
   }
+
 
   void _showErrorDialog(String message) {
     if (!mounted) return; // Check if the widget is disposed
@@ -116,15 +138,39 @@ class _LoginScreenNfcState extends State<LoginScreenNfc> {
     );
   }
 
-  void _handleNavigation(String route) {
-    if (!mounted) return; // Check if the widget is disposed
+  Future<void> _handleNavigation(String route, String adminName) async {
+    if (!mounted) return;
 
     setState(() {
       _isScanning = false;
     });
 
-    Future.delayed(const Duration(milliseconds: 500), () {
-      Navigator.pushReplacementNamed(context, route);
+    await Future.delayed(const Duration(milliseconds: 500), () {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) {
+            Widget destinationPage;
+            switch (route) {
+              case '/homeSuperAdmin':
+                destinationPage = HomeSuperAdminPage(adminName: adminName);
+                break;
+              case '/homeAdmin':
+                destinationPage = HomeAdminPage(adminName: adminName);
+                break;
+              case '/homeStaff':
+                destinationPage = HomeStaffPage(adminName: adminName);
+                break;
+              default:
+                destinationPage = const Placeholder();
+            }
+            return AdminNameProvider(
+              adminName: adminName,
+              child: destinationPage,
+            );
+          },
+        ),
+      );
     });
   }
 

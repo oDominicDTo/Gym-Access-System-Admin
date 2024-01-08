@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 
 
 class TopNavigationBar extends StatefulWidget implements PreferredSizeWidget {
-  const TopNavigationBar({super.key});
+  final String adminName; // Add adminName parameter
+
+  const TopNavigationBar({Key? key, required this.adminName}) : super(key: key);
 
   @override
   State createState() => _TopNavigationBarState();
@@ -109,45 +111,35 @@ class _TopNavigationBarState extends State<TopNavigationBar> {
               ),
             ],
           ),
-          InkWell(
-            onTap: () {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (context) =>
-              //   ),
-              // );
-            },
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                    vertical: 8, horizontal: 12),
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.3),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: const Row(
-                  children: [
-                    Text(
-                      'Dominic Tanas',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontFamily: 'Poppins',
-                        fontSize: 16, // Adjust the font size as needed
-                      ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Container(
+              padding: const EdgeInsets.symmetric(
+                  vertical: 8, horizontal: 12),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.3),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Row(
+                children: [
+                  Text(
+                    widget.adminName,
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontFamily: 'Poppins',
+                      fontSize: 16, // Adjust the font size as needed
                     ),
-                    SizedBox(width: 8),
-                    CircleAvatar(
-                      backgroundColor: Colors.white,
-                      child: Icon(
-                        Icons.person_outline,
-                        color: Colors
-                            .black, // Customize the icon color as needed
-                      ),
+                  ),
+                  const SizedBox(width: 8),
+                  const CircleAvatar(
+                    backgroundColor: Colors.white,
+                    child: Icon(
+                      Icons.person_outline,
+                      color: Colors
+                          .black, // Customize the icon color as needed
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),

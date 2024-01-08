@@ -8,7 +8,9 @@ import 'package:gym_kiosk_admin/widgets/top_navigation_bar.dart';
 import '../renew/renewal_page.dart';
 
 class HomeAdminPage extends StatefulWidget {
-  const HomeAdminPage({super.key});
+  final String adminName;
+
+  const HomeAdminPage({Key? key, required this.adminName}) : super(key: key);
 
   @override
   State createState() => _HomeAdminPageState();
@@ -30,7 +32,7 @@ class _HomeAdminPageState extends State<HomeAdminPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const TopNavigationBar(),
+      appBar: TopNavigationBar(adminName: widget.adminName),
       body: Row(
         children: <Widget>[
           NavigationRail(

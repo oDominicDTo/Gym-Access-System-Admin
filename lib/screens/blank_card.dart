@@ -7,7 +7,7 @@ import 'package:gym_kiosk_admin/main.dart';
 import 'package:gym_kiosk_admin/models/model.dart';
 
 import '../../services/nfc_service.dart';
-import 'admin/home_admin.dart';
+
 
 
 class InsertBlankCard extends StatefulWidget {
@@ -74,26 +74,16 @@ class _InsertBlankCardState extends State<InsertBlankCard> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('NFC Tag Assigned'),
-          content: const Text('NFC tag assigned successfully.'),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('OK'),
-              onPressed: () {
-                Navigator.of(context).popUntil((route) => route.isFirst);
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const HomeAdminPage(),
-                  ),
-                );
-              },
-            ),
-          ],
+        return const AlertDialog(
+          title: Text('NFC Tag Assigned'),
+          content: Text('NFC tag assigned successfully.'),
         );
       },
     );
+    Future.delayed(const Duration(seconds: 2), () {
+      Navigator.of(context).pop();
+      Navigator.of(context).pop();
+    });
   }
 
   @override

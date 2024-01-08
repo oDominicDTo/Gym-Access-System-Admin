@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:gym_kiosk_admin/objectbox.dart';
 import 'package:gym_kiosk_admin/screens/login_nfc.dart';
+import 'package:gym_kiosk_admin/widgets/admin_name_provider.dart';
 import 'package:window_size/window_size.dart';
 import 'package:gym_kiosk_admin/screens/admin/home_admin.dart';
 import 'package:gym_kiosk_admin/screens/staff/home_staff.dart';
@@ -32,17 +33,20 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  MaterialApp(
-      title: 'Gym Kiosk Admin',
-      debugShowCheckedModeBanner: false,
-      initialRoute: '/', // Set the initial route
-      routes: {
-        '/': (context) => const HomeAdminPage(), // Define the initial route
-        '/homeSuperAdmin': (context) => const HomeSuperAdminPage(),
-        '/homeAdmin': (context) => const HomeAdminPage(),
-        '/homeStaff': (context) => const HomeStaffPage(),
-        // Add more routes if needed
-      },
+    return  AdminNameProvider(
+      adminName: '',
+      child: MaterialApp(
+        title: 'Gym Kiosk Admin',
+        debugShowCheckedModeBanner: false,
+        initialRoute: '/', // Set the initial route
+        routes: {
+          '/': (context) => const LoginScreenNfc(), // Define the initial route
+          '/homeSuperAdmin': (context) => const HomeSuperAdminPage(adminName: '',),
+          '/homeAdmin': (context) => const HomeAdminPage(adminName: '',),
+          '/homeStaff': (context) => const HomeStaffPage(adminName: '',),
+          // Add more routes if needed
+        },
+      ),
     );
   }
 }

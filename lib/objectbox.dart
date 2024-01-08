@@ -343,10 +343,41 @@ class ObjectBox {
   List<Administrator> getAllAdministrators() {
     return _administratorBox.getAll();
   }
+
   List<Administrator> getStaffAdministrators() {
     final query = _administratorBox.query(Administrator_.type.equals('staff')).build();
     return query.find();
   }
+
+  Future<String?> getAdminNameByLoginDetails({
+    String? nfcTagId,
+    String? username,
+    String? password,
+  }) async {
+    String? adminName;
+
+    if (nfcTagId != null) {
+      // Fetch admin by NFC tag ID
+      final adminByNFC = await getAdministratorByTagId(nfcTagId);
+      if (adminByNFC != null) {
+        adminName = adminByNFC.name;
+      }
+    } else if (username != null && password != null) {
+      // Authenticate admin by username and password
+      final authenticatedAdmin = authenticateAdmin(username, password);
+      if (authenticatedAdmin != null) {
+        adminName = authenticatedAdmin.name;
+      }
+    }
+
+    return adminName;
+  }
+  Future<Administrator?> getAdministratorByUsername(String username) async {
+    final query = _administratorBox.query(Administrator_.username.equals(username)).build();
+    final List<Administrator> admins = query.find();
+    return admins.isNotEmpty ? admins.first : null;
+  }
+
   void updateAdministrator(Administrator updatedAdmin) async {
     final existingAdmin = _administratorBox.get(updatedAdmin.id);
     if (existingAdmin != null) {
