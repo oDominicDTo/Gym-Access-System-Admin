@@ -15,66 +15,86 @@ class PreviewMemberPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(),
       body: SingleChildScrollView(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(width: 100),
-            Expanded(
-              flex: 1,
-              child: _buildProfileHeader(context),
-            ),
-            const SizedBox(width: 100),
-            Expanded(
-              flex: 2,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 16.0),
-                    _buildNameRow(member),
-                    _buildMembershipStatusWidget(member),
-                    _buildInfoRow(
-                      icon: Icons.event,
-                      label: 'Start Date:',
-                      value: member.membershipStartDateFormat,
-                      color: Colors.blue,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(width: 16), // Left side spacing
+              Expanded(
+                flex: 1,
+                child: _buildProfileHeader(context),
+              ),
+              const SizedBox(width: 16), // Spacing between the photo and the box
+              Expanded(
+                flex: 2,
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 2,
+                          blurRadius: 5,
+                          offset: const Offset(0, 3),
+                        ),
+                      ],
                     ),
-                    _buildInfoRow(
-                      icon: Icons.event,
-                      label: 'End Date:',
-                      value: member.membershipEndDateFormat,
-                      color: Colors.red,
-                    ),
-                    _buildInfoRow(
-                      icon: Icons.timelapse,
-                      label: 'Duration:',
-                      value: _getRemainingMembershipDuration(member),
-                      color: Colors.green,
-                    ),
-                    const SizedBox(height: 50.0),
-                    SizedBox(
-                      width: 200,
-                      child: CustomCardButton(
-                        title: 'Proceed',
-                        icon: Icons.navigate_next,
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  MembershipDurationPage(selectedMember: member),
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildNameRow(member),
+                        _buildMembershipStatusWidget(member),
+                        _buildInfoRow(
+                          icon: Icons.event,
+                          label: 'Start Date:',
+                          value: member.membershipStartDateFormat,
+                          color: Colors.blue,
+                        ),
+                        _buildInfoRow(
+                          icon: Icons.event,
+                          label: 'End Date:',
+                          value: member.membershipEndDateFormat,
+                          color: Colors.red,
+                        ),
+                        _buildInfoRow(
+                          icon: Icons.timelapse,
+                          label: 'Duration:',
+                          value: _getRemainingMembershipDuration(member),
+                          color: Colors.green,
+                        ),
+                        const SizedBox(height: 20.0),
+                        Center(
+                          child: SizedBox(
+                            width: 150,
+                            child: CustomCardButton(
+                              title: 'Proceed',
+                              icon: Icons.navigate_next,
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        MembershipDurationPage(selectedMember: member),
+                                  ),
+                                );
+                              },
+                              iconColor: Colors.orangeAccent,
                             ),
-                          );
-                        },
-                        iconColor: Colors.orangeAccent,
-                      ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
               ),
-            ),
-          ],
+              const SizedBox(width: 16), // Right side spacing
+            ],
+          ),
         ),
       ),
     );
@@ -106,7 +126,7 @@ class PreviewMemberPage extends StatelessWidget {
               child: Image.file(
                 file,
                 fit: BoxFit.cover,
-                width: 300,
+                width: double.infinity, // Make the width flexible
                 height: 400,
               ),
             ),

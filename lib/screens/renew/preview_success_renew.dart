@@ -1,10 +1,9 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:gym_kiosk_admin/screens/renew/renewal_page.dart';
-import 'package:gym_kiosk_admin/widgets/custom_card_button.dart';
 import 'package:path_provider/path_provider.dart';
 import '../../../models/model.dart';
-
+import 'renewal_page.dart';
+import '../../../widgets/custom_card_button.dart';
 
 class SuccessPage extends StatelessWidget {
   final Member member;
@@ -33,56 +32,77 @@ class SuccessPage extends StatelessWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(automaticallyImplyLeading: false,
-      ),
+      appBar: AppBar(automaticallyImplyLeading: false),
       body: SingleChildScrollView(
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const SizedBox(width: 100),
-            Expanded(flex:1, child:
-            _buildProfileImage()
+            Expanded(
+              flex: 1,
+              child: _buildProfileImage(),
             ),
-
             const SizedBox(width: 20.0),
             Expanded(
               flex: 2,
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const SizedBox(height: 20.0),
-                    Text(
-                      'Successfully Added $durationText',
-                      style: const TextStyle(fontFamily: 'Poppins', fontSize: 24),
-                    ),
-                    const SizedBox(height: 16.0),
-                    Text(
-                      'Start Date: ${member.membershipStartDateFormat}',
-                      style: const TextStyle(fontFamily: 'Poppins', fontSize: 24),
-                    ),
-                    Text(
-                      'End Date: ${member.membershipEndDateFormat}',
-                      style: const TextStyle(fontFamily: 'Poppins', fontSize: 24),
-                    ),
-                    const SizedBox(height: 50.0),
-                    CustomCardButton(
-                      title: 'Exit',
-                      icon: Icons.close,
-                      onPressed: () {
-                        Navigator.popUntil(context, ModalRoute.withName('/'));
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const RenewalPage(),
-                          ),
-                        );
-                      },
-                      iconColor: Colors.blue,
-                    ),
-                  ],
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 2,
+                        blurRadius: 5,
+                        offset: const Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const SizedBox(height: 20.0),
+                      Text(
+                        'Successfully Added $durationText',
+                        style: const TextStyle(fontFamily: 'Poppins', fontSize: 24),
+                      ),
+                      const SizedBox(height: 16.0),
+                      _buildInfoRow(
+                        icon: Icons.event,
+                        label: 'Start Date:',
+                        value: member.membershipStartDateFormat,
+                        color: Colors.blue,
+                      ),
+                      _buildInfoRow(
+                        icon: Icons.event,
+                        label: 'End Date:',
+                        value: member.membershipEndDateFormat,
+                        color: Colors.red,
+                      ),
+                      const SizedBox(height: 50.0),
+                      SizedBox(
+                        width: 150, // Set the width here
+                        child: CustomCardButton(
+                          title: 'Exit',
+                          icon: Icons.close,
+                          onPressed: () {
+                            Navigator.popUntil(context, ModalRoute.withName('/'));
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const RenewalPage(),
+                              ),
+                            );
+                          },
+                          iconColor: Colors.blue,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -98,7 +118,7 @@ class SuccessPage extends StatelessWidget {
       builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const SizedBox(
-            height: 200, // Adjust the height as desired
+            height: 500, // Adjust the height as desired
             width: 200, // Adjust the width as desired
             child: Center(child: CircularProgressIndicator()),
           );
@@ -110,7 +130,7 @@ class SuccessPage extends StatelessWidget {
             return _buildAvatarPlaceholder();
           }
           return SizedBox(
-            height: 400, // Adjust the height as desired
+            height: 1000, // Adjust the height as desired
             width: 400, // Adjust the width as desired
             child: ClipRRect(
               borderRadius: BorderRadius.circular(8.0),
@@ -135,6 +155,32 @@ class SuccessPage extends StatelessWidget {
           size: 300,
           color: Colors.grey, // Change color to black to ensure visibility
         ),
+      ),
+    );
+  }
+
+  Widget _buildInfoRow({
+    required IconData icon,
+    required String label,
+    required String value,
+    required Color color,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            icon,
+            size: 25,
+            color: color,
+          ),
+          const SizedBox(width: 8),
+          Text(
+            '$label $value',
+            style: const TextStyle(fontFamily: 'Poppins', fontSize: 24),
+          ),
+        ],
       ),
     );
   }

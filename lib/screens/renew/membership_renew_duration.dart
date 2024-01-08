@@ -135,25 +135,30 @@ class _MembershipDurationPageState extends State<MembershipDurationPage> {
                       isConfirmButtonHovered = hovering;
                     });
                   },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: isConfirmButtonHovered ? Colors.white : Colors.black,
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Colors.black),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          spreadRadius: 2,
-                          blurRadius: 5,
-                          offset: const Offset(0, 3),
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ConfirmationPaymentPage(
+                            selectedMember: widget.selectedMember,
+                            months: months,
+                          ),
                         ),
-                      ],
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      primary: isConfirmButtonHovered ? const Color(0xFF5CC69C) : Colors.black,
+                      fixedSize: const Size(120, 50), // Adjust the button size here
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10), // Adjust the radius here
+                      ),
                     ),
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                     child: Text(
                       'Confirm',
                       style: TextStyle(
                         color: isConfirmButtonHovered ? Colors.black : Colors.white,
+                        fontSize: 16, // Adjust the font size here
                       ),
                     ),
                   ),

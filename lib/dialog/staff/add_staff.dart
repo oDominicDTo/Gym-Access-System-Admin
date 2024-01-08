@@ -46,16 +46,18 @@ class _AddStaffDialogState extends State<AddStaffDialog> {
         return AlertDialog(
           title: const Text('Place Blank Card on NFC Scanner'),
           content: SizedBox(
+            width: 200, // Adjust width as needed
+            height: 150, // Adjust height as needed
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Lottie.asset(
                   'assets/animation/insert_card.json',
-                  width: 150,
-                  height: 150,
+                  width: 80,
+                  height: 80,
                   fit: BoxFit.contain,
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
                 ElevatedButton(
                   onPressed: () {
                     Navigator.pop(context);
@@ -126,8 +128,8 @@ class _AddStaffDialogState extends State<AddStaffDialog> {
     return AlertDialog(
       title: const Center(child: Text('Add Staff')),
       content: SizedBox(
-        width: 500, // Adjust width as needed
-        height: 400.0, // Adjust height as needed
+        width: 200, // Adjust width as needed
+        height: 250.0, // Adjust height as needed
         child: Form(
           key: _formKey,
           child: Column(
@@ -176,7 +178,7 @@ class _AddStaffDialogState extends State<AddStaffDialog> {
                   });
                 },
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState?.validate() ?? false) {

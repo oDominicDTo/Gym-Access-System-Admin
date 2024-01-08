@@ -81,9 +81,10 @@ class _ListStaffDialogState extends State<ListStaffDialog> {
             ).then((_) => _fetchStaff()); // Refresh staff list after adding a new staff member
           },
           label: const Text('Add'),
-          foregroundColor: Colors.black,
+          foregroundColor: Colors.white, // Set text color to white
           shape: const StadiumBorder(),
-          icon: const Icon(Icons.add, color: Colors.black),
+          icon: const Icon(Icons.add, color: Colors.white), // Set icon color to white
+          backgroundColor: Colors.black, // Set button background color to black
           elevation: 5,
           highlightElevation: 5,
         ),
