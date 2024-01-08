@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:gym_kiosk_admin/dialog/edit_member_dialog.dart';
 import '../models/model.dart'; // Import your Member model here
 import 'package:path_provider/path_provider.dart';
 
@@ -63,6 +64,20 @@ class MemberProfileDialog {
                             );
                           }
                         },
+                      ),
+                    ),   Positioned(
+                      top: 15,
+                      right: 16,
+                      child:ElevatedButton(
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return EditMemberDialog(member: member);
+                            },
+                          );
+                        },
+                        child: const Text('Edit Member'),
                       ),
                     ),
                     Positioned(

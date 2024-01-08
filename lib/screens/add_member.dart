@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gym_kiosk_admin/main.dart';
 import 'package:gym_kiosk_admin/models/model.dart';
-import 'camera_page.dart';
 import 'membership_duration.dart';
 import 'package:intl/intl.dart';
 
@@ -633,37 +632,4 @@ class _MemberInputState extends State<MemberInput> {
       ),
     );
   }
-
-/* void _saveMember() {
-    if (_formKey.currentState!.validate()) {
-      String firstName = firstNameController.text;
-      String lastName = lastNameController.text;
-      String contactNumber = contactNumberController.text;
-      String email = emailController.text;
-
-      if (selectedMembershipType != null) {
-        Member newMember = Member(
-          firstName: firstName,
-          lastName: lastName,
-          contactNumber: contactNumber,
-          email: email,
-          address: selectedAddress == AddressSelection.other
-              ? '$otherCity, $otherBarangay'
-              : 'Biñan, $selectedBinanBarangay',
-          dateOfBirth: DateTime.now(),
-          nfcTagID: 'sampleNfcTagID',
-          // Sample NFC ID, replace with actual logic
-          membershipStartDate: DateTime.now(),
-          membershipEndDate: DateTime.now(),
-          photoPath: '',
-        );
-
-        // Set the membership type through the relation
-        newMember.membershipType.target = selectedMembershipType;
-
-        // Save the member using your ObjectBox logic
-        objectbox.addMember(newMember);
-      }
-    }
-  }*/
 }
