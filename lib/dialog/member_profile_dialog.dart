@@ -22,8 +22,8 @@ class MemberProfileDialog {
         borderRadius: BorderRadius.circular(16.0),
       ),
       child: FractionallySizedBox(
-        widthFactor: 0.8,
-        heightFactor: 0.9,
+        widthFactor: 0.5,
+        heightFactor: 0.7,
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -34,7 +34,7 @@ class MemberProfileDialog {
                 decoration: const BoxDecoration(
                   color: Colors.blue, // Use your desired color
                   borderRadius:
-                      BorderRadius.vertical(top: Radius.circular(16.0)),
+                  BorderRadius.vertical(top: Radius.circular(16.0)),
                 ),
                 child: Stack(
                   alignment: Alignment.center,
@@ -65,10 +65,11 @@ class MemberProfileDialog {
                           }
                         },
                       ),
-                    ),   Positioned(
+                    ),
+                    Positioned(
                       top: 15,
                       right: 16,
-                      child:ElevatedButton(
+                      child: ElevatedButton.icon(
                         onPressed: () {
                           showDialog(
                             context: context,
@@ -77,18 +78,20 @@ class MemberProfileDialog {
                             },
                           );
                         },
-                        child: const Text('Edit Member'),
+                        icon: Icon(Icons.edit),
+                        label: Text('Edit'), // Empty text for no label
                       ),
                     ),
                     Positioned(
                       bottom: 16,
                       right: 16,
-                      child: ElevatedButton(
+                      child: ElevatedButton.icon(
                         onPressed: () {
                           _showDeleteConfirmationDialog(
                               context, member, deleteMemberAndRefresh);
                         },
-                        child: const Text('Delete Member'),
+                        icon: Icon(Icons.delete),
+                        label: Text('Delete'), // Empty text for no label
                       ),
                     ),
                   ],
