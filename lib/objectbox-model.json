@@ -238,7 +238,7 @@
     },
     {
       "id": "13:6886693126471221766",
-      "lastPropertyId": "6:8956989881464025423",
+      "lastPropertyId": "7:4393122270738686167",
       "name": "UserFeedback",
       "properties": [
         {
@@ -271,6 +271,11 @@
           "id": "6:8956989881464025423",
           "name": "title",
           "type": 9
+        },
+        {
+          "id": "7:4393122270738686167",
+          "name": "isUser",
+          "type": 1
         }
       ],
       "relations": []

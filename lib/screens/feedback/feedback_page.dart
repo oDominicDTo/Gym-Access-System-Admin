@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gym_kiosk_admin/screens/feedback/submit_feedback.dart';
 import 'package:gym_kiosk_admin/screens/feedback/view_feedback.dart';
 import '../../widgets/custom_card_button.dart';
 
@@ -64,7 +65,12 @@ class _FeedbackPageState extends State<FeedbackPage>{
                               title: 'Submit Feedback',
                               icon: Icons.add_comment,
                               onPressed: () {
-                                // Action to submit feedback
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const SubmitFeedback(),
+                                  ),
+                                );
                               },
                               iconColor: Colors.pink,
                             ),

@@ -250,7 +250,7 @@ final _entities = <ModelEntity>[
   ModelEntity(
       id: const IdUid(13, 6886693126471221766),
       name: 'UserFeedback',
-      lastPropertyId: const IdUid(6, 8956989881464025423),
+      lastPropertyId: const IdUid(7, 4393122270738686167),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
@@ -282,6 +282,11 @@ final _entities = <ModelEntity>[
             id: const IdUid(6, 8956989881464025423),
             name: 'title',
             type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(7, 4393122270738686167),
+            name: 'isUser',
+            type: 1,
             flags: 0)
       ],
       relations: <ModelRelation>[],
@@ -616,17 +621,21 @@ ModelDefinition getObjectBoxModel() {
         },
         objectToFB: (UserFeedback object, fb.Builder fbb) {
           final feedbackTextOffset = fbb.writeString(object.feedbackText);
-          final categoryOffset = fbb.writeString(object.category);
+          final categoryOffset = object.category == null
+              ? null
+              : fbb.writeString(object.category!);
           final nameOffset =
               object.name == null ? null : fbb.writeString(object.name!);
-          final titleOffset = fbb.writeString(object.title);
-          fbb.startTable(7);
+          final titleOffset =
+              object.title == null ? null : fbb.writeString(object.title!);
+          fbb.startTable(8);
           fbb.addInt64(0, object.id);
           fbb.addInt64(1, object.submissionTime.millisecondsSinceEpoch);
           fbb.addOffset(2, feedbackTextOffset);
           fbb.addOffset(3, categoryOffset);
           fbb.addOffset(4, nameOffset);
           fbb.addOffset(5, titleOffset);
+          fbb.addBool(6, object.isUser);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -641,9 +650,11 @@ ModelDefinition getObjectBoxModel() {
               feedbackText: const fb.StringReader(asciiOptimization: true)
                   .vTableGet(buffer, rootOffset, 8, ''),
               category: const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 10, ''),
+                  .vTableGetNullable(buffer, rootOffset, 10),
               title: const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 14, ''),
+                  .vTableGetNullable(buffer, rootOffset, 14),
+              isUser: const fb.BoolReader()
+                  .vTableGet(buffer, rootOffset, 16, false),
               name: const fb.StringReader(asciiOptimization: true)
                   .vTableGetNullable(buffer, rootOffset, 12));
 
@@ -825,4 +836,8 @@ class UserFeedback_ {
   /// see [UserFeedback.title]
   static final title =
       QueryStringProperty<UserFeedback>(_entities[6].properties[5]);
+
+  /// see [UserFeedback.isUser]
+  static final isUser =
+      QueryBooleanProperty<UserFeedback>(_entities[6].properties[6]);
 }

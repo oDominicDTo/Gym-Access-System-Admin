@@ -195,9 +195,10 @@ class UserFeedback {
   DateTime submissionTime;
 
   final String feedbackText;
-  final String category; // Categories could be UI, Functionality, Performance, etc.
+  final String? category; // Categories could be UI, Functionality, Performance, etc.
   final String? name; // Optional: User's name
-  final String title;
+  final String? title;
+  final bool isUser;
 
   UserFeedback({
     this.id = 0,
@@ -205,6 +206,7 @@ class UserFeedback {
     required this.feedbackText,
     required this.category,
     required this.title,
+    required this.isUser,
     this.name,
   });
 }

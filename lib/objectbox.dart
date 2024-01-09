@@ -185,13 +185,14 @@ class ObjectBox {
 
     List<String> sentences = faker.lorem.sentences(3);
     String feedbackText = sentences.join(' ');
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 30; i++) {
       UserFeedback feedback = UserFeedback(
         submissionTime: faker.date.dateTime(minYear: 2022, maxYear: 2024),
         feedbackText: feedbackText,
         category: faker.randomGenerator.element(['UI', 'Functionality', 'Performance']),
         title: faker.lorem.words(3).join(' '), // Generate a title using faker
         name: faker.randomGenerator.boolean() ? faker.person.firstName() : 'Anonymous',
+        isUser: faker.randomGenerator.boolean(),
       );
 
       _feedbackBox.put(feedback);
@@ -473,8 +474,40 @@ class ObjectBox {
     return null; // Return null if authentication fails
   }
 
-  Future<int> addFeedback(UserFeedback feedback) async {
-    return _feedbackBox.put(feedback);
+  Future<void> addFeedbackUser({
+    String? name,
+    required String title,
+    required String category,
+    required String feedbackText,
+  }) async {
+    final feedback = UserFeedback(
+      submissionTime: DateTime.now(),
+      feedbackText: feedbackText,
+      category: category,
+      title: title,
+      isUser: true,
+      name: name,
+    );
+
+    _feedbackBox.put(feedback);
+  }
+
+  Future<void> addFeedbackAdmin({
+    String? name,
+    required String title,
+    required String category,
+    required String feedbackText,
+  }) async {
+    final feedback = UserFeedback(
+      submissionTime: DateTime.now(),
+      feedbackText: feedbackText,
+      category: category,
+      title: title,
+      isUser: false, // Assuming this is set for admin submissions
+      name: name,
+    );
+
+    _feedbackBox.put(feedback);
   }
 
   UserFeedback getFeedback(int id) {
@@ -498,8 +531,18 @@ class ObjectBox {
     return _feedbackBox.getAllAsync();
   }
 
-  Future<List<UserFeedback>> getFeedbackSortedByTime() async {
-    final query = _feedbackBox.query().order(UserFeedback_.submissionTime, flags : Order.descending).build();
+  Future<List<UserFeedback>> getFeedbackSortedByTimeUser(bool isUser) async {
+    final query = _feedbackBox
+        .query(UserFeedback_.isUser.equals(isUser))
+        .order(UserFeedback_.submissionTime, flags: Order.descending)
+        .build();
+    return query.find();
+  }
+  Future<List<UserFeedback>> getFeedbackSortedByTimeAdmin(bool isUser) async {
+    final query = _feedbackBox
+        .query(UserFeedback_.isUser.equals(!isUser))
+        .order(UserFeedback_.submissionTime, flags: Order.descending)
+        .build();
     return query.find();
   }
 }

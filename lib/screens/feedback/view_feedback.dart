@@ -17,7 +17,7 @@ class _ViewFeedbackState extends State<ViewFeedback> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<UserFeedback>>(
-      future: objectbox.getFeedbackSortedByTime(),
+      future: objectbox.getFeedbackSortedByTimeUser(true),
       builder: (context, AsyncSnapshot<List<UserFeedback>?> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
