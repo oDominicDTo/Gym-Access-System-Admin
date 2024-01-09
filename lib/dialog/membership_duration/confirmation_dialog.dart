@@ -26,7 +26,7 @@ class ConfirmationDialog extends StatelessWidget {
       ),
       content: Text(
         message,
-        style: TextStyle(color: Colors.black, fontFamily: 'Poppins', fontSize: 15),
+        style: const TextStyle(color: Colors.black, fontFamily: 'Poppins', fontSize: 15),
         textAlign: TextAlign.center,
       ),
       actions: [

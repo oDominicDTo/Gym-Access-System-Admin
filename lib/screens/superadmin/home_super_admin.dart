@@ -23,7 +23,7 @@ class _HomeSuperAdminPageState extends State<HomeSuperAdminPage> {
   final List<Widget> _screens = [
     const HomePage(),
     const Center(child: Text('Welcome to Overview!')),
-    const MemberInput(),
+    const MemberInput(adminName: '',),
     const MemberListScreen(),
     const RenewalPage(),
     const ManagementPage(),
@@ -130,6 +130,8 @@ class _HomeSuperAdminPageState extends State<HomeSuperAdminPage> {
                 );
               },
             )
+                : _selectedIndex == 2 // Check for Add Member screen
+                ? MemberInput(adminName: widget.adminName) // Pass adminName here
                 : _screens[_selectedIndex],
           ),
         ],

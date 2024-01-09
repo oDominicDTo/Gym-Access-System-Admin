@@ -160,7 +160,13 @@ class MembershipType {
     required this.discount,
     required this.isLifetime,
   });
+  @override
+  String toString() {
+    return typeName; // Or any other representation you prefer
+  }
 }
+
+
 
 @Entity()
 class RenewalLog {
@@ -238,17 +244,17 @@ class AdminRenewalLog {
   @Property(type: PropertyType.date)
   DateTime renewalDate; // Date of renewal
 
-  int memberId; // ID of the member who renewed
-  int adminId; // ID of the admin who performed the action
-  int membershipTypeId; // ID of the membership type
+  String memberName; // ID of the member who renewed
+  String adminName; // ID of the admin who performed the action
+  String membershipType; // ID of the membership type
   double amount; // Amount paid for membership renewal
 
   AdminRenewalLog({
     this.id = 0,
     required this.renewalDate,
-    required this.memberId,
-    required this.adminId,
-    required this.membershipTypeId,
+    required this.memberName,
+    required this.adminName,
+    required this.membershipType,
     required this.amount,
   });
 
@@ -265,17 +271,17 @@ class NewMemberLog {
   @Property(type: PropertyType.date)
   DateTime creationDate; // Date of creation
 
-  int memberId; // ID of the new member
-  int adminId; // ID of the admin who added the member
-  int membershipTypeId; // ID of the membership type
+  String memberName; // ID of the new member
+  String adminName; // ID of the admin who added the member
+  String membershipType; // ID of the membership type
   double amount; // Amount paid for new membership
 
   NewMemberLog({
     this.id = 0,
     required this.creationDate,
-    required this.memberId,
-    required this.adminId,
-    required this.membershipTypeId,
+    required this.memberName,
+    required this.adminName,
+    required this.membershipType,
     required this.amount,
   });
 

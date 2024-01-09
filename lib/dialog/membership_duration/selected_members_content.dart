@@ -136,10 +136,10 @@ class _AdjustSelectedMembershipDurationState extends State<AdjustSelectedMembers
                   context: context,
                   builder: (BuildContext context) {
                     return AlertDialog(
-                      title: Row(
+                      title: const Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Icon(
+                          Icon(
                             Icons.error_outline,
                             color: Colors.red,
                             size: 40.0, // Adjust the size according to your preference
@@ -147,15 +147,15 @@ class _AdjustSelectedMembershipDurationState extends State<AdjustSelectedMembers
                         ], // Add a comma here
                       ),
 
-                      content: Container(
+                      content: const SizedBox(
                             width: 400.0,
                             height: 60,// Adjust the width as needed
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                const Text('Action Required', style: TextStyle(color: Colors.black, fontFamily: 'Poppins', fontWeight: FontWeight.bold, fontSize: 15)),
-                                const SizedBox(height: 10.0),
-                                const Text('Please add or subtract days first.', style: TextStyle(color: Colors.black, fontFamily: 'Poppins', fontSize: 15)),
+                                Text('Action Required', style: TextStyle(color: Colors.black, fontFamily: 'Poppins', fontWeight: FontWeight.bold, fontSize: 15)),
+                                SizedBox(height: 10.0),
+                                Text('Please add or subtract days first.', style: TextStyle(color: Colors.black, fontFamily: 'Poppins', fontSize: 15)),
                               ],
                             ),
                           ),
@@ -192,11 +192,11 @@ class _AdjustSelectedMembershipDurationState extends State<AdjustSelectedMembers
                           showDialog(
                             context: context,
                             builder: (BuildContext context) {
-                              return AlertDialog(
+                              return const AlertDialog(
                                   title: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                  const Icon(
+                                  Icon(
                                   Icons.check_circle,
                                   color: Colors.green,
                                   size: 50.0, // Adjust the size according to your preference
@@ -204,15 +204,15 @@ class _AdjustSelectedMembershipDurationState extends State<AdjustSelectedMembers
                               ], // Add a comma here
                               ),
 
-                              content: Container(
+                              content: SizedBox(
                               width: 550.0,
                               height: 80,// Adjust the width as needed
                               child: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                              const Text('Success', style: TextStyle(color: Colors.black, fontFamily: 'Poppins', fontWeight: FontWeight.bold, fontSize: 20)),
-                              const SizedBox(height: 10.0),
-                              const Text('Membership duration updated for selected members.', style: TextStyle(color: Colors.black, fontFamily: 'Poppins', fontSize: 15)),
+                              Text('Success', style: TextStyle(color: Colors.black, fontFamily: 'Poppins', fontWeight: FontWeight.bold, fontSize: 20)),
+                              SizedBox(height: 10.0),
+                              Text('Membership duration updated for selected members.', style: TextStyle(color: Colors.black, fontFamily: 'Poppins', fontSize: 15)),
                               ],
                               ),
                               ),
@@ -234,7 +234,7 @@ class _AdjustSelectedMembershipDurationState extends State<AdjustSelectedMembers
               }
             },
             style: ElevatedButton.styleFrom(
-              side: BorderSide(color: Colors.black), // Set border color to black
+              side: const BorderSide(color: Colors.black), // Set border color to black
             ),
             child: const Text('Update Duration for Selected Members', style: TextStyle(fontFamily: 'Poppins', color: Colors.black)),
           ),

@@ -12,7 +12,7 @@ class MembershipDurationPage extends StatefulWidget {
   final String address;
   final String dateOfBirth;
   final Function(Member) onSaveMember;
-
+  final String adminName;
   const MembershipDurationPage({
     Key? key,
     this.selectedMembershipType,
@@ -23,6 +23,7 @@ class MembershipDurationPage extends StatefulWidget {
     required this.address,
     required this.onSaveMember,
     required this.dateOfBirth,
+    required this.adminName,
   }) : super(key: key);
 
   @override
@@ -161,6 +162,7 @@ class _MembershipDurationPageState extends State<MembershipDurationPage> {
                                               builder: (context) => CameraPage(
                                                 newMember: newMember,
                                                 selectedMembershipType: widget.selectedMembershipType,
+                                                adminName: widget.adminName,
                                               ),
                                             ),
                                           );

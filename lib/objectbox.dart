@@ -5,6 +5,7 @@ import 'package:path/path.dart' as p;
 import 'models/model.dart';
 import 'objectbox.g.dart'; // Assuming Member entity is defined in model.dart
 import 'package:gym_kiosk_admin/services/nfc_service.dart';
+import 'dart:math';
 
 class ObjectBox {
   late final Store _store;
@@ -18,7 +19,8 @@ class ObjectBox {
   late final NFCService _nfcService;
   late final Box<RenewalLog> _renewalLogBox;
   late final Box<UserFeedback> _feedbackBox;
-
+  late final Box<NewMemberLog> _newMemberLogBox;
+  late final Box<AdminRenewalLog> _adminRenewalLogBox;
   ObjectBox._create(this._store) {
     // Optional: enable ObjectBox Admin on debug builds.
     // https://docs.objectbox.io/data-browser
@@ -34,6 +36,8 @@ class ObjectBox {
     _nfcService = NFCService();
     _renewalLogBox = Box<RenewalLog>(_store);
     _feedbackBox = Box<UserFeedback>(_store);
+    _newMemberLogBox = Box<NewMemberLog>(_store);
+    _adminRenewalLogBox = Box<AdminRenewalLog>(_store);
 
     // Start NFC event listener
     _startNFCListener();
@@ -49,7 +53,7 @@ class ObjectBox {
   static Future<ObjectBox> create() async {
     // Set a unique directory within the documents directory
     final directoryPath =
-        p.join((await getApplicationDocumentsDirectory()).path, "Kiosk");
+    p.join((await getApplicationDocumentsDirectory()).path, "Kiosk");
 
     // Create the directory if it doesn't exist
     await Directory(directoryPath).create(recursive: true);
@@ -59,6 +63,7 @@ class ObjectBox {
 
     return ObjectBox._create(store);
   }
+
   void _startNFCListener() {
     _nfcService.onNFCEvent.listen((tagId) {
       if (tagId != 'Error') {
@@ -83,7 +88,8 @@ class ObjectBox {
 
   void _recordCheckIn(Member member, DateTime checkInTime) {
     final checkIn = CheckIn(
-      member: ToOne<Member>()..target = member,
+      member: ToOne<Member>()
+        ..target = member,
       checkInTime: checkInTime,
     );
     _checkInBox.put(checkIn);
@@ -91,7 +97,8 @@ class ObjectBox {
 
   void _recordCheckOut(Member member, DateTime checkOutTime) {
     final checkOut = CheckOut(
-      member: ToOne<Member>()..target = member,
+      member: ToOne<Member>()
+        ..target = member,
       checkOutTime: checkOutTime,
     );
     _checkOutBox.put(checkOut);
@@ -142,7 +149,8 @@ class ObjectBox {
       membershipEndDate: DateTime.now().add(const Duration(days: 30)),
       photoPath: 'dom.jpg',
     );
-    member1.membershipType.target = membershipTypes[faker.randomGenerator.integer(membershipTypes.length)];
+    member1.membershipType.target =
+    membershipTypes[faker.randomGenerator.integer(membershipTypes.length)];
 
     Member member2 = Member(
       firstName: 'Jay Ann',
@@ -156,13 +164,16 @@ class ObjectBox {
       membershipEndDate: DateTime.now().add(const Duration(days: 30)),
       photoPath: 'jayan.jpg',
     );
-    member2.membershipType.target = membershipTypes[faker.randomGenerator.integer(membershipTypes.length)];
+    member2.membershipType.target =
+    membershipTypes[faker.randomGenerator.integer(membershipTypes.length)];
 
     // When the Member is put, its MembershipType will automatically be put into the MembershipType Box.
     _memberBox.putMany([member1, member2]);
 
 
     for (int i = 0; i < 100; i++) {
+      int randomDays = Random().nextInt(365 * 2) -
+          365; // generates a random integer between -365 and 365
       Member member = Member(
         firstName: faker.person.firstName(),
         lastName: faker.person.lastName(),
@@ -172,12 +183,14 @@ class ObjectBox {
         address: faker.address.streetAddress(),
         email: faker.internet.email(),
         membershipStartDate: DateTime.now(),
-        membershipEndDate: DateTime.now().add(const Duration(days: 365)),
+        membershipEndDate: DateTime.now().add(Duration(days: randomDays)),
+        // adds or subtracts the random number of days from the current date
         photoPath: faker.image.image(),
       );
 
       // Assign a random membership type to the member
-      member.membershipType.target = membershipTypes[faker.randomGenerator.integer(membershipTypes.length)];
+      member.membershipType.target =
+      membershipTypes[faker.randomGenerator.integer(membershipTypes.length)];
 
       // When the Member is put, its MembershipType will automatically be put into the MembershipType Box.
       _memberBox.put(member);
@@ -189,15 +202,18 @@ class ObjectBox {
       UserFeedback feedback = UserFeedback(
         submissionTime: faker.date.dateTime(minYear: 2022, maxYear: 2024),
         feedbackText: feedbackText,
-        category: faker.randomGenerator.element(['UI', 'Functionality', 'Performance']),
-        title: faker.lorem.words(3).join(' '), // Generate a title using faker
-        name: faker.randomGenerator.boolean() ? faker.person.firstName() : 'Anonymous',
+        category: faker.randomGenerator.element(
+            ['UI', 'Functionality', 'Performance']),
+        title: faker.lorem.words(3).join(' '),
+        // Generate a title using faker
+        name: faker.randomGenerator.boolean()
+            ? faker.person.firstName()
+            : 'Anonymous',
         isUser: faker.randomGenerator.boolean(),
       );
 
       _feedbackBox.put(feedback);
     }
-
   }
 
   void _putAdminData() async {
@@ -252,16 +268,19 @@ class ObjectBox {
 
   List<String> getAllMemberNames() {
     final members = _memberBox.getAll();
-    return members.map((member) => '${member.firstName} ${member.lastName}').toList();
+    return members.map((member) => '${member.firstName} ${member.lastName}')
+        .toList();
   }
 
   // Assuming you have a Box<Member> instance named 'box'
   List<Member> getMembersSortedByStartDate() {
-    final query = _memberBox.query(Member_.membershipStartDate.notNull()).build();
+    final query = _memberBox.query(Member_.membershipStartDate.notNull())
+        .build();
     final members = query.find();
     query.close();
 
-    members.sort((a, b) => b.membershipStartDate.compareTo(a.membershipStartDate));
+    members.sort((a, b) =>
+        b.membershipStartDate.compareTo(a.membershipStartDate));
 
     return members;
   }
@@ -295,16 +314,20 @@ class ObjectBox {
     final members = _memberBox.getAll(); // Retrieve all members
 
     for (final member in members) {
-      member.extendMembership(days); // Extend membership duration for each member
+      member.extendMembership(
+          days); // Extend membership duration for each member
       _memberBox.put(member); // Update the member in the database
     }
   }
-  void updateMembershipDurationForSelectedMembers(List<int> selectedMemberIds, int days) {
+
+  void updateMembershipDurationForSelectedMembers(List<int> selectedMemberIds,
+      int days) {
     for (final memberId in selectedMemberIds) {
       final member = _memberBox.get(memberId);
 
       if (member != null) {
-        member.extendMembership(days); // Extend membership duration for each selected member
+        member.extendMembership(
+            days); // Extend membership duration for each selected member
         _memberBox.put(member); // Update the member in the database
       }
     }
@@ -326,19 +349,23 @@ class ObjectBox {
   }
 
   Future<bool> checkTagIDExists(String tagId) async {
-    final memberQuery = _memberBox.query(Member_.nfcTagID.equals(tagId)).build();
-    final adminQuery = _administratorBox.query(Administrator_.nfcTagID.equals(tagId)).build();
+    final memberQuery = _memberBox.query(Member_.nfcTagID.equals(tagId))
+        .build();
+    final adminQuery = _administratorBox.query(
+        Administrator_.nfcTagID.equals(tagId)).build();
 
     final List<Member> members = memberQuery.find();
     final List<Administrator> admins = adminQuery.find();
 
     return (members.isNotEmpty || admins.isNotEmpty);
   }
+
 // CRUD methods for Administrator entity
 
   Future<Administrator?> getAdministratorByTagId(String tagId) async {
     // Create a query to find an administrator with the given NFC tag ID
-    final query = _administratorBox.query(Administrator_.nfcTagID.equals(tagId)).build();
+    final query = _administratorBox.query(Administrator_.nfcTagID.equals(tagId))
+        .build();
 
     // Find and return the first matching administrator (or null if not found)
     final List<Administrator> admins = query.find();
@@ -363,7 +390,8 @@ class ObjectBox {
   }
 
   List<Administrator> getStaffAdministrators() {
-    final query = _administratorBox.query(Administrator_.type.equals('staff')).build();
+    final query = _administratorBox.query(Administrator_.type.equals('staff'))
+        .build();
     return query.find();
   }
 
@@ -390,8 +418,10 @@ class ObjectBox {
 
     return adminName;
   }
+
   Future<Administrator?> getAdministratorByUsername(String username) async {
-    final query = _administratorBox.query(Administrator_.username.equals(username)).build();
+    final query = _administratorBox.query(
+        Administrator_.username.equals(username)).build();
     final List<Administrator> admins = query.find();
     return admins.isNotEmpty ? admins.first : null;
   }
@@ -421,6 +451,7 @@ class ObjectBox {
       }
     }
   }
+
   // CRUD methods for RenewalLog entity
 
   // Create a new RenewalLog entry
@@ -452,12 +483,21 @@ class ObjectBox {
   Future<List<RenewalLog>> getAllRenewalLogsAsync() async {
     return _renewalLogBox.getAllAsync();
   }
+
   Future<List<RenewalLog>> getRenewalLogsForYear(int year) async {
     final startOfYear = DateTime(year, 1, 1);
-    final endOfYear = DateTime(year, 12, 31, 23, 59, 59, 999);
+    final endOfYear = DateTime(
+        year,
+        12,
+        31,
+        23,
+        59,
+        59,
+        999);
 
     final query = _renewalLogBox.query(
-        RenewalLog_.renewalDate.greaterThan(startOfYear.millisecondsSinceEpoch) &
+        RenewalLog_.renewalDate.greaterThan(
+            startOfYear.millisecondsSinceEpoch) &
         RenewalLog_.renewalDate.lessThan(endOfYear.millisecondsSinceEpoch)
     ).build();
 
@@ -466,7 +506,8 @@ class ObjectBox {
   }
 
   Administrator? authenticateAdmin(String username, String password) {
-    final query = _administratorBox.query(Administrator_.username.equals(username)).build();
+    final query = _administratorBox.query(
+        Administrator_.username.equals(username)).build();
     final List<Administrator> admins = query.find();
     if (admins.isNotEmpty && admins.first.password == password) {
       return admins.first; // Return the authenticated administrator
@@ -503,7 +544,8 @@ class ObjectBox {
       feedbackText: feedbackText,
       category: category,
       title: title,
-      isUser: false, // Assuming this is set for admin submissions
+      isUser: false,
+      // Assuming this is set for admin submissions
       name: name,
     );
 
@@ -538,11 +580,54 @@ class ObjectBox {
         .build();
     return query.find();
   }
+
   Future<List<UserFeedback>> getFeedbackSortedByTimeAdmin(bool isUser) async {
     final query = _feedbackBox
         .query(UserFeedback_.isUser.equals(!isUser))
         .order(UserFeedback_.submissionTime, flags: Order.descending)
         .build();
     return query.find();
+  }
+
+  Future<Map<String, Map<String, int>>> getMembershipStatusData() async {
+    final List<MembershipType> membershipTypes = _membershipTypeBox.getAll();
+    final Map<String, Map<String, int>> membershipData = {};
+
+    for (var type in membershipTypes) {
+      final String typeName = type.typeName;
+
+      int activeCount = 0;
+      int expiredCount = 0;
+      int inactiveCount = 0;
+
+      // Filter members by type
+      final membersOfType = _memberBox.query(Member_.membershipType.equals(type.id)).build().find();
+
+      for (var member in membersOfType) {
+        switch (member.getMembershipStatus()) {
+          case MembershipStatus.active:
+            activeCount++;
+            break;
+          case MembershipStatus.expired:
+            expiredCount++;
+            break;
+          case MembershipStatus.inactive:
+            inactiveCount++;
+            break;
+        }
+      }
+
+      membershipData[typeName] = {
+        'Active': activeCount,
+        'Expired': expiredCount,
+        'Inactive': inactiveCount,
+      };
+    }
+
+    return membershipData;
+  }
+
+  Future<int> addNewMemberLog(NewMemberLog newMemberLog) async {
+    return _newMemberLogBox.put(newMemberLog);
   }
 }

@@ -4,6 +4,7 @@ import 'package:gym_kiosk_admin/screens/feedback/feedback_page.dart';
 import 'package:gym_kiosk_admin/screens/home_page.dart';
 import 'package:gym_kiosk_admin/dialog/admin/management_page_admin.dart';
 import 'package:gym_kiosk_admin/screens/member_list_screen.dart';
+import 'package:gym_kiosk_admin/screens/membership_analytics.dart';
 import 'package:gym_kiosk_admin/widgets/top_navigation_bar.dart';
 
 import '../renew/renewal_page.dart';
@@ -22,8 +23,8 @@ class _HomeAdminPageState extends State<HomeAdminPage> {
 
   final List<Widget> _screens = [
     const HomePage(),
-    const Center(child: Text('Welcome to Overview!')),
-    const MemberInput(),
+    MembershipStatusChartPage(),
+    const MemberInput(adminName: '',),
     const MemberListScreen(),
     const RenewalPage(),
     const ManagementPage(),
@@ -130,6 +131,8 @@ class _HomeAdminPageState extends State<HomeAdminPage> {
                 );
               },
             )
+                : _selectedIndex == 2 // Check for Add Member screen
+                ? MemberInput(adminName: widget.adminName) // Pass adminName here
                 : _screens[_selectedIndex],
           ),
         ],

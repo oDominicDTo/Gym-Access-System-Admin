@@ -132,7 +132,7 @@ class _MemberSelectionDialogState extends State<MemberSelectionDialog> {
                           final isSelected = selectedMemberIds.contains(member.id);
 
                           return ListTile(
-                            title: Text('${member.firstName} ${member.lastName}', style: TextStyle(color: Colors.black, fontFamily: 'Poppins')),
+                            title: Text('${member.firstName} ${member.lastName}', style: const TextStyle(color: Colors.black, fontFamily: 'Poppins')),
                             trailing: isSelected
                                 ? const Icon(Icons.check_box, color: Colors.blue)
                                 : const Icon(Icons.check_box_outline_blank),
@@ -178,7 +178,7 @@ class _MemberSelectionDialogState extends State<MemberSelectionDialog> {
                         itemBuilder: (context, index) {
                           final selectedMember = selectedMembers[index];
                           return ListTile(
-                            title: Text(selectedMember, style: TextStyle(color: Colors.black, fontFamily: 'Poppins')),
+                            title: Text(selectedMember, style: const TextStyle(color: Colors.black, fontFamily: 'Poppins')),
                             // Add any actions related to selected members here if needed
                           );
                         },
@@ -203,7 +203,7 @@ class _MemberSelectionDialogState extends State<MemberSelectionDialog> {
                       'No member selected',
                       style: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold, fontSize: 20),
                     ),
-                    content: Text(
+                    content: const Text(
                       'Please select member first.',
                       style: TextStyle(color: Colors.black, fontFamily: 'Poppins', fontSize: 15),
                     ),

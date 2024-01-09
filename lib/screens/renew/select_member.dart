@@ -71,7 +71,7 @@ class _MemberSelectionPageState extends State<MemberSelectionPage> {
             child: TextField(
               controller: _searchController,
               decoration: InputDecoration(
-                labelText: 'Search Members', labelStyle: TextStyle(fontFamily: 'Poppins'),
+                labelText: 'Search Members', labelStyle: const TextStyle(fontFamily: 'Poppins'),
                 prefixIcon: const Icon(Icons.search, color: Colors.purple),
                 filled: true,
                 fillColor: Colors.white,
@@ -105,7 +105,7 @@ class _MemberSelectionPageState extends State<MemberSelectionPage> {
                   child: Container(
                     color: _hoveredIndex == index ? Colors.lightBlueAccent : Colors.transparent,
                     child: ListTile(
-                      title: Text('${member.firstName} ${member.lastName}', style: TextStyle(fontFamily: 'Poppins')),
+                      title: Text('${member.firstName} ${member.lastName}', style: const TextStyle(fontFamily: 'Poppins')),
                     ),
                   ),
                 );

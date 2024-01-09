@@ -12,9 +12,10 @@ import 'dart:typed_data';
 class CameraPage extends StatefulWidget {
   final MembershipType? selectedMembershipType;
   final Member newMember;
+  final String adminName;
 
   const CameraPage(
-      {Key? key, required this.newMember, this.selectedMembershipType})
+      {Key? key, required this.newMember, this.selectedMembershipType, required this.adminName})
       : super(key: key);
 
   @override
@@ -144,7 +145,9 @@ class _CameraPageState extends State<CameraPage> {
         MaterialPageRoute(
           builder: (context) => InsertBlankCard(
               newMember: widget.newMember,
-              selectedMembershipType: widget.selectedMembershipType),
+              selectedMembershipType: widget.selectedMembershipType,
+  adminName: widget.adminName,
+            ),
         ),
       );
     } else {

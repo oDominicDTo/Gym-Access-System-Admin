@@ -8,7 +8,8 @@ import 'package:intl/intl.dart';
 enum AddressSelection { binan, other }
 
 class MemberInput extends StatefulWidget {
-  const MemberInput({Key? key}) : super(key: key);
+  final String adminName;
+  const MemberInput({Key? key, required this.adminName}) : super(key: key);
 
   @override
   State<MemberInput> createState() => _MemberInputState();
@@ -255,6 +256,7 @@ class _MemberInputState extends State<MemberInput> {
                                         ? '$otherCity, $otherBarangay'
                                         : 'Biñan, $selectedBinanBarangay',
                                     onSaveMember: (Member newMember) {},
+                                    adminName: widget.adminName,
                                   ),
                                 ),
                               );

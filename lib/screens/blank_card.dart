@@ -13,7 +13,9 @@ import '../../services/nfc_service.dart';
 class InsertBlankCard extends StatefulWidget {
   final Member newMember;
   final MembershipType? selectedMembershipType;
-  const InsertBlankCard({Key? key, required this.newMember, this.selectedMembershipType}) : super(key: key);
+  final String adminName;
+
+  const InsertBlankCard({Key? key, required this.newMember, this.selectedMembershipType, required this.adminName}) : super(key: key);
 
   @override
   State<InsertBlankCard> createState() => _InsertBlankCardState();
@@ -44,7 +46,18 @@ class _InsertBlankCardState extends State<InsertBlankCard> {
     if (!exists) {
       widget.newMember.nfcTagID = tagId;
       widget.newMember.membershipType.target = widget.selectedMembershipType;
+
+      final newMemberLog = NewMemberLog(
+        memberName: '${widget.newMember.firstName} ${widget.newMember.lastName}',
+        adminName: widget.adminName,
+        membershipType: widget.selectedMembershipType?.typeName ?? '',
+        amount: widget.selectedMembershipType?.fee ?? 0.0,
+        creationDate: DateTime.now(), // Add a timestamp for the log
+      );
+
       objectbox.addMember(widget.newMember);
+      objectbox.addNewMemberLog(newMemberLog); // Log the addition of the new member
+
       _showSuccessDialog();
     } else {
       _showExistingTagDialog();

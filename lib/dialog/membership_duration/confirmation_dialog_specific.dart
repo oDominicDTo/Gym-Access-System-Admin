@@ -26,7 +26,7 @@ class ConfirmationDialog extends StatelessWidget {
       ),
       content: Text(
         message,
-        style: TextStyle(color: Colors.black, fontFamily: 'Poppins', fontSize: 15),
+        style: const TextStyle(color: Colors.black, fontFamily: 'Poppins', fontSize: 15),
         textAlign: TextAlign.center,
       ),
 
@@ -47,7 +47,7 @@ class ConfirmationDialog extends StatelessWidget {
             onConfirmation(false); // Cancel the action
           },
           style: ElevatedButton.styleFrom(
-            side: BorderSide(color: Colors.red), // Set border color to black
+            side: const BorderSide(color: Colors.red), // Set border color to black
           ),
           child: const Text('No', style: TextStyle(color: Colors.black, fontFamily: 'Poppins')),
         ),

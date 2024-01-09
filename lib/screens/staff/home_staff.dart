@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:gym_kiosk_admin/screens/add_member.dart';
 import 'package:gym_kiosk_admin/screens/feedback/feedback_page.dart';
 import 'package:gym_kiosk_admin/screens/home_page.dart';
-import 'package:gym_kiosk_admin/dialog/admin/management_page_admin.dart';
 import 'package:gym_kiosk_admin/screens/member_list_screen.dart';
 import 'package:gym_kiosk_admin/widgets/top_navigation_bar.dart';
 
@@ -23,7 +22,9 @@ class _HomeStaffPageState extends State<HomeStaffPage> {
   final List<Widget> _screens = [
     const HomePage(),
     const Center(child: Text('Welcome to Overview!')),
-    const MemberInput(),
+    const MemberInput(
+      adminName: '',
+    ),
     const MemberListScreen(),
     const RenewalPage(),
     const FeedbackPage(),
@@ -113,16 +114,18 @@ class _HomeStaffPageState extends State<HomeStaffPage> {
           ),
           const VerticalDivider(thickness: 1, width: 1),
           Expanded(
-            child:
-                _selectedIndex == 5
+            child: _selectedIndex == 5
                 ? Navigator(
-              onGenerateRoute: (settings) {
-                return MaterialPageRoute(
-                  builder: (_) => const FeedbackPage(),
-                );
-              },
-            )
-                : _screens[_selectedIndex],
+                    onGenerateRoute: (settings) {
+                      return MaterialPageRoute(
+                        builder: (_) => const FeedbackPage(),
+                      );
+                    },
+                  )
+                : _selectedIndex == 2 // Check for Add Member screen
+                    ? MemberInput(
+                        adminName: widget.adminName) // Pass adminName here
+                    : _screens[_selectedIndex],
           ),
         ],
       ),

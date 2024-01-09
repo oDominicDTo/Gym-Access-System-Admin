@@ -294,7 +294,7 @@ final _entities = <ModelEntity>[
   ModelEntity(
       id: const IdUid(15, 7772235705929313319),
       name: 'AdminRenewalLog',
-      lastPropertyId: const IdUid(6, 3843739889110435778),
+      lastPropertyId: const IdUid(9, 5625649490804205479),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
@@ -308,24 +308,24 @@ final _entities = <ModelEntity>[
             type: 10,
             flags: 0),
         ModelProperty(
-            id: const IdUid(3, 5963594393753213004),
-            name: 'memberId',
-            type: 6,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(4, 2173068232630115283),
-            name: 'adminId',
-            type: 6,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(5, 6669964360131324254),
-            name: 'membershipTypeId',
-            type: 6,
-            flags: 0),
-        ModelProperty(
             id: const IdUid(6, 3843739889110435778),
             name: 'amount',
             type: 8,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(7, 6068771707186174779),
+            name: 'memberName',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(8, 4151446149217037214),
+            name: 'adminName',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(9, 5625649490804205479),
+            name: 'membershipType',
+            type: 9,
             flags: 0)
       ],
       relations: <ModelRelation>[],
@@ -362,7 +362,7 @@ final _entities = <ModelEntity>[
   ModelEntity(
       id: const IdUid(17, 911722525332705996),
       name: 'NewMemberLog',
-      lastPropertyId: const IdUid(6, 4453717152096912947),
+      lastPropertyId: const IdUid(9, 2701727070414414081),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
@@ -376,24 +376,24 @@ final _entities = <ModelEntity>[
             type: 10,
             flags: 0),
         ModelProperty(
-            id: const IdUid(3, 5215538072195219068),
-            name: 'memberId',
-            type: 6,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(4, 4414367922735005008),
-            name: 'adminId',
-            type: 6,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(5, 1561428821361172620),
-            name: 'membershipTypeId',
-            type: 6,
-            flags: 0),
-        ModelProperty(
             id: const IdUid(6, 4453717152096912947),
             name: 'amount',
             type: 8,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(7, 1422952817569272112),
+            name: 'adminName',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(8, 9212662791149283230),
+            name: 'memberName',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(9, 2701727070414414081),
+            name: 'membershipType',
+            type: 9,
             flags: 0)
       ],
       relations: <ModelRelation>[],
@@ -492,7 +492,13 @@ ModelDefinition getObjectBoxModel() {
         7341745565348888331,
         7276322085100816622,
         9047186856383652257,
-        980136744478674287
+        980136744478674287,
+        4414367922735005008,
+        5963594393753213004,
+        2173068232630115283,
+        6669964360131324254,
+        5215538072195219068,
+        1561428821361172620
       ],
       retiredRelationUids: const [337373602936818043, 3094033825849941879],
       modelVersion: 5,
@@ -788,13 +794,16 @@ ModelDefinition getObjectBoxModel() {
           object.id = id;
         },
         objectToFB: (AdminRenewalLog object, fb.Builder fbb) {
-          fbb.startTable(7);
+          final memberNameOffset = fbb.writeString(object.memberName);
+          final adminNameOffset = fbb.writeString(object.adminName);
+          final membershipTypeOffset = fbb.writeString(object.membershipType);
+          fbb.startTable(10);
           fbb.addInt64(0, object.id);
           fbb.addInt64(1, object.renewalDate.millisecondsSinceEpoch);
-          fbb.addInt64(2, object.memberId);
-          fbb.addInt64(3, object.adminId);
-          fbb.addInt64(4, object.membershipTypeId);
           fbb.addFloat64(5, object.amount);
+          fbb.addOffset(6, memberNameOffset);
+          fbb.addOffset(7, adminNameOffset);
+          fbb.addOffset(8, membershipTypeOffset);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -806,12 +815,12 @@ ModelDefinition getObjectBoxModel() {
               id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
               renewalDate: DateTime.fromMillisecondsSinceEpoch(
                   const fb.Int64Reader().vTableGet(buffer, rootOffset, 6, 0)),
-              memberId:
-                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 8, 0),
-              adminId:
-                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 10, 0),
-              membershipTypeId:
-                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 12, 0),
+              memberName: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 16, ''),
+              adminName: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 18, ''),
+              membershipType: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 20, ''),
               amount: const fb.Float64Reader()
                   .vTableGet(buffer, rootOffset, 14, 0));
 
@@ -860,13 +869,16 @@ ModelDefinition getObjectBoxModel() {
           object.id = id;
         },
         objectToFB: (NewMemberLog object, fb.Builder fbb) {
-          fbb.startTable(7);
+          final adminNameOffset = fbb.writeString(object.adminName);
+          final memberNameOffset = fbb.writeString(object.memberName);
+          final membershipTypeOffset = fbb.writeString(object.membershipType);
+          fbb.startTable(10);
           fbb.addInt64(0, object.id);
           fbb.addInt64(1, object.creationDate.millisecondsSinceEpoch);
-          fbb.addInt64(2, object.memberId);
-          fbb.addInt64(3, object.adminId);
-          fbb.addInt64(4, object.membershipTypeId);
           fbb.addFloat64(5, object.amount);
+          fbb.addOffset(6, adminNameOffset);
+          fbb.addOffset(7, memberNameOffset);
+          fbb.addOffset(8, membershipTypeOffset);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -878,12 +890,12 @@ ModelDefinition getObjectBoxModel() {
               id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
               creationDate: DateTime.fromMillisecondsSinceEpoch(
                   const fb.Int64Reader().vTableGet(buffer, rootOffset, 6, 0)),
-              memberId:
-                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 8, 0),
-              adminId:
-                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 10, 0),
-              membershipTypeId:
-                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 12, 0),
+              memberName: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 18, ''),
+              adminName: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 16, ''),
+              membershipType: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 20, ''),
               amount: const fb.Float64Reader()
                   .vTableGet(buffer, rootOffset, 14, 0));
 
@@ -1081,21 +1093,21 @@ class AdminRenewalLog_ {
   static final renewalDate =
       QueryIntegerProperty<AdminRenewalLog>(_entities[7].properties[1]);
 
-  /// see [AdminRenewalLog.memberId]
-  static final memberId =
-      QueryIntegerProperty<AdminRenewalLog>(_entities[7].properties[2]);
-
-  /// see [AdminRenewalLog.adminId]
-  static final adminId =
-      QueryIntegerProperty<AdminRenewalLog>(_entities[7].properties[3]);
-
-  /// see [AdminRenewalLog.membershipTypeId]
-  static final membershipTypeId =
-      QueryIntegerProperty<AdminRenewalLog>(_entities[7].properties[4]);
-
   /// see [AdminRenewalLog.amount]
   static final amount =
-      QueryDoubleProperty<AdminRenewalLog>(_entities[7].properties[5]);
+      QueryDoubleProperty<AdminRenewalLog>(_entities[7].properties[2]);
+
+  /// see [AdminRenewalLog.memberName]
+  static final memberName =
+      QueryStringProperty<AdminRenewalLog>(_entities[7].properties[3]);
+
+  /// see [AdminRenewalLog.adminName]
+  static final adminName =
+      QueryStringProperty<AdminRenewalLog>(_entities[7].properties[4]);
+
+  /// see [AdminRenewalLog.membershipType]
+  static final membershipType =
+      QueryStringProperty<AdminRenewalLog>(_entities[7].properties[5]);
 }
 
 /// [CardChangeLog] entity fields to define ObjectBox queries.
@@ -1127,19 +1139,19 @@ class NewMemberLog_ {
   static final creationDate =
       QueryIntegerProperty<NewMemberLog>(_entities[9].properties[1]);
 
-  /// see [NewMemberLog.memberId]
-  static final memberId =
-      QueryIntegerProperty<NewMemberLog>(_entities[9].properties[2]);
-
-  /// see [NewMemberLog.adminId]
-  static final adminId =
-      QueryIntegerProperty<NewMemberLog>(_entities[9].properties[3]);
-
-  /// see [NewMemberLog.membershipTypeId]
-  static final membershipTypeId =
-      QueryIntegerProperty<NewMemberLog>(_entities[9].properties[4]);
-
   /// see [NewMemberLog.amount]
   static final amount =
-      QueryDoubleProperty<NewMemberLog>(_entities[9].properties[5]);
+      QueryDoubleProperty<NewMemberLog>(_entities[9].properties[2]);
+
+  /// see [NewMemberLog.adminName]
+  static final adminName =
+      QueryStringProperty<NewMemberLog>(_entities[9].properties[3]);
+
+  /// see [NewMemberLog.memberName]
+  static final memberName =
+      QueryStringProperty<NewMemberLog>(_entities[9].properties[4]);
+
+  /// see [NewMemberLog.membershipType]
+  static final membershipType =
+      QueryStringProperty<NewMemberLog>(_entities[9].properties[5]);
 }

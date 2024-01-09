@@ -29,11 +29,11 @@ class _SubmitFeedbackState extends State<SubmitFeedback> {
       builder: (BuildContext context) {
         return AlertDialog(
 
-          title: Row(
+          title: const Row(
             mainAxisAlignment: MainAxisAlignment.center,
 
             children: [
-              const Icon(
+              Icon(
                 Icons.check_circle,
                 color: Colors.green,
                 size: 50.0, // Adjust the size according to your preference
@@ -41,14 +41,14 @@ class _SubmitFeedbackState extends State<SubmitFeedback> {
             ], // Add a comma here
           ), // Add a comma here
 
-          content: Container(
+          content: const SizedBox(
             width: 500.0, // Adjust the width as needed
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Text('Feedback Sent!', style: TextStyle(color: Colors.black, fontFamily: 'Poppins', fontWeight: FontWeight.bold, fontSize: 25)),
-                const SizedBox(height: 10.0),
-                const Text('Your feedback has been successfully submitted.', style: TextStyle(color: Colors.black, fontFamily: 'Poppins', fontSize: 13)),
+                Text('Feedback Sent!', style: TextStyle(color: Colors.black, fontFamily: 'Poppins', fontWeight: FontWeight.bold, fontSize: 25)),
+                SizedBox(height: 10.0),
+                Text('Your feedback has been successfully submitted.', style: TextStyle(color: Colors.black, fontFamily: 'Poppins', fontSize: 13)),
               ],
             ),
           ),
