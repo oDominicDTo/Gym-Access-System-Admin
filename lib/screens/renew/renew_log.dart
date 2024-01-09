@@ -194,7 +194,7 @@ class _RenewalLogPageState extends State<RenewalLogPage> {
 
     for (var member in displayedMembers) {
       List<DataCell> cells = [
-        DataCell(Text('${member.firstName} ${member.lastName}')),
+        DataCell(Text('${member.firstName} ${member.lastName}', style: TextStyle(fontFamily: 'Poppins'))),
         ...List.generate(12, (index) {
           var renewalDate = renewalLogs.firstWhere(
                   (log) => log.member.target!.id == member.id && log.renewalDate.month == index + 1,

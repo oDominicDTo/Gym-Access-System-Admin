@@ -43,7 +43,7 @@ class _MembershipDurationPageState extends State<MembershipDurationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Membership Duration'),
+        title: const Text('Membership Duration', style: TextStyle(fontFamily: 'Poppins')),
       ),
       body: Padding(
         padding: const EdgeInsets.all(10),
@@ -112,7 +112,7 @@ class _MembershipDurationPageState extends State<MembershipDurationPage> {
             const SizedBox(height: 20),
             Text(
               'Total Price: PHP ${totalPrice.toStringAsFixed(2)}',
-              style: const TextStyle(fontSize: 20),
+              style: const TextStyle(fontSize: 20, fontFamily: 'Poppins'),
             ),
             const SizedBox(height: 100),
             Row(
@@ -158,7 +158,8 @@ class _MembershipDurationPageState extends State<MembershipDurationPage> {
                       'Confirm',
                       style: TextStyle(
                         color: isConfirmButtonHovered ? Colors.black : Colors.white,
-                        fontSize: 16, // Adjust the font size here
+                        fontSize: 16,
+                        fontFamily: 'Poppins'// Adjust the font size here
                       ),
                     ),
                   ),

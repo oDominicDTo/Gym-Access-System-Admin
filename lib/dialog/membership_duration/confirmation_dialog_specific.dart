@@ -19,22 +19,37 @@ class ConfirmationDialog extends StatelessWidget {
         : 'Are you sure you want $operation $days days $operationType specific members?';
 
     return AlertDialog(
-      title: const Text('Confirmation'),
-      content: Text(message),
+      title: const Text(
+        'Confirmation',
+        style: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold, fontSize: 20),
+        textAlign: TextAlign.center,
+      ),
+      content: Text(
+        message,
+        style: TextStyle(color: Colors.black, fontFamily: 'Poppins', fontSize: 15),
+        textAlign: TextAlign.center,
+      ),
+
       actions: [
         TextButton(
           onPressed: () {
             Navigator.of(context).pop(); // Close the dialog
             onConfirmation(true); // Confirm the action
           },
-          child: const Text('Yes'),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.green, // Set background color to black
+          ),
+          child: const Text('Yes', style: TextStyle(color: Colors.white, fontFamily: 'Poppins')),
         ),
         TextButton(
           onPressed: () {
             Navigator.of(context).pop(); // Close the dialog
             onConfirmation(false); // Cancel the action
           },
-          child: const Text('No'),
+          style: ElevatedButton.styleFrom(
+            side: BorderSide(color: Colors.red), // Set border color to black
+          ),
+          child: const Text('No', style: TextStyle(color: Colors.black, fontFamily: 'Poppins')),
         ),
       ],
     );

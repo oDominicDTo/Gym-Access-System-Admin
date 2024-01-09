@@ -5,12 +5,14 @@ import 'package:gym_kiosk_admin/main.dart';
 import 'confirmation_dialog_specific.dart';
 
 class AdjustSelectedMembershipDuration extends StatefulWidget {
+
   final List<int> selectedMemberIds;
   final BuildContext initialContext;
   final ValueChanged<int> onDaysChanged;
 
   const AdjustSelectedMembershipDuration({
     Key? key,
+
     required this.selectedMemberIds,
     required this.initialContext,
     required this.onDaysChanged,
@@ -53,7 +55,7 @@ class _AdjustSelectedMembershipDurationState extends State<AdjustSelectedMembers
             padding: EdgeInsets.all(8.0),
             child: Text(
               'Adjust Membership Duration for Selected Members',
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Poppins', fontSize: 15),
             ),
           ),
           Expanded(
@@ -93,7 +95,7 @@ class _AdjustSelectedMembershipDurationState extends State<AdjustSelectedMembers
                         days == 0
                             ? 'Days to Add/Subtract'
                             : 'Days to ${days >= 0 ? 'Add' : 'Subtract'}: ${days.abs()}',
-                        style: const TextStyle(fontSize: 18),
+                        style: const TextStyle(fontSize: 18, fontFamily: 'Poppins'),
                       ),
                       const SizedBox(width: 16),
                       GestureDetector(
@@ -134,17 +136,44 @@ class _AdjustSelectedMembershipDurationState extends State<AdjustSelectedMembers
                   context: context,
                   builder: (BuildContext context) {
                     return AlertDialog(
-                      title: const Text('Action Required'),
-                      content: const Text('Please add or subtract days first.'),
+                      title: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(
+                            Icons.error_outline,
+                            color: Colors.red,
+                            size: 40.0, // Adjust the size according to your preference
+                          ),
+                        ], // Add a comma here
+                      ),
+
+                      content: Container(
+                            width: 400.0,
+                            height: 60,// Adjust the width as needed
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Text('Action Required', style: TextStyle(color: Colors.black, fontFamily: 'Poppins', fontWeight: FontWeight.bold, fontSize: 15)),
+                                const SizedBox(height: 10.0),
+                                const Text('Please add or subtract days first.', style: TextStyle(color: Colors.black, fontFamily: 'Poppins', fontSize: 15)),
+                              ],
+                            ),
+                          ),
+
+
                       actions: [
                         TextButton(
                           onPressed: () {
                             Navigator.of(context).pop(); // Close the dialog
                           },
-                          child: const Text('OK'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.black, // Set background color to black
+                          ),
+                          child: const Text('OK', style: TextStyle(fontFamily: 'Poppins', color: Colors.white)),
                         ),
                       ],
                     );
+
                   },
                 );
               } else {
@@ -163,11 +192,32 @@ class _AdjustSelectedMembershipDurationState extends State<AdjustSelectedMembers
                           showDialog(
                             context: context,
                             builder: (BuildContext context) {
-                              return const AlertDialog(
-                                title: Text('Success'),
-                                content: Text('Membership duration updated for selected members.'),
+                              return AlertDialog(
+                                  title: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                  const Icon(
+                                  Icons.check_circle,
+                                  color: Colors.green,
+                                  size: 50.0, // Adjust the size according to your preference
+                              ),
+                              ], // Add a comma here
+                              ),
+
+                              content: Container(
+                              width: 550.0,
+                              height: 80,// Adjust the width as needed
+                              child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                              const Text('Success', style: TextStyle(color: Colors.black, fontFamily: 'Poppins', fontWeight: FontWeight.bold, fontSize: 20)),
+                              const SizedBox(height: 10.0),
+                              const Text('Membership duration updated for selected members.', style: TextStyle(color: Colors.black, fontFamily: 'Poppins', fontSize: 15)),
+                              ],
+                              ),
+                              ),
                               );
-                            },
+                              },
                           );
                           // Delay navigation back to the initial dialog after 2 seconds
                           Future.delayed(const Duration(seconds: 2), () {
@@ -183,14 +233,17 @@ class _AdjustSelectedMembershipDurationState extends State<AdjustSelectedMembers
                 );
               }
             },
-            child: const Text('Update Duration for Selected Members'),
+            style: ElevatedButton.styleFrom(
+              side: BorderSide(color: Colors.black), // Set border color to black
+            ),
+            child: const Text('Update Duration for Selected Members', style: TextStyle(fontFamily: 'Poppins', color: Colors.black)),
           ),
           const SizedBox(height: 8),
           TextButton(
             onPressed: () {
               Navigator.of(context).pop(); // Close the Adjust Membership Duration screen
             },
-            child: const Text('Back'),
+            child: const Text('Back', style: TextStyle(fontFamily: 'Poppins', color: Colors.black)),
           ),
         ],
       ),
