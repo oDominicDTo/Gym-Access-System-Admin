@@ -130,7 +130,7 @@ class SuccessPage extends StatelessWidget {
             return _buildAvatarPlaceholder();
           }
           return SizedBox(
-            height: 1000, // Adjust the height as desired
+            height: 400, // Adjust the height as desired
             width: 400, // Adjust the width as desired
             child: ClipRRect(
               borderRadius: BorderRadius.circular(8.0),
