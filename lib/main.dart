@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         initialRoute: '/', // Set the initial route
         routes: {
-          '/': (context) => const HomeAdminPage(adminName: '',), // Define the initial route
+          '/': (context) => const LoginScreenNfc(), // Define the initial route
           '/homeSuperAdmin': (context) => const HomeSuperAdminPage(adminName: '',),
           '/homeAdmin': (context) => const HomeAdminPage(adminName: '',),
           '/homeStaff': (context) => const HomeStaffPage(adminName: '',),

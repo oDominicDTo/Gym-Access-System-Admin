@@ -626,7 +626,6 @@ class ObjectBox {
 
     return membershipData;
   }
-
   Future<int> addNewMemberLog(NewMemberLog newMemberLog) async {
     return _newMemberLogBox.put(newMemberLog);
   }

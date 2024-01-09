@@ -13,9 +13,14 @@ class CameraPage extends StatefulWidget {
   final MembershipType? selectedMembershipType;
   final Member newMember;
   final String adminName;
+  final double totalPrice;
 
   const CameraPage(
-      {Key? key, required this.newMember, this.selectedMembershipType, required this.adminName})
+      {Key? key,
+      required this.newMember,
+      this.selectedMembershipType,
+      required this.adminName,
+      required this.totalPrice})
       : super(key: key);
 
   @override
@@ -144,10 +149,11 @@ class _CameraPageState extends State<CameraPage> {
         context,
         MaterialPageRoute(
           builder: (context) => InsertBlankCard(
-              newMember: widget.newMember,
-              selectedMembershipType: widget.selectedMembershipType,
-  adminName: widget.adminName,
-            ),
+            newMember: widget.newMember,
+            selectedMembershipType: widget.selectedMembershipType,
+            adminName: widget.adminName,
+            totalPrice: widget.totalPrice,
+          ),
         ),
       );
     } else {
@@ -156,36 +162,38 @@ class _CameraPageState extends State<CameraPage> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: const Text('Take Photo',
+            title: const Text(
+              'Take Photo',
               textAlign: TextAlign.center,
-              style: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold),
+              style:
+                  TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold),
             ),
-            content: const Text('Please take a photo before proceeding.',
-              style: TextStyle(color: Colors.black,fontFamily: 'Poppins'),
+            content: const Text(
+              'Please take a photo before proceeding.',
+              style: TextStyle(color: Colors.black, fontFamily: 'Poppins'),
             ),
             actions: <Widget>[
               Center(
-              child: Row (
-            mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextButton(
-                style: TextButton.styleFrom(
-                  backgroundColor: Colors.black, // Set background color to black
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    TextButton(
+                      style: TextButton.styleFrom(
+                        backgroundColor:
+                            Colors.black, // Set background color to black
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: const Text('OK',
+                          style: TextStyle(color: Colors.white)),
+                    ),
+                  ],
                 ),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Text('OK', style: TextStyle(color: Colors.white)),
-            ),
-          ],
               ),
-
-              ),
-
             ],
           );
         },
-
       );
     }
   }
@@ -254,7 +262,9 @@ class _CameraPageState extends State<CameraPage> {
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.black, // Set background color to black
             ),
-            child: Text(_photoTaken ? 'Retake' : 'Take Photo', style: const TextStyle(color: Colors.white,fontFamily: 'Poppins')),
+            child: Text(_photoTaken ? 'Retake' : 'Take Photo',
+                style: const TextStyle(
+                    color: Colors.white, fontFamily: 'Poppins')),
           ),
           const SizedBox(height: 16),
           Row(
@@ -267,17 +277,23 @@ class _CameraPageState extends State<CameraPage> {
                   Navigator.pop(context);
                 },
                 style: TextButton.styleFrom(
-                  side: const BorderSide(color: Colors.black), // Set border color to black
+                  side: const BorderSide(
+                      color: Colors.black), // Set border color to black
                 ),
-                child: const Text('Previous', style: TextStyle(color: Colors.black, fontFamily: 'Poppins')),
+                child: const Text('Previous',
+                    style:
+                        TextStyle(color: Colors.black, fontFamily: 'Poppins')),
               ),
               const SizedBox(width: 20),
               ElevatedButton(
                 onPressed: _navigateToNextPage,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black, // Set background color to black
+                  backgroundColor:
+                      Colors.black, // Set background color to black
                 ),
-                child: const Text('Next', style: TextStyle(color: Colors.white, fontFamily: 'Poppins')),
+                child: const Text('Next',
+                    style:
+                        TextStyle(color: Colors.white, fontFamily: 'Poppins')),
               ),
             ],
           ),

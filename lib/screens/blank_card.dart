@@ -14,8 +14,8 @@ class InsertBlankCard extends StatefulWidget {
   final Member newMember;
   final MembershipType? selectedMembershipType;
   final String adminName;
-
-  const InsertBlankCard({Key? key, required this.newMember, this.selectedMembershipType, required this.adminName}) : super(key: key);
+  final double totalPrice;
+  const InsertBlankCard({Key? key, required this.newMember, this.selectedMembershipType, required this.adminName, required this.totalPrice}) : super(key: key);
 
   @override
   State<InsertBlankCard> createState() => _InsertBlankCardState();
@@ -51,7 +51,7 @@ class _InsertBlankCardState extends State<InsertBlankCard> {
         memberName: '${widget.newMember.firstName} ${widget.newMember.lastName}',
         adminName: widget.adminName,
         membershipType: widget.selectedMembershipType?.typeName ?? '',
-        amount: widget.selectedMembershipType?.fee ?? 0.0,
+        amount: widget.totalPrice,
         creationDate: DateTime.now(), // Add a timestamp for the log
       );
 

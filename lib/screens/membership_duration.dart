@@ -163,6 +163,7 @@ class _MembershipDurationPageState extends State<MembershipDurationPage> {
                                                 newMember: newMember,
                                                 selectedMembershipType: widget.selectedMembershipType,
                                                 adminName: widget.adminName,
+                                                totalPrice: totalPrice,
                                               ),
                                             ),
                                           );
