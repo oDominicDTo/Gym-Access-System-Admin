@@ -210,3 +210,76 @@ class UserFeedback {
     this.name,
   });
 }
+
+@Entity()
+class CardChangeLog {
+  @Id()
+  int id;
+
+  String entityType; // Type of entity: 'member' or 'admin'
+
+  String entityName; // Name of the entity (member or admin)
+
+  @Property(type: PropertyType.date)
+  DateTime changeDate; // Date when the card was changed
+
+  CardChangeLog({
+    this.id = 0,
+    required this.entityType,
+    required this.entityName,
+    required this.changeDate,
+  });
+}
+@Entity()
+class AdminRenewalLog {
+  @Id()
+  int id;
+
+  @Property(type: PropertyType.date)
+  DateTime renewalDate; // Date of renewal
+
+  int memberId; // ID of the member who renewed
+  int adminId; // ID of the admin who performed the action
+  int membershipTypeId; // ID of the membership type
+  double amount; // Amount paid for membership renewal
+
+  AdminRenewalLog({
+    this.id = 0,
+    required this.renewalDate,
+    required this.memberId,
+    required this.adminId,
+    required this.membershipTypeId,
+    required this.amount,
+  });
+
+  String getFormattedRenewalDate() {
+    return DateFormat('MMM dd, yyyy').format(renewalDate);
+  }
+}
+
+@Entity()
+class NewMemberLog {
+  @Id()
+  int id;
+
+  @Property(type: PropertyType.date)
+  DateTime creationDate; // Date of creation
+
+  int memberId; // ID of the new member
+  int adminId; // ID of the admin who added the member
+  int membershipTypeId; // ID of the membership type
+  double amount; // Amount paid for new membership
+
+  NewMemberLog({
+    this.id = 0,
+    required this.creationDate,
+    required this.memberId,
+    required this.adminId,
+    required this.membershipTypeId,
+    required this.amount,
+  });
+
+  String getFormattedCreationDate() {
+    return DateFormat('MMM dd, yyyy').format(creationDate);
+  }
+}

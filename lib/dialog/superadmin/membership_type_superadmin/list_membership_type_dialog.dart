@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gym_kiosk_admin/models/model.dart';
-
-import '../../main.dart';
+import '../../../main.dart';
 import 'add_membership_type_dialog.dart';
 import 'edit_membership_type_dialog.dart';
 

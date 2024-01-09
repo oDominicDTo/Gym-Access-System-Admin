@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gym_kiosk_admin/screens/add_member.dart';
 import 'package:gym_kiosk_admin/screens/feedback/feedback_page.dart';
 import 'package:gym_kiosk_admin/screens/home_page.dart';
-import 'package:gym_kiosk_admin/screens/management_page.dart';
+import 'package:gym_kiosk_admin/dialog/admin/management_page_admin.dart';
 import 'package:gym_kiosk_admin/screens/member_list_screen.dart';
 import 'package:gym_kiosk_admin/widgets/top_navigation_bar.dart';
 

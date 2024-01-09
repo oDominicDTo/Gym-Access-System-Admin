@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gym_kiosk_admin/models/model.dart';
 import 'package:lottie/lottie.dart';
+import '../../../main.dart';
+import '../../../services/nfc_service.dart';
 
-import '../../main.dart';
-import '../../services/nfc_service.dart';
 
 class EditStaffDialog extends StatefulWidget {
   final Administrator staff;
@@ -52,10 +52,11 @@ class _EditStaffDialogState extends State<EditStaffDialog> {
     }
   }
 
-  void _updateStaffData(String name, String username, String password) {
+  void _updateStaffData(String name, String username, String password, String type) {
     editedStaff.name = name;
     editedStaff.username = username;
     editedStaff.password = password;
+    editedStaff.type = type;
     nfcChanged = true; // Set the flag indicating changes in the staff data
   }
 
@@ -207,7 +208,7 @@ class _EditStaffDialogState extends State<EditStaffDialog> {
                   return null;
                 },
                 onChanged: (value) {
-                  _updateStaffData(value, editedStaff.username, editedStaff.password);
+                  _updateStaffData(value, editedStaff.username, editedStaff.password, editedStaff.type);
                 },
               ),
               TextFormField(
@@ -220,7 +221,7 @@ class _EditStaffDialogState extends State<EditStaffDialog> {
                   return null;
                 },
                 onChanged: (value) {
-                  _updateStaffData(editedStaff.name, value, editedStaff.password);
+                  _updateStaffData(editedStaff.name, value, editedStaff.password, editedStaff.type);
                 },
               ),
               TextFormField(
@@ -234,7 +235,20 @@ class _EditStaffDialogState extends State<EditStaffDialog> {
                   return null;
                 },
                 onChanged: (value) {
-                  _updateStaffData(editedStaff.name, editedStaff.username, value);
+                  _updateStaffData(editedStaff.name, editedStaff.username, value, editedStaff.type);
+                },
+              ),
+              TextFormField(
+                initialValue: editedStaff.type,
+                decoration: const InputDecoration(labelText: 'Type'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a type';
+                  }
+                  return null;
+                },
+                onChanged: (value) {
+                  _updateStaffData(editedStaff.name, editedStaff.username, editedStaff.password, value);
                 },
               ),
               const SizedBox(height: 20),

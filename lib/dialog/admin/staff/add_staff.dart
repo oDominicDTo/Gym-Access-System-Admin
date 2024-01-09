@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gym_kiosk_admin/models/model.dart';
 import 'package:lottie/lottie.dart';
-import '../../main.dart';
-import '../../services/nfc_service.dart';
+import '../../../main.dart';
+import '../../../services/nfc_service.dart';
 
 class AddStaffDialog extends StatefulWidget {
   const AddStaffDialog({Key? key}) : super(key: key);

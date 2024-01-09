@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:gym_kiosk_admin/screens/add_member.dart';
+import 'package:gym_kiosk_admin/screens/feedback/feedback_page.dart';
+import 'package:gym_kiosk_admin/screens/home_page.dart';
+import 'package:gym_kiosk_admin/dialog/admin/management_page_admin.dart';
 import 'package:gym_kiosk_admin/screens/member_list_screen.dart';
+import 'package:gym_kiosk_admin/widgets/top_navigation_bar.dart';
+
+import '../renew/renewal_page.dart';
 
 class HomeStaffPage extends StatefulWidget {
   final String adminName;
-  const HomeStaffPage({super.key, required this.adminName});
+
+  const HomeStaffPage({Key? key, required this.adminName}) : super(key: key);
 
   @override
   State createState() => _HomeStaffPageState();
@@ -14,57 +21,30 @@ class _HomeStaffPageState extends State<HomeStaffPage> {
   int _selectedIndex = 0;
 
   final List<Widget> _screens = [
-    const Center(child: Text('Welcome to Home!')),
+    const HomePage(),
     const Center(child: Text('Welcome to Overview!')),
     const MemberInput(),
     const MemberListScreen(),
-    const Center(child: Text('Welcome to Profile')),
-    const Center(child: Text('Welcome to Feedback')),
+    const RenewalPage(),
+    const FeedbackPage(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(50.0),
-        child: AppBar(
-          automaticallyImplyLeading: false,
-          backgroundColor: Colors.white,
-          elevation: 4,
-          titleSpacing: 0,
-          title: Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                  top: 30.0,
-                  bottom: 25.0,
-                  left: 2.0,
-                  right: 2.0,
-                ),
-                child: SizedBox(
-                  height: 40,
-                  width: 300,
-                  child: Image.asset(
-                    'assets/images/whole_logo.png',
-                    fit: BoxFit.contain,
-                  ),
-                ),
-
-              ),
-            ],
-          ),
-
-        ),
-      ),
+      appBar: TopNavigationBar(adminName: widget.adminName),
       body: Row(
         children: <Widget>[
           NavigationRail(
             selectedIndex: _selectedIndex,
             onDestinationSelected: (int index) {
-              if (index == 6) { // Check if "Log Out" button is clicked
-                // Perform logout actions here
-                Navigator.of(context).pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
-                // This will navigate to the home route ("/") and remove all routes from the stack
+              if (index == 4) {
+                setState(() {
+                  _selectedIndex = index;
+                });
+              } else if (index == 6) {
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                    '/', (Route<dynamic> route) => false);
               } else {
                 setState(() {
                   _selectedIndex = index;
@@ -103,8 +83,17 @@ class _HomeStaffPageState extends State<HomeStaffPage> {
               ),
               NavigationRailDestination(
                 icon: Icon(Icons.person),
-                label: Text('Profile',
-                  style: TextStyle(fontFamily: 'Poppins'),),
+                label: Text(
+                  'Renew',
+                  style: TextStyle(fontFamily: 'Poppins'),
+                ),
+              ),
+              NavigationRailDestination(
+                icon: Icon(Icons.build_outlined),
+                label: Text(
+                  'Management',
+                  style: TextStyle(fontFamily: 'Poppins'),
+                ),
               ),
               NavigationRailDestination(
                 icon: Icon(Icons.feedback_outlined),
@@ -115,14 +104,25 @@ class _HomeStaffPageState extends State<HomeStaffPage> {
               ),
               NavigationRailDestination(
                 icon: Icon(Icons.logout_rounded),
-                label: Text('Log Out',
-                  style: TextStyle(fontFamily: 'Poppins'),),
+                label: Text(
+                  'Log Out',
+                  style: TextStyle(fontFamily: 'Poppins'),
+                ),
               ),
             ],
           ),
           const VerticalDivider(thickness: 1, width: 1),
           Expanded(
-            child: _screens[_selectedIndex],
+            child:
+                _selectedIndex == 5
+                ? Navigator(
+              onGenerateRoute: (settings) {
+                return MaterialPageRoute(
+                  builder: (_) => const FeedbackPage(),
+                );
+              },
+            )
+                : _screens[_selectedIndex],
           ),
         ],
       ),

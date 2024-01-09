@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gym_kiosk_admin/dialog/membership_duration/specific_member_content.dart';
-import '../../screens/management_page.dart';
+import '../admin/management_page_admin.dart';
 import 'all_members_content.dart';
 
 class InitialMembershipDialog extends StatefulWidget {

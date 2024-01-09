@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:gym_kiosk_admin/dialog/admin/staff/list_staff.dart';
 import 'package:gym_kiosk_admin/dialog/membership_duration/initial_dialog.dart';
-import 'package:gym_kiosk_admin/dialog/staff/list_staff.dart';
-import '../dialog/membership_type/list_membership_type_dialog.dart';
+
+import 'membership_type_admin/list_membership_type_dialog.dart';
+
 
 class ManagementPage extends StatelessWidget {
   const ManagementPage({super.key});

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gym_kiosk_admin/models/model.dart';
-import '../../main.dart';
+import '../../../main.dart';
 import 'edit_staff.dart';
 import 'add_staff.dart';
 
