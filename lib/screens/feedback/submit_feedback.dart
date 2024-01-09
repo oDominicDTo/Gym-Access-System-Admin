@@ -28,17 +28,44 @@ class _SubmitFeedbackState extends State<SubmitFeedback> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Feedback Sent'),
-          content: const Text('Your feedback has been successfully submitted.'),
+
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+
+            children: [
+              const Icon(
+                Icons.check_circle,
+                color: Colors.green,
+                size: 50.0, // Adjust the size according to your preference
+              ),
+            ], // Add a comma here
+          ), // Add a comma here
+
+          content: Container(
+            width: 500.0, // Adjust the width as needed
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text('Feedback Sent!', style: TextStyle(color: Colors.black, fontFamily: 'Poppins', fontWeight: FontWeight.bold, fontSize: 25)),
+                const SizedBox(height: 10.0),
+                const Text('Your feedback has been successfully submitted.', style: TextStyle(color: Colors.black, fontFamily: 'Poppins', fontSize: 13)),
+              ],
+            ),
+          ),
           actions: <Widget>[
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: const Text('OK'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.black, // Set background color to black
+              ),
+              child: const Text('OK', style: TextStyle(color: Colors.white, fontFamily: 'Poppins')),
             ),
           ],
         );
+
+
       },
     );
   }
@@ -54,7 +81,7 @@ class _SubmitFeedbackState extends State<SubmitFeedback> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Submit Feedback'),
+        title: const Text('Submit Feedback', style: TextStyle(color: Colors.black, fontFamily: 'Poppins')),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -66,7 +93,7 @@ class _SubmitFeedbackState extends State<SubmitFeedback> {
               TextFormField(
                 controller: nameController,
                 decoration: const InputDecoration(
-                  labelText: 'Name (Optional)',
+                  labelText: 'Name (Optional)', labelStyle: TextStyle(color: Colors.black, fontFamily: 'Poppins'),
                   border: OutlineInputBorder(),
                 ),
               ),
@@ -74,7 +101,7 @@ class _SubmitFeedbackState extends State<SubmitFeedback> {
               TextFormField(
                 controller: titleController,
                 decoration: const InputDecoration(
-                  labelText: 'Title',
+                  labelText: 'Title', labelStyle: TextStyle(color: Colors.black, fontFamily: 'Poppins'),
                   border: OutlineInputBorder(),
                 ),
                 validator: (value) {
@@ -93,7 +120,7 @@ class _SubmitFeedbackState extends State<SubmitFeedback> {
                   });
                 },
                 decoration: const InputDecoration(
-                  labelText: 'Category',
+                  labelText: 'Category', labelStyle: TextStyle(color: Colors.black, fontFamily: 'Poppins'),
                   border: OutlineInputBorder(),
                 ),
                 validator: (value) {
@@ -114,7 +141,7 @@ class _SubmitFeedbackState extends State<SubmitFeedback> {
                 controller: feedbackController,
                 maxLines: 5,
                 decoration: const InputDecoration(
-                  labelText: 'Feedback',
+                  labelText: 'Feedback', labelStyle: TextStyle(color: Colors.black, fontFamily: 'Poppins'),
                   border: OutlineInputBorder(),
                 ),
                 validator: (value) {
@@ -142,7 +169,10 @@ class _SubmitFeedbackState extends State<SubmitFeedback> {
                     _showSuccessDialog();
                   }
                 },
-                child: const Text('Submit'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.black, // Set background color to black
+                ),
+                child: const Text('Submit', style: TextStyle(color: Colors.white, fontFamily: 'Poppins')),
               ),
             ],
           ),

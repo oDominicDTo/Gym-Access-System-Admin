@@ -180,7 +180,7 @@ class _MemberListScreenState extends State<MemberListScreen> {
                   color: Colors.black,
                 ),
                 label:
-                    const Text('Filter', style: TextStyle(color: Colors.black)),
+                    const Text('Filter', style: TextStyle(color: Colors.black, fontFamily: 'Poppins')),
               ),
             ),
             Expanded(
@@ -212,7 +212,7 @@ class _MemberListScreenState extends State<MemberListScreen> {
                 ),
                 label: const Text(
                   'Export',
-                  style: TextStyle(color: Colors.black),
+                  style: TextStyle(color: Colors.black, fontFamily: 'Poppins'),
                 ),
                 style: ButtonStyle(
                   shape: MaterialStateProperty.all<OutlinedBorder>(

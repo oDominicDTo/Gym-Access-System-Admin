@@ -46,7 +46,7 @@ class _ConfirmationPaymentPageState extends State<ConfirmationPaymentPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Confirm Payment'),
+        title: const Text('Confirm Payment', style: TextStyle(fontFamily: 'Poppins')),
       ),
       body: Padding(
         padding: const EdgeInsets.all(10),
@@ -73,13 +73,14 @@ class _ConfirmationPaymentPageState extends State<ConfirmationPaymentPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text('Did you receive the payment for this membership?'),
+                  const Text('Did you receive the payment for this membership?', style: TextStyle(fontFamily: 'Poppins')),
                   const SizedBox(height: 20),
                   Text(
                     'Total Amount: PHP ${totalPrice.toStringAsFixed(2)}',
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
+                      fontFamily: 'Poppins'
                     ),
                   ),
                 ],

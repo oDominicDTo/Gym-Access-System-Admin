@@ -72,8 +72,8 @@ class PreviewMemberPage extends StatelessWidget {
                           child: SizedBox(
                             width: 150,
                             child: CustomCardButton(
-                              title: 'Proceed',
                               icon: Icons.navigate_next,
+                              title: 'Proceed',
                               onPressed: () {
                                 Navigator.push(
                                   context,

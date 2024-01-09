@@ -54,7 +54,7 @@ class _AllMembersContentState extends State<AllMembersContent> {
             padding: EdgeInsets.all(8.0),
             child: Text(
               'Adjust Membership Duration for All Members',
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Poppins', fontSize: 15),
             ),
           ),
           Expanded(
@@ -94,7 +94,7 @@ class _AllMembersContentState extends State<AllMembersContent> {
                         days == 0
                             ? 'Days to Add/Subtract'
                             : 'Days to ${days >= 0 ? 'Add' : 'Subtract'}: ${days.abs()}',
-                        style: const TextStyle(fontSize: 18),
+                        style: const TextStyle(fontSize: 18, fontFamily: 'Poppins'),
                       ),
                       const SizedBox(width: 16),
                       GestureDetector(
@@ -135,14 +135,38 @@ class _AllMembersContentState extends State<AllMembersContent> {
                   context: context,
                   builder: (BuildContext context) {
                     return AlertDialog(
-                      title: const Text('Action Required'),
-                      content: const Text('Please add or subtract days first.'),
+                      title: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(
+                            Icons.error_outline,
+                            color: Colors.red,
+                            size: 40.0, // Adjust the size according to your preference
+                          ),
+                        ], // Add a comma here
+                      ),
+
+                      content: Container(
+                        width: 400.0,
+                        height: 60,// Adjust the width as needed
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Text('Action Required', style: TextStyle(color: Colors.black, fontFamily: 'Poppins', fontWeight: FontWeight.bold, fontSize: 15)),
+                            const SizedBox(height: 10.0),
+                            const Text('Please add or subtract days first.', style: TextStyle(color: Colors.black, fontFamily: 'Poppins', fontSize: 15)),
+                          ],
+                        ),
+                      ),
                       actions: [
                         TextButton(
                           onPressed: () {
                             Navigator.of(context).pop(); // Close the dialog
                           },
-                          child: const Text('OK'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.black, // Set background color to black
+                          ),
+                          child: const Text('OK', style: TextStyle(color: Colors.black, fontFamily: 'Poppins')),
                         ),
                       ],
                     );
@@ -163,9 +187,30 @@ class _AllMembersContentState extends State<AllMembersContent> {
                           showDialog(
                             context: context,
                             builder: (BuildContext context) {
-                              return const AlertDialog(
-                                title: Text('Success'),
-                                content: Text('Membership duration updated successfully.'),
+                              return AlertDialog(
+                                title: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Icon(
+                                      Icons.check_circle,
+                                      color: Colors.green,
+                                      size: 50.0, // Adjust the size according to your preference
+                                    ),
+                                  ], // Add a comma here
+                                ),
+
+                                content: Container(
+                                  width: 550.0,
+                                  height: 80,// Adjust the width as needed
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      const Text('Success', style: TextStyle(color: Colors.black, fontFamily: 'Poppins', fontWeight: FontWeight.bold, fontSize: 20)),
+                                      const SizedBox(height: 10.0),
+                                      const Text('Membership duration updated successfully.', style: TextStyle(color: Colors.black, fontFamily: 'Poppins', fontSize: 15)),
+                                    ],
+                                  ),
+                                ),
                               );
                             },
                           );
@@ -182,13 +227,16 @@ class _AllMembersContentState extends State<AllMembersContent> {
                 );
               }
             },
-            child: const Text('Update Duration'),
+            style: ElevatedButton.styleFrom(
+              side: BorderSide(color: Colors.black), // Set border color to black
+            ),
+            child: const Text('Update Duration', style: TextStyle(fontFamily: 'Poppins', color: Colors.black)),
           ),
           const SizedBox(height: 8),
           // Example back button to switch back to initial content
           TextButton(
             onPressed: widget.onBack,
-            child: const Text('Back'),
+            child: const Text('Back', style: TextStyle(fontFamily: 'Poppins', color: Colors.black)),
           ),
         ],
       ),

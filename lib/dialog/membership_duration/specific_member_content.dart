@@ -79,7 +79,10 @@ class _MemberSelectionDialogState extends State<MemberSelectionDialog> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: const Text('Close'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.black, // Set background color to black
+              ),
+              child: const Text('Close', style: TextStyle(fontFamily: 'Poppins', color: Colors.white),),
             ),
           ],
         );
@@ -91,7 +94,7 @@ class _MemberSelectionDialogState extends State<MemberSelectionDialog> {
   Widget build(BuildContext context) {
     final filteredMembers = getFilteredMembers(_searchController.text);
     return AlertDialog(
-      title: const Text('Select Members'),
+      title: const Text('Select Members', style: TextStyle(color: Colors.black, fontFamily: 'Poppins', fontSize: 20, fontWeight: FontWeight.bold)),
       content: SizedBox(
         width: 700,
         child: Row(
@@ -110,7 +113,7 @@ class _MemberSelectionDialogState extends State<MemberSelectionDialog> {
                     TextField(
                       controller: _searchController,
                       decoration: const InputDecoration(
-                        labelText: 'Search Members',
+                        labelText: 'Search Members', labelStyle: TextStyle(color: Colors.black, fontFamily: 'Poppins'),
                         prefixIcon: Icon(Icons.search),
                         border: OutlineInputBorder(),
                       ),
@@ -129,7 +132,7 @@ class _MemberSelectionDialogState extends State<MemberSelectionDialog> {
                           final isSelected = selectedMemberIds.contains(member.id);
 
                           return ListTile(
-                            title: Text('${member.firstName} ${member.lastName}'),
+                            title: Text('${member.firstName} ${member.lastName}', style: TextStyle(color: Colors.black, fontFamily: 'Poppins')),
                             trailing: isSelected
                                 ? const Icon(Icons.check_box, color: Colors.blue)
                                 : const Icon(Icons.check_box_outline_blank),
@@ -166,7 +169,7 @@ class _MemberSelectionDialogState extends State<MemberSelectionDialog> {
                   children: [
                     const Text(
                       'Selected Members',
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Poppins'),
                     ),
                     const Divider(),
                     Expanded(
@@ -175,7 +178,7 @@ class _MemberSelectionDialogState extends State<MemberSelectionDialog> {
                         itemBuilder: (context, index) {
                           final selectedMember = selectedMembers[index];
                           return ListTile(
-                            title: Text(selectedMember),
+                            title: Text(selectedMember, style: TextStyle(color: Colors.black, fontFamily: 'Poppins')),
                             // Add any actions related to selected members here if needed
                           );
                         },
@@ -196,14 +199,23 @@ class _MemberSelectionDialogState extends State<MemberSelectionDialog> {
                 context: context,
                 builder: (BuildContext context) {
                   return AlertDialog(
-                    title: const Text('No Members Selected'),
-                    content: const Text('Please select members first.'),
+                    title: const Text(
+                      'No member selected',
+                      style: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold, fontSize: 20),
+                    ),
+                    content: Text(
+                      'Please select member first.',
+                      style: TextStyle(color: Colors.black, fontFamily: 'Poppins', fontSize: 15),
+                    ),
                     actions: [
                       TextButton(
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
-                        child: const Text('OK'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.black, // Set background color to black
+                        ),
+                        child: const Text('OK', style: TextStyle(color: Colors.white, fontFamily: 'Poppins')),
                       ),
                     ],
                   );
@@ -213,13 +225,16 @@ class _MemberSelectionDialogState extends State<MemberSelectionDialog> {
               navigateToAdjustMembershipDuration();
             }
           },
-          child: const Text('Adjust Membership Duration'),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.black, // Set background color to black
+          ),
+          child: const Text('Adjust Membership Duration', style: TextStyle(color: Colors.white, fontFamily: 'Poppins')),
         ),
         TextButton(
           onPressed: () {
             Navigator.of(context).pop(); // Just go back without selecting
           },
-          child: const Text('Back'),
+          child: const Text('Back', style: TextStyle(color: Colors.black, fontFamily: 'Poppins')),
         ),
       ],
     );
