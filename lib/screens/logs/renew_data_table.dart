@@ -145,14 +145,16 @@ class _AdminRenewalLogPageState extends State<AdminRenewalLogPage> {
                           leading: const Icon(Icons.calendar_today),
                           title: const Text('This Year'),
                           onTap: () async {
-                            await exportSelectedYear();
+                            exportSelectedYear();
+                            Navigator.pop(context);
                           },
                         ),
                         ListTile(
                           leading: const Icon(Icons.date_range),
                           title: const Text('Selected Month and Year'),
                           onTap: () async {
-                            await exportSelectedMonthYear();
+                            exportSelectedMonthYear();
+                            Navigator.pop(context);
                           },
                         ),
                       ],
