@@ -747,5 +747,17 @@ class ObjectBox {
     final adminRenewalLogs = query.find();
     return adminRenewalLogs;
   }
+  Future<List<AdminRenewalLog>> getAdminRenewalLogsForYearAndMonth(int year, int month) async {
+    final startOfMonth = DateTime(year, month, 1).millisecondsSinceEpoch;
+    final endOfMonth = DateTime(year, month + 1, 0, 23, 59, 59, 999).millisecondsSinceEpoch;
+
+    final query = _adminRenewalLogBox.query(
+      AdminRenewalLog_.renewalDate.greaterThan(startOfMonth) &
+      AdminRenewalLog_.renewalDate.lessThan(endOfMonth),
+    ).build();
+
+    final adminRenewalLogs = query.find();
+    return adminRenewalLogs;
+  }
 
 }

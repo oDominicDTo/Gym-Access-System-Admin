@@ -14,27 +14,26 @@ class _NewMemberLogPageState extends State<NewMemberLogPage> {
   late int selectedYear;
   late int selectedMonth; // Initialize selectedMonth
   List<NewMemberLog> newMemberLogs = [];
-  late GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey;
+  late ScaffoldMessengerState scaffoldMessenger;
 
   @override
   void initState() {
     super.initState();
-    scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
     final now = DateTime.now();
     selectedYear = now.year;
     selectedMonth = now.month;
     fetchNewMemberLogs();
-    scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
+    scaffoldMessenger = ScaffoldMessenger.of(context);
   }
 
   Future<void> fetchNewMemberLogs() async {
-    final List<NewMemberLog> fetchedNewMemberLogs = await fetchNewMemberLogsForYearAndMonth(selectedYear, selectedMonth);
+    final List<NewMemberLog> fetchedNewMemberLogs =
+        await fetchNewMemberLogsForYearAndMonth(selectedYear, selectedMonth);
 
     setState(() {
       newMemberLogs = fetchedNewMemberLogs;
@@ -42,24 +41,27 @@ class _NewMemberLogPageState extends State<NewMemberLogPage> {
   }
 
   Future<void> exportSelectedYear() async {
-    String? filePath = await NewMemberPDFExporter.exportToPDFForYear(newMemberLogs, selectedYear);
+    String? filePath = await NewMemberPDFExporter.exportToPDFForYear(
+        newMemberLogs, selectedYear);
     handleExportResult(filePath);
   }
 
   Future<void> exportSelectedMonthYear() async {
-    String? filePath = await NewMemberPDFExporter.exportToPDF(newMemberLogs, selectedYear, selectedMonth);
+    String? filePath;
+    filePath = await NewMemberPDFExporter.exportToPDF(
+        newMemberLogs, selectedYear, selectedMonth);
     handleExportResult(filePath);
   }
 
   void handleExportResult(String? filePath) {
     if (filePath != null) {
-      scaffoldMessengerKey.currentState?.showSnackBar(
+      scaffoldMessenger.showSnackBar(
         SnackBar(
           content: Text('PDF saved at $filePath'),
         ),
       );
     } else {
-      scaffoldMessengerKey.currentState?.showSnackBar(
+      scaffoldMessenger.showSnackBar(
         const SnackBar(
           content: Text('Failed to save PDF'),
         ),
@@ -67,7 +69,8 @@ class _NewMemberLogPageState extends State<NewMemberLogPage> {
     }
   }
 
-  Future<List<NewMemberLog>> fetchNewMemberLogsForYearAndMonth(int year, int month) async {
+  Future<List<NewMemberLog>> fetchNewMemberLogsForYearAndMonth(
+      int year, int month) async {
     // Implement logic to fetch new member logs for the selected year and month from ObjectBox
     // Example:
     return objectbox.getNewMemberLogsForYearAndMonth(year, month);
@@ -84,14 +87,14 @@ class _NewMemberLogPageState extends State<NewMemberLogPage> {
     ];
 
     return Scaffold(
-      key: scaffoldMessengerKey,
       appBar: AppBar(
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             IconButton(
               onPressed: () async {
-                if (selectedMonth > 1) { // Check before decrementing selectedMonth
+                if (selectedMonth > 1) {
+                  // Check before decrementing selectedMonth
                   setState(() {
                     selectedMonth -= 1;
                   });
@@ -110,11 +113,13 @@ class _NewMemberLogPageState extends State<NewMemberLogPage> {
               children: [
                 Text(
                   '$selectedYear-${selectedMonth.toString().padLeft(2, '0')}',
-                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 20),
                 ),
                 IconButton(
                   onPressed: () async {
-                    if (selectedMonth < 12) { // Check before incrementing selectedMonth
+                    if (selectedMonth < 12) {
+                      // Check before incrementing selectedMonth
                       setState(() {
                         selectedMonth += 1;
                       });
@@ -142,14 +147,16 @@ class _NewMemberLogPageState extends State<NewMemberLogPage> {
                           leading: const Icon(Icons.calendar_today),
                           title: const Text('This Year'),
                           onTap: () async {
-                            await exportSelectedYear();
+                            exportSelectedYear();
+                            Navigator.pop(context);
                           },
                         ),
                         ListTile(
                           leading: const Icon(Icons.date_range),
                           title: const Text('Selected Month and Year'),
                           onTap: () async {
-                            await exportSelectedMonthYear();
+                            exportSelectedMonthYear();
+                            Navigator.pop(context);
                           },
                         ),
                       ],
