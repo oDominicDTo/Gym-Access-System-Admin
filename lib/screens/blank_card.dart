@@ -94,8 +94,7 @@ class _InsertBlankCardState extends State<InsertBlankCard> {
       },
     );
     Future.delayed(const Duration(seconds: 2), () {
-      Navigator.of(context).pop();
-      Navigator.of(context).pop();
+      Navigator.of(context).popUntil((route) => route.isFirst);
     });
   }
 

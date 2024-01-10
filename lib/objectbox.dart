@@ -626,7 +626,118 @@ class ObjectBox {
 
     return membershipData;
   }
+
+  // CRUD methods for NewMemberLog entity
+
   Future<int> addNewMemberLog(NewMemberLog newMemberLog) async {
     return _newMemberLogBox.put(newMemberLog);
   }
+
+  NewMemberLog getNewMemberLog(int id) {
+    return _newMemberLogBox.get(id)!;
+  }
+
+  void updateNewMemberLog(NewMemberLog updatedNewMemberLog) {
+    _newMemberLogBox.put(updatedNewMemberLog);
+  }
+
+  void deleteNewMemberLog(int id) {
+    _newMemberLogBox.remove(id);
+  }
+
+  List<NewMemberLog> getAllNewMemberLogs() {
+    return _newMemberLogBox.getAll();
+  }
+
+  Future<List<NewMemberLog>> getAllNewMemberLogsAsync() async {
+    return _newMemberLogBox.getAllAsync();
+  }
+
+  Future<List<NewMemberLog>> getNewMemberLogsForYear(int year) async {
+    final startOfYear = DateTime(year, 1, 1);
+    final endOfYear = DateTime(
+      year,
+      12,
+      31,
+      23,
+      59,
+      59,
+      999,
+    );
+
+    final query = _newMemberLogBox.query(
+      NewMemberLog_.creationDate.greaterThan(
+        startOfYear.millisecondsSinceEpoch,
+      ) &
+      NewMemberLog_.creationDate.lessThan(
+        endOfYear.millisecondsSinceEpoch,
+      ),
+    ).build();
+
+    final newMemberLogs = query.find();
+    return newMemberLogs;
+  }
+  Future<List<NewMemberLog>> getNewMemberLogsForYearAndMonth(int year, int month) async {
+    final startOfMonth = DateTime(year, month, 1).millisecondsSinceEpoch;
+    final endOfMonth = DateTime(year, month + 1, 0, 23, 59, 59, 999).millisecondsSinceEpoch;
+
+    final query = _newMemberLogBox.query(
+      NewMemberLog_.creationDate.greaterThan(startOfMonth) &
+      NewMemberLog_.creationDate.lessThan(endOfMonth),
+    ).build();
+
+    final newMemberLogs = query.find();
+    return newMemberLogs;
+  }
+
+
+  Future<int> addAdminRenewalLog(AdminRenewalLog adminRenewalLog) async {
+    return _adminRenewalLogBox.put(adminRenewalLog);
+  }
+
+  AdminRenewalLog getAdminRenewalLog(int id) {
+    return _adminRenewalLogBox.get(id)!;
+  }
+
+  void updateAdminRenewalLog(AdminRenewalLog updatedAdminRenewalLog) {
+    _adminRenewalLogBox.put(updatedAdminRenewalLog);
+  }
+
+  void deleteAdminRenewalLog(int id) {
+    _adminRenewalLogBox.remove(id);
+  }
+
+  List<AdminRenewalLog> getAllAdminRenewalLogs() {
+    return _adminRenewalLogBox.getAll();
+  }
+
+  Future<List<AdminRenewalLog>> getAllAdminRenewalLogsAsync() async {
+    return _adminRenewalLogBox.getAllAsync();
+  }
+
+  Future<List<AdminRenewalLog>> getAdminRenewalLogsForYear(int year) async {
+    final startOfYear = DateTime(year, 1, 1);
+    final endOfYear = DateTime(
+      year,
+      12,
+      31,
+      23,
+      59,
+      59,
+      999,
+    );
+
+    final query = _adminRenewalLogBox.query(
+      AdminRenewalLog_.renewalDate.greaterThan(
+        startOfYear.millisecondsSinceEpoch,
+      ) &
+      AdminRenewalLog_.renewalDate.lessThan(
+        endOfYear.millisecondsSinceEpoch,
+      ),
+    ).build();
+
+    final adminRenewalLogs = query.find();
+    return adminRenewalLogs;
+  }
+
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gym_kiosk_admin/dialog/admin/staff/list_staff.dart';
 import 'package:gym_kiosk_admin/dialog/membership_duration/initial_dialog.dart';
+import 'package:gym_kiosk_admin/screens/logs/view_newmember_log.dart';
 
 import 'membership_type_admin/list_membership_type_dialog.dart';
 
@@ -83,10 +84,13 @@ class ManagementPage extends StatelessWidget {
                           const SizedBox(height: 16.0),
                           Expanded(
                             child: CustomCardButton(
-                              title: 'Button 4',
+                              title: 'View Logs',
                               icon: Icons.category,
                               onPressed: () {
-                                // Action for button 4
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => const LogPage(),
+                                );
                               },
                               iconColor: Colors.green, // Set icon color
                             ),

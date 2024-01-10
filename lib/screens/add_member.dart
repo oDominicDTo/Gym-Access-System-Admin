@@ -91,7 +91,6 @@ class _MemberInputState extends State<MemberInput> {
     dobController.dispose();
     super.dispose();
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
