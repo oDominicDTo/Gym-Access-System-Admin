@@ -86,21 +86,12 @@ class _HomePageState extends State<HomePage> {
 
       objectbox.logCheckIn(member.id, checkInTime: checkInTime);
 
-      objectbox.addAttendance(
-        Attendance(
-          checkInTime: checkInTime,
-          memberId: member.id,
-        ),
-      );
-
       member.checkedIn = true;
       _checkedInMembers.add(member);
     } else {
       DateTime checkOutTime = DateTime.now();
 
       objectbox.logCheckOut(member.id, checkOutTime: checkOutTime);
-
-      objectbox.updateLatestAttendanceForMember(member.id, checkOutTime);
 
       member.checkedIn = false;
       _checkedInMembers.removeWhere((m) => m.id == member.id);
@@ -245,75 +236,81 @@ class _HomePageState extends State<HomePage> {
     if (_attendanceLog.isEmpty) {
       return const Center(child: Text('No attendance available'));
     } else {
-      return SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: DataTable(
-          dataRowHeight: 60, // Adjust the row height as needed
-          columns: const [
-            DataColumn(label: Text('Name')),
-            DataColumn(label: Text('Type')),
-            DataColumn(label: Text('Check-In Time')),
-            DataColumn(label: Text('Check-Out Time')),
-            DataColumn(label: Text('Status')),
-          ],
-          rows: _attendanceLog.map((attendance) {
-            Member member = objectbox.getMember(attendance.memberId);
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: DataTable(
+              dataRowMaxHeight: 60, // Adjust the row height as needed
+              columns: const [
+                DataColumn(label: Text('Name')),
+                DataColumn(label: Text('Type')),
+                DataColumn(label: Text('Check-In Time')),
+                DataColumn(label: Text('Check-Out Time')),
+                DataColumn(label: Text('Status')),
+              ],
+              rows: _attendanceLog.map((attendance) {
+                Member member = objectbox.getMember(attendance.memberId);
 
-            String formattedCheckInTime =
-            DateFormat('MMM d y h:mm a').format(attendance.checkInTime);
+                String formattedCheckInTime =
+                DateFormat('h:mm a').format(attendance.checkInTime);
 
-            String checkOutTime = attendance.checkOutTime != null &&
-                attendance.checkOutTime != DateTime(2000, 1, 1)
-                ? DateFormat('MMM d y h:mm a').format(attendance.checkOutTime!)
-                : '---';
+                String checkOutTime = attendance.checkOutTime != null &&
+                    attendance.checkOutTime != DateTime(2000, 1, 1)
+                    ? DateFormat('h:mm a').format(attendance.checkOutTime!)
+                    : '---';
 
-            MembershipStatus status = member.getMembershipStatus();
-            String statusText;
-            Color statusColor;
-            double statusSize = 16; // Adjust font size here
+                MembershipStatus status = member.getMembershipStatus();
+                String statusText;
+                Color statusColor;
+                double statusSize = 16; // Adjust font size here
 
-            switch (status) {
-              case MembershipStatus.active:
-                statusText = 'Active';
-                statusColor = Colors.green;
-                break;
-              case MembershipStatus.expired:
-                statusText = 'Expired';
-                statusColor = Colors.red;
-                break;
-              case MembershipStatus.inactive:
-                statusText = 'Inactive';
-                statusColor = Colors.red;
-                break;
-              default:
-                statusText = 'Unknown';
-                statusColor = Colors.grey;
-            }
+                switch (status) {
+                  case MembershipStatus.active:
+                    statusText = 'Active';
+                    statusColor = Colors.green;
+                    break;
+                  case MembershipStatus.expired:
+                    statusText = 'Expired';
+                    statusColor = Colors.red;
+                    break;
+                  case MembershipStatus.inactive:
+                    statusText = 'Inactive';
+                    statusColor = Colors.red;
+                    break;
+                  default:
+                    statusText = 'Unknown';
+                    statusColor = Colors.grey;
+                }
 
-            return DataRow(cells: [
-              DataCell(Text(
-                '${member.firstName} ${member.lastName}',
-                style: TextStyle(fontSize: 14), // Adjust font size here
-              )),
-              DataCell(Text(
-                member.membershipType.target?.typeName ?? "Unknown",
-                style: TextStyle(fontSize: 14), // Adjust font size here
-              )),
-              DataCell(Text(
-                formattedCheckInTime,
-                style: TextStyle(fontSize: 14), // Adjust font size here
-              )),
-              DataCell(Text(
-                checkOutTime,
-                style: TextStyle(fontSize: 14), // Adjust font size here
-              )),
-              DataCell(Text(
-                statusText,
-                style: TextStyle(fontSize: statusSize, color: statusColor),
-              )),
-            ]);
-          }).toList(),
-        ),
+                return DataRow(cells: [
+                  DataCell(Text(
+                    '${member.firstName} ${member.lastName}',
+                    style: const TextStyle(fontSize: 14), // Adjust font size here
+                  )),
+                  DataCell(Text(
+                    member.membershipType.target?.typeName ?? "Unknown",
+                    style: const TextStyle(fontSize: 14), // Adjust font size here
+                  )),
+                  DataCell(Text(
+                    formattedCheckInTime,
+                    style: const TextStyle(fontSize: 14), // Adjust font size here
+                  )),
+                  DataCell(Text(
+                    checkOutTime,
+                    style: const TextStyle(fontSize: 14), // Adjust font size here
+                  )),
+                  DataCell(Text(
+                    statusText,
+                    style: TextStyle(fontSize: statusSize, color: statusColor),
+                  )),
+                ]);
+              }).toList(),
+            ),
+          ),
+        ],
       );
     }
   }

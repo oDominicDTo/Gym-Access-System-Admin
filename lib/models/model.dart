@@ -156,49 +156,6 @@ class MembershipType {
 
 
 @Entity()
-class CheckIn {
-  @Id()
-  int id;
-
-  final member = ToOne<Member>(); // Define the ToOne relation to Member
-
-  @Property(type: PropertyType.date)
-  DateTime checkInTime;
-
-  CheckIn({
-    this.id = 0,
-    required this.checkInTime,
-    required ToOne<Member>? member,
-  }) {
-    this.member.target = member?.target;
-  }
-}
-
-@Entity()
-class CheckOut {
-  @Id()
-  int id;
-
-  final member = ToOne<Member>(); // Define the ToOne relation to Member
-
-  @Property(type: PropertyType.date)
-  DateTime checkOutTime;
-
-  CheckOut({
-    this.id = 0,
-    required this.checkOutTime,
-    required ToOne<Member>? member,
-  }) {
-    this.member.target = member?.target;
-  }
-}
-
-
-
-
-
-
-@Entity()
 class RenewalLog {
   @Id()
   int id;

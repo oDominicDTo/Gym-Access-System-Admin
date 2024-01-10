@@ -7,16 +7,16 @@ import 'package:path_provider/path_provider.dart';
 import '../../main.dart';
 import '../../objectbox.g.dart';
 
-class CheckInDialog extends StatefulWidget {
+class CheckOutDialog extends StatefulWidget {
   final ValueChanged<List<String>> onMembersSelected;
   final VoidCallback? onCheckInConfirmed;
-  const CheckInDialog({super.key, required this.onMembersSelected, required this.onCheckInConfirmed});
+  const CheckOutDialog({super.key, required this.onMembersSelected, required this.onCheckInConfirmed});
 
   @override
-  State createState() => _CheckInDialogState();
+  State createState() => _CheckOutDialogState();
 }
 
-class _CheckInDialogState extends State<CheckInDialog> {
+class _CheckOutDialogState extends State<CheckOutDialog> {
   List<Member> allMembers = []; // Fetch members from ObjectBox
   Member? selectedMember;
   late TextEditingController _searchController;
@@ -214,13 +214,13 @@ class _CheckInDialogState extends State<CheckInDialog> {
               return;
             }
             _isButtonDisabled = true;
-            if (selectedMember != null && selectedMember!.checkedIn){
+            if (selectedMember != null && !selectedMember!.checkedIn){
               showDialog(
                 context: context,
                 builder: (BuildContext context) {
                   return AlertDialog(
                     title: const Text(
-                      'Member Already Checked In',
+                      'Member Already Checked Out',
                       style: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold, fontSize: 20),
                     ),
                     content: const Text(
@@ -245,16 +245,16 @@ class _CheckInDialogState extends State<CheckInDialog> {
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(
-                  title: const Text('Confirm Check-In'),
-                  content: Text('Check in ${selectedMember!.firstName} ${selectedMember!.lastName}?'),
+                  title: const Text('Confirm Check-Out'),
+                  content: Text('Check out ${selectedMember!.firstName} ${selectedMember!.lastName}?'),
                   actions: <Widget>[
                     TextButton(
                       onPressed: () async {
-                        final checkInTime = DateTime.now();
+                        final checkOutTime = DateTime.now();
 
                         try {
-                           objectbox.store.runInTransaction(TxMode.write, ()  {
-                            objectbox.logCheckIn(selectedMember!.id, checkInTime: checkInTime);
+                          objectbox.store.runInTransaction(TxMode.write, ()  {
+                            objectbox.logCheckOut(selectedMember!.id, checkOutTime: checkOutTime);
                           });
                           Navigator.of(context).pop(); // Close confirmation dialog
                           Navigator.of(context).pop(); // Close dialog below the confirmation dialog

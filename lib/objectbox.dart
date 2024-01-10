@@ -13,8 +13,6 @@ class ObjectBox {
   late final Admin _admin;
   late final Box<Administrator> _administratorBox;
   late final Box<Member> _memberBox;
-  late final Box<CheckIn> _checkInBox;
-  late final Box<CheckOut> _checkOutBox;
   late final Box<MembershipType> _membershipTypeBox;
   late final NFCService _nfcService;
   late final Box<RenewalLog> _renewalLogBox;
@@ -32,8 +30,6 @@ class ObjectBox {
     }
     _administratorBox = Box<Administrator>(_store);
     _memberBox = Box<Member>(_store);
-    _checkInBox = Box<CheckIn>(_store);
-    _checkOutBox = Box<CheckOut>(_store);
     _membershipTypeBox = Box<MembershipType>(_store);
     _nfcService = NFCService();
     _renewalLogBox = Box<RenewalLog>(_store);
@@ -770,23 +766,30 @@ class ObjectBox {
 
 
 
-  // Method to log check out for a member
-  Future<void> logCheckOut(int memberId, {required DateTime checkOutTime}) async {
+  void logCheckOut(int memberId, {required DateTime checkOutTime}) {
+    // Get the member
     final member = _memberBox.get(memberId);
 
     if (member != null && member.checkedIn) {
+      // Get the latest attendance record for the member
       final latestAttendance = getLatestAttendanceForMember(memberId);
 
-      if (latestAttendance != null && latestAttendance.checkOutTime == null) {
+      if (latestAttendance != null && latestAttendance.checkOutTime == DateTime(2000, 1, 1)) {
+        // Update the check-out time
         latestAttendance.checkOutTime = checkOutTime;
-        await updateAttendance(latestAttendance);
+
+        // Put the updated attendance record back into the box
+        _attendanceBox.put(latestAttendance);
 
         // Update the member's checkedIn status
         member.checkedIn = false;
-        updateMember(member);
+
+        // Put the updated member back into the box
+        _memberBox.put(member);
       }
     }
   }
+
 
   Future<List<Attendance>> fetchAttendanceForDay(DateTime date, DateTime endOfDay) async {
     final startOfDay = DateTime(date.year, date.month, date.day, 0, 0, 0);
@@ -808,20 +811,6 @@ class ObjectBox {
     return attendances.isNotEmpty ? attendances.first : null;
   }
 
-
-  void updateLatestAttendanceForMember(int memberId, DateTime checkOutTime) {
-    getAttendanceForMember(memberId).then((attendances) {
-      if (attendances.isNotEmpty) {
-        final latestAttendance = attendances.reduce((a, b) =>
-        a.checkInTime.isAfter(b.checkInTime) ? a : b);
-
-        if (latestAttendance != null && latestAttendance.checkOutTime == null) {
-          latestAttendance.checkOutTime = checkOutTime;
-          updateAttendance(latestAttendance);
-        }
-      }
-    });
-  }
 
   Future<void> updateAttendance(Attendance attendance) async {
     // Fetch the existing attendance record from the database

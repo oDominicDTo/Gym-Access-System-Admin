@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-
+import 'package:gym_kiosk_admin/dialog/attendance/checkout_dialog.dart';
 import '../../widgets/custom_card_button.dart';
 import 'checkIn_dialog.dart';
-
 
 class CheckDialog extends StatelessWidget {
   final Null Function() onCheckInConfirmed;
@@ -11,7 +10,6 @@ class CheckDialog extends StatelessWidget {
     Key? key,
     required this.onCheckInConfirmed,
   }) : super(key: key);
-
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +27,8 @@ class CheckDialog extends StatelessWidget {
                 context: context,
                 builder: (BuildContext context) => CheckInDialog(
                   onMembersSelected: (List<String> value) {},
-                  onCheckInConfirmed: onCheckInConfirmed, // Pass the callback here
+                  onCheckInConfirmed:
+                      onCheckInConfirmed, // Pass the callback here
                 ),
               );
             },
@@ -41,6 +40,14 @@ class CheckDialog extends StatelessWidget {
             title: 'Check Out',
             onPressed: () {
               Navigator.of(context).pop();
+              showDialog(
+                context: context,
+                builder: (BuildContext context) => CheckOutDialog(
+                  onMembersSelected: (List<String> value) {},
+                  onCheckInConfirmed:
+                      onCheckInConfirmed, // Pass the callback here
+                ),
+              );
             },
             icon: Icons.arrow_circle_left_outlined,
             iconColor: Colors.black,
