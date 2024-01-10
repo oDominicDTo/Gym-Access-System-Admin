@@ -206,58 +206,6 @@ final _entities = <ModelEntity>[
       relations: <ModelRelation>[],
       backlinks: <ModelBacklink>[]),
   ModelEntity(
-      id: const IdUid(10, 4250344304555983422),
-      name: 'CheckIn',
-      lastPropertyId: const IdUid(3, 959515500019605461),
-      flags: 0,
-      properties: <ModelProperty>[
-        ModelProperty(
-            id: const IdUid(1, 3589808727678625238),
-            name: 'id',
-            type: 6,
-            flags: 1),
-        ModelProperty(
-            id: const IdUid(2, 2130941890027434785),
-            name: 'memberId',
-            type: 11,
-            flags: 520,
-            indexId: const IdUid(10, 6979038591882905776),
-            relationTarget: 'Member'),
-        ModelProperty(
-            id: const IdUid(3, 959515500019605461),
-            name: 'checkInTime',
-            type: 10,
-            flags: 0)
-      ],
-      relations: <ModelRelation>[],
-      backlinks: <ModelBacklink>[]),
-  ModelEntity(
-      id: const IdUid(11, 6200012836170653188),
-      name: 'CheckOut',
-      lastPropertyId: const IdUid(3, 7584122991086285350),
-      flags: 0,
-      properties: <ModelProperty>[
-        ModelProperty(
-            id: const IdUid(1, 6234137489678793912),
-            name: 'id',
-            type: 6,
-            flags: 1),
-        ModelProperty(
-            id: const IdUid(2, 8510225582063035397),
-            name: 'memberId',
-            type: 11,
-            flags: 520,
-            indexId: const IdUid(11, 9021452178579632282),
-            relationTarget: 'Member'),
-        ModelProperty(
-            id: const IdUid(3, 7584122991086285350),
-            name: 'checkOutTime',
-            type: 10,
-            flags: 0)
-      ],
-      relations: <ModelRelation>[],
-      backlinks: <ModelBacklink>[]),
-  ModelEntity(
       id: const IdUid(13, 6886693126471221766),
       name: 'UserFeedback',
       lastPropertyId: const IdUid(7, 4393122270738686167),
@@ -475,7 +423,9 @@ ModelDefinition getObjectBoxModel() {
         1500853826776324486,
         8465745737525015078,
         4878952722867786680,
-        7111581215987727205
+        7111581215987727205,
+        4250344304555983422,
+        6200012836170653188
       ],
       retiredIndexUids: const [
         5016079819760097089,
@@ -544,7 +494,13 @@ ModelDefinition getObjectBoxModel() {
         2173068232630115283,
         6669964360131324254,
         5215538072195219068,
-        1561428821361172620
+        1561428821361172620,
+        3589808727678625238,
+        2130941890027434785,
+        959515500019605461,
+        6234137489678793912,
+        8510225582063035397,
+        7584122991086285350
       ],
       retiredRelationUids: const [337373602936818043, 3094033825849941879],
       modelVersion: 5,
@@ -727,68 +683,8 @@ ModelDefinition getObjectBoxModel() {
           object.member.attach(store);
           return object;
         }),
-    CheckIn: EntityDefinition<CheckIn>(
-        model: _entities[4],
-        toOneRelations: (CheckIn object) => [object.member],
-        toManyRelations: (CheckIn object) => {},
-        getId: (CheckIn object) => object.id,
-        setId: (CheckIn object, int id) {
-          object.id = id;
-        },
-        objectToFB: (CheckIn object, fb.Builder fbb) {
-          fbb.startTable(4);
-          fbb.addInt64(0, object.id);
-          fbb.addInt64(1, object.member.targetId);
-          fbb.addInt64(2, object.checkInTime.millisecondsSinceEpoch);
-          fbb.finish(fbb.endTable());
-          return object.id;
-        },
-        objectFromFB: (Store store, ByteData fbData) {
-          final buffer = fb.BufferContext(fbData);
-          final rootOffset = buffer.derefObject(0);
-
-          final object = CheckIn(
-              id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
-              checkInTime: DateTime.fromMillisecondsSinceEpoch(
-                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 8, 0)),
-              member: ToOne(
-                  targetId: const fb.Int64Reader()
-                      .vTableGet(buffer, rootOffset, 6, 0)));
-          object.member.attach(store);
-          return object;
-        }),
-    CheckOut: EntityDefinition<CheckOut>(
-        model: _entities[5],
-        toOneRelations: (CheckOut object) => [object.member],
-        toManyRelations: (CheckOut object) => {},
-        getId: (CheckOut object) => object.id,
-        setId: (CheckOut object, int id) {
-          object.id = id;
-        },
-        objectToFB: (CheckOut object, fb.Builder fbb) {
-          fbb.startTable(4);
-          fbb.addInt64(0, object.id);
-          fbb.addInt64(1, object.member.targetId);
-          fbb.addInt64(2, object.checkOutTime.millisecondsSinceEpoch);
-          fbb.finish(fbb.endTable());
-          return object.id;
-        },
-        objectFromFB: (Store store, ByteData fbData) {
-          final buffer = fb.BufferContext(fbData);
-          final rootOffset = buffer.derefObject(0);
-
-          final object = CheckOut(
-              id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
-              checkOutTime: DateTime.fromMillisecondsSinceEpoch(
-                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 8, 0)),
-              member: ToOne(
-                  targetId: const fb.Int64Reader()
-                      .vTableGet(buffer, rootOffset, 6, 0)));
-          object.member.attach(store);
-          return object;
-        }),
     UserFeedback: EntityDefinition<UserFeedback>(
-        model: _entities[6],
+        model: _entities[4],
         toOneRelations: (UserFeedback object) => [],
         toManyRelations: (UserFeedback object) => {},
         getId: (UserFeedback object) => object.id,
@@ -837,7 +733,7 @@ ModelDefinition getObjectBoxModel() {
           return object;
         }),
     AdminRenewalLog: EntityDefinition<AdminRenewalLog>(
-        model: _entities[7],
+        model: _entities[5],
         toOneRelations: (AdminRenewalLog object) => [],
         toManyRelations: (AdminRenewalLog object) => {},
         getId: (AdminRenewalLog object) => object.id,
@@ -881,7 +777,7 @@ ModelDefinition getObjectBoxModel() {
           return object;
         }),
     CardChangeLog: EntityDefinition<CardChangeLog>(
-        model: _entities[8],
+        model: _entities[6],
         toOneRelations: (CardChangeLog object) => [],
         toManyRelations: (CardChangeLog object) => {},
         getId: (CardChangeLog object) => object.id,
@@ -915,7 +811,7 @@ ModelDefinition getObjectBoxModel() {
           return object;
         }),
     NewMemberLog: EntityDefinition<NewMemberLog>(
-        model: _entities[9],
+        model: _entities[7],
         toOneRelations: (NewMemberLog object) => [],
         toManyRelations: (NewMemberLog object) => {},
         getId: (NewMemberLog object) => object.id,
@@ -956,7 +852,7 @@ ModelDefinition getObjectBoxModel() {
           return object;
         }),
     Attendance: EntityDefinition<Attendance>(
-        model: _entities[10],
+        model: _entities[8],
         toOneRelations: (Attendance object) => [],
         toManyRelations: (Attendance object) => {},
         getId: (Attendance object) => object.id,
@@ -1120,157 +1016,129 @@ class RenewalLog_ {
       QueryIntegerProperty<RenewalLog>(_entities[3].properties[3]);
 }
 
-/// [CheckIn] entity fields to define ObjectBox queries.
-class CheckIn_ {
-  /// see [CheckIn.id]
-  static final id = QueryIntegerProperty<CheckIn>(_entities[4].properties[0]);
-
-  /// see [CheckIn.member]
-  static final member =
-      QueryRelationToOne<CheckIn, Member>(_entities[4].properties[1]);
-
-  /// see [CheckIn.checkInTime]
-  static final checkInTime =
-      QueryIntegerProperty<CheckIn>(_entities[4].properties[2]);
-}
-
-/// [CheckOut] entity fields to define ObjectBox queries.
-class CheckOut_ {
-  /// see [CheckOut.id]
-  static final id = QueryIntegerProperty<CheckOut>(_entities[5].properties[0]);
-
-  /// see [CheckOut.member]
-  static final member =
-      QueryRelationToOne<CheckOut, Member>(_entities[5].properties[1]);
-
-  /// see [CheckOut.checkOutTime]
-  static final checkOutTime =
-      QueryIntegerProperty<CheckOut>(_entities[5].properties[2]);
-}
-
 /// [UserFeedback] entity fields to define ObjectBox queries.
 class UserFeedback_ {
   /// see [UserFeedback.id]
   static final id =
-      QueryIntegerProperty<UserFeedback>(_entities[6].properties[0]);
+      QueryIntegerProperty<UserFeedback>(_entities[4].properties[0]);
 
   /// see [UserFeedback.submissionTime]
   static final submissionTime =
-      QueryIntegerProperty<UserFeedback>(_entities[6].properties[1]);
+      QueryIntegerProperty<UserFeedback>(_entities[4].properties[1]);
 
   /// see [UserFeedback.feedbackText]
   static final feedbackText =
-      QueryStringProperty<UserFeedback>(_entities[6].properties[2]);
+      QueryStringProperty<UserFeedback>(_entities[4].properties[2]);
 
   /// see [UserFeedback.category]
   static final category =
-      QueryStringProperty<UserFeedback>(_entities[6].properties[3]);
+      QueryStringProperty<UserFeedback>(_entities[4].properties[3]);
 
   /// see [UserFeedback.name]
   static final name =
-      QueryStringProperty<UserFeedback>(_entities[6].properties[4]);
+      QueryStringProperty<UserFeedback>(_entities[4].properties[4]);
 
   /// see [UserFeedback.title]
   static final title =
-      QueryStringProperty<UserFeedback>(_entities[6].properties[5]);
+      QueryStringProperty<UserFeedback>(_entities[4].properties[5]);
 
   /// see [UserFeedback.isUser]
   static final isUser =
-      QueryBooleanProperty<UserFeedback>(_entities[6].properties[6]);
+      QueryBooleanProperty<UserFeedback>(_entities[4].properties[6]);
 }
 
 /// [AdminRenewalLog] entity fields to define ObjectBox queries.
 class AdminRenewalLog_ {
   /// see [AdminRenewalLog.id]
   static final id =
-      QueryIntegerProperty<AdminRenewalLog>(_entities[7].properties[0]);
+      QueryIntegerProperty<AdminRenewalLog>(_entities[5].properties[0]);
 
   /// see [AdminRenewalLog.renewalDate]
   static final renewalDate =
-      QueryIntegerProperty<AdminRenewalLog>(_entities[7].properties[1]);
+      QueryIntegerProperty<AdminRenewalLog>(_entities[5].properties[1]);
 
   /// see [AdminRenewalLog.amount]
   static final amount =
-      QueryDoubleProperty<AdminRenewalLog>(_entities[7].properties[2]);
+      QueryDoubleProperty<AdminRenewalLog>(_entities[5].properties[2]);
 
   /// see [AdminRenewalLog.memberName]
   static final memberName =
-      QueryStringProperty<AdminRenewalLog>(_entities[7].properties[3]);
+      QueryStringProperty<AdminRenewalLog>(_entities[5].properties[3]);
 
   /// see [AdminRenewalLog.adminName]
   static final adminName =
-      QueryStringProperty<AdminRenewalLog>(_entities[7].properties[4]);
+      QueryStringProperty<AdminRenewalLog>(_entities[5].properties[4]);
 
   /// see [AdminRenewalLog.membershipType]
   static final membershipType =
-      QueryStringProperty<AdminRenewalLog>(_entities[7].properties[5]);
+      QueryStringProperty<AdminRenewalLog>(_entities[5].properties[5]);
 
   /// see [AdminRenewalLog.addedDurationDays]
   static final addedDurationDays =
-      QueryIntegerProperty<AdminRenewalLog>(_entities[7].properties[6]);
+      QueryIntegerProperty<AdminRenewalLog>(_entities[5].properties[6]);
 }
 
 /// [CardChangeLog] entity fields to define ObjectBox queries.
 class CardChangeLog_ {
   /// see [CardChangeLog.id]
   static final id =
-      QueryIntegerProperty<CardChangeLog>(_entities[8].properties[0]);
+      QueryIntegerProperty<CardChangeLog>(_entities[6].properties[0]);
 
   /// see [CardChangeLog.entityType]
   static final entityType =
-      QueryStringProperty<CardChangeLog>(_entities[8].properties[1]);
+      QueryStringProperty<CardChangeLog>(_entities[6].properties[1]);
 
   /// see [CardChangeLog.entityName]
   static final entityName =
-      QueryStringProperty<CardChangeLog>(_entities[8].properties[2]);
+      QueryStringProperty<CardChangeLog>(_entities[6].properties[2]);
 
   /// see [CardChangeLog.changeDate]
   static final changeDate =
-      QueryIntegerProperty<CardChangeLog>(_entities[8].properties[3]);
+      QueryIntegerProperty<CardChangeLog>(_entities[6].properties[3]);
 }
 
 /// [NewMemberLog] entity fields to define ObjectBox queries.
 class NewMemberLog_ {
   /// see [NewMemberLog.id]
   static final id =
-      QueryIntegerProperty<NewMemberLog>(_entities[9].properties[0]);
+      QueryIntegerProperty<NewMemberLog>(_entities[7].properties[0]);
 
   /// see [NewMemberLog.creationDate]
   static final creationDate =
-      QueryIntegerProperty<NewMemberLog>(_entities[9].properties[1]);
+      QueryIntegerProperty<NewMemberLog>(_entities[7].properties[1]);
 
   /// see [NewMemberLog.amount]
   static final amount =
-      QueryDoubleProperty<NewMemberLog>(_entities[9].properties[2]);
+      QueryDoubleProperty<NewMemberLog>(_entities[7].properties[2]);
 
   /// see [NewMemberLog.adminName]
   static final adminName =
-      QueryStringProperty<NewMemberLog>(_entities[9].properties[3]);
+      QueryStringProperty<NewMemberLog>(_entities[7].properties[3]);
 
   /// see [NewMemberLog.memberName]
   static final memberName =
-      QueryStringProperty<NewMemberLog>(_entities[9].properties[4]);
+      QueryStringProperty<NewMemberLog>(_entities[7].properties[4]);
 
   /// see [NewMemberLog.membershipType]
   static final membershipType =
-      QueryStringProperty<NewMemberLog>(_entities[9].properties[5]);
+      QueryStringProperty<NewMemberLog>(_entities[7].properties[5]);
 }
 
 /// [Attendance] entity fields to define ObjectBox queries.
 class Attendance_ {
   /// see [Attendance.id]
   static final id =
-      QueryIntegerProperty<Attendance>(_entities[10].properties[0]);
+      QueryIntegerProperty<Attendance>(_entities[8].properties[0]);
 
   /// see [Attendance.memberId]
   static final memberId =
-      QueryIntegerProperty<Attendance>(_entities[10].properties[1]);
+      QueryIntegerProperty<Attendance>(_entities[8].properties[1]);
 
   /// see [Attendance.checkInTime]
   static final checkInTime =
-      QueryIntegerProperty<Attendance>(_entities[10].properties[2]);
+      QueryIntegerProperty<Attendance>(_entities[8].properties[2]);
 
   /// see [Attendance.checkOutTime]
   static final checkOutTime =
-      QueryIntegerProperty<Attendance>(_entities[10].properties[3]);
+      QueryIntegerProperty<Attendance>(_entities[8].properties[3]);
 }
