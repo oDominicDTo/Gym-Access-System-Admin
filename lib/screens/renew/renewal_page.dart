@@ -4,7 +4,8 @@ import 'package:gym_kiosk_admin/widgets/custom_card_button.dart';
 import 'member_renew.dart';
 
 class RenewalPage extends StatefulWidget {
-  const RenewalPage({Key? key}) : super(key: key);
+  final String adminName;
+  const RenewalPage({Key? key, required this.adminName}) : super(key: key);
 
   @override
   State createState() => _RenewalPageState();
@@ -38,7 +39,7 @@ class _RenewalPageState extends State<RenewalPage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const RenewMemberPage(),
+                        builder: (context) => RenewMemberPage(adminName: widget.adminName),
                       ),
                     );
                   },

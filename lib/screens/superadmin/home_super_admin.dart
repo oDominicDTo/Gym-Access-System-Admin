@@ -25,7 +25,7 @@ class _HomeSuperAdminPageState extends State<HomeSuperAdminPage> {
     const Center(child: Text('Welcome to Overview!')),
     const MemberInput(adminName: '',),
     const MemberListScreen(),
-    const RenewalPage(),
+    const RenewalPage( adminName: '',),
     const ManagementPage(),
     const FeedbackPage(),
   ];
@@ -118,7 +118,7 @@ class _HomeSuperAdminPageState extends State<HomeSuperAdminPage> {
                 ? Navigator(
               onGenerateRoute: (settings) {
                 return MaterialPageRoute(
-                  builder: (_) => const RenewalPage(),
+                  builder: (_) => RenewalPage(adminName: widget.adminName,),
                 );
               },
             )

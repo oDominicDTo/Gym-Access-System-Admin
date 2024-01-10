@@ -247,6 +247,7 @@ class AdminRenewalLog {
   String memberName; // ID of the member who renewed
   String adminName; // ID of the admin who performed the action
   String membershipType; // ID of the membership type
+  int addedDurationDays; // Number of days added to the membership
   double amount; // Amount paid for membership renewal
 
   AdminRenewalLog({
@@ -255,6 +256,7 @@ class AdminRenewalLog {
     required this.memberName,
     required this.adminName,
     required this.membershipType,
+    required this.addedDurationDays,
     required this.amount,
   });
 

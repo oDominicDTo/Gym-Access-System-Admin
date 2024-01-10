@@ -7,29 +7,13 @@ import '../../../widgets/custom_card_button.dart';
 
 class SuccessPage extends StatelessWidget {
   final Member member;
-
-  const SuccessPage({Key? key, required this.member}) : super(key: key);
+  final int addedDurationDays;
+  const SuccessPage({Key? key, required this.member, required this.addedDurationDays}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final Duration membershipDuration = member.membershipEndDate.difference(member.membershipStartDate);
 
-    String durationText = '';
-    if (membershipDuration.inDays >= 365) {
-      final years = membershipDuration.inDays ~/ 365;
-      final remainingDays = membershipDuration.inDays % 365;
-      if (remainingDays > 30) {
-        durationText = '$years year${years > 1 ? 's' : ''}';
-      } else {
-        durationText = '$years year${years > 1 ? 's' : ''} and $remainingDays day${remainingDays > 1 ? 's' : ''}';
-      }
-    } else if (membershipDuration.inDays > 30) {
-      final months = membershipDuration.inDays ~/ 30;
-      final remainingDays = membershipDuration.inDays % 30;
-      durationText = '$months month${months > 1 ? 's' : ''} and $remainingDays day${remainingDays > 1 ? 's' : ''}';
-    } else {
-      durationText = '${membershipDuration.inDays} day${membershipDuration.inDays > 1 ? 's' : ''}';
-    }
+
 
     return Scaffold(
       appBar: AppBar(automaticallyImplyLeading: false),
@@ -67,7 +51,7 @@ class SuccessPage extends StatelessWidget {
                     children: [
                       const SizedBox(height: 20.0),
                       Text(
-                        'Successfully Added $durationText',
+                        'Successfully Added  $addedDurationDays  Days',
                         style: const TextStyle(fontFamily: 'Poppins', fontSize: 24),
                       ),
                       const SizedBox(height: 16.0),
@@ -90,13 +74,7 @@ class SuccessPage extends StatelessWidget {
                           title: 'Exit',
                           icon: Icons.close,
                           onPressed: () {
-                            Navigator.popUntil(context, ModalRoute.withName('/'));
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const RenewalPage(),
-                              ),
-                            );
+                            Navigator.of(context).popUntil((route) => route.isFirst);
                           },
                           iconColor: Colors.blue,
                         ),

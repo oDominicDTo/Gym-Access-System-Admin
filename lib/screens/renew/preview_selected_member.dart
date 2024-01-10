@@ -7,8 +7,8 @@ import '../../widgets/custom_card_button.dart';
 
 class PreviewMemberPage extends StatelessWidget {
   final Member member;
-
-  const PreviewMemberPage({Key? key, required this.member}) : super(key: key);
+  final String adminName;
+  const PreviewMemberPage({Key? key, required this.member, required this.adminName}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +79,7 @@ class PreviewMemberPage extends StatelessWidget {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) =>
-                                        MembershipDurationPage(selectedMember: member),
+                                        MembershipDurationPage(selectedMember: member, adminName: adminName),
                                   ),
                                 );
                               },

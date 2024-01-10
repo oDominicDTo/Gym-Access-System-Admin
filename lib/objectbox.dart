@@ -172,8 +172,19 @@ class ObjectBox {
 
 
     for (int i = 0; i < 100; i++) {
-      int randomDays = Random().nextInt(365 * 2) -
-          365; // generates a random integer between -365 and 365
+      int randomDays = Random().nextInt(365 * 2) - 365;
+      // Generates a random integer between -365 and 365
+
+      DateTime currentDate = DateTime.now();
+      DateTime membershipStartDate = currentDate;
+      DateTime membershipEndDate = currentDate.add(Duration(days: randomDays));
+
+      if (randomDays <= 0) {
+        // If the random days are negative or zero, adjust the start date
+        membershipStartDate = membershipEndDate;
+        membershipEndDate = membershipEndDate.add(Duration(days: -randomDays));
+      }
+
       Member member = Member(
         firstName: faker.person.firstName(),
         lastName: faker.person.lastName(),
@@ -182,17 +193,14 @@ class ObjectBox {
         dateOfBirth: faker.date.dateTime(minYear: 1950, maxYear: 2005),
         address: faker.address.streetAddress(),
         email: faker.internet.email(),
-        membershipStartDate: DateTime.now(),
-        membershipEndDate: DateTime.now().add(Duration(days: randomDays)),
-        // adds or subtracts the random number of days from the current date
+        membershipStartDate: membershipStartDate,
+        membershipEndDate: membershipEndDate,
         photoPath: faker.image.image(),
       );
 
-      // Assign a random membership type to the member
       member.membershipType.target =
       membershipTypes[faker.randomGenerator.integer(membershipTypes.length)];
 
-      // When the Member is put, its MembershipType will automatically be put into the MembershipType Box.
       _memberBox.put(member);
     }
 

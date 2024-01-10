@@ -3,6 +3,7 @@ import 'package:gym_kiosk_admin/screens/add_member.dart';
 import 'package:gym_kiosk_admin/screens/feedback/feedback_page.dart';
 import 'package:gym_kiosk_admin/screens/home_page.dart';
 import 'package:gym_kiosk_admin/screens/member_list_screen.dart';
+import 'package:gym_kiosk_admin/screens/membership_analytics.dart';
 import 'package:gym_kiosk_admin/widgets/top_navigation_bar.dart';
 
 import '../renew/renewal_page.dart';
@@ -21,12 +22,12 @@ class _HomeStaffPageState extends State<HomeStaffPage> {
 
   final List<Widget> _screens = [
     const HomePage(),
-    const Center(child: Text('Welcome to Overview!')),
+    MembershipStatusChartPage(),
     const MemberInput(
       adminName: '',
     ),
     const MemberListScreen(),
-    const RenewalPage(),
+    const RenewalPage(adminName: '',),
     const FeedbackPage(),
   ];
 
@@ -114,7 +115,15 @@ class _HomeStaffPageState extends State<HomeStaffPage> {
           ),
           const VerticalDivider(thickness: 1, width: 1),
           Expanded(
-            child: _selectedIndex == 5
+            child: _selectedIndex == 4
+                ? Navigator(
+              onGenerateRoute: (settings) {
+                return MaterialPageRoute(
+                  builder: (_) => RenewalPage(adminName: widget.adminName),
+                );
+              },
+            )
+            : _selectedIndex == 5
                 ? Navigator(
                     onGenerateRoute: (settings) {
                       return MaterialPageRoute(

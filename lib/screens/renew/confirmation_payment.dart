@@ -7,10 +7,12 @@ class ConfirmationPaymentPage extends StatefulWidget {
   final Member selectedMember;
   final int months;
 
+  final String adminName;
+
   const ConfirmationPaymentPage({
     Key? key,
     required this.selectedMember,
-    required this.months,
+    required this.months,  required this.adminName,
   }) : super(key: key);
 
   @override
@@ -78,9 +80,9 @@ class _ConfirmationPaymentPageState extends State<ConfirmationPaymentPage> {
                   Text(
                     'Total Amount: PHP ${totalPrice.toStringAsFixed(2)}',
                     style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                      fontFamily: 'Poppins'
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                        fontFamily: 'Poppins'
                     ),
                   ),
                 ],
@@ -115,25 +117,38 @@ class _ConfirmationPaymentPageState extends State<ConfirmationPaymentPage> {
                   onPressed: () {
                     // Update membership duration and log renewal
                     final currentDate = DateTime.now();
-                    final updatedEndDate = currentDate.add(Duration(days: 30 * widget.months));
+                    // final updatedEndDate = currentDate.add(Duration(days: 30 * widget.months));
 
                     // Update membership duration
-                    widget.selectedMember.membershipEndDate = updatedEndDate;
-                    // Assuming objectbox methods are being handled elsewhere
+                    final addedDurationDays = 30 * widget.months;
 
-                    // Log renewal in RenewalLog entity with added duration days
-                    final addedDurationDays = 30 * widget.months; // Calculate the added duration
+                  objectbox.updateMembershipDuration(widget.selectedMember.id, addedDurationDays);
+
+                    final membershipType = widget.selectedMember.membershipType.target;
+                    final membershipTypeName = membershipType != null ? membershipType.typeName : '';
+
+                    final newAdminRenewalLog = AdminRenewalLog(
+                      renewalDate: currentDate,
+                      memberName: '${widget.selectedMember.firstName} ${widget.selectedMember.lastName}',
+                      adminName: widget.adminName, // Set the admin name here
+                      membershipType: membershipTypeName, // Assuming membership type ID needs to be captured
+                      addedDurationDays: addedDurationDays,
+                      amount: totalPrice, // If applicable, include the total price here
+                    );
+
                     final newRenewalLog = RenewalLog(
                       renewalDate: currentDate,
                       addedDurationDays: addedDurationDays,
                     );
                     newRenewalLog.member.target = widget.selectedMember;
+
                     objectbox.addRenewalLog(newRenewalLog);
+                    objectbox.addAdminRenewalLog(newAdminRenewalLog);
 
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => SuccessPage(member: widget.selectedMember),
+                        builder: (context) => SuccessPage(member: widget.selectedMember, addedDurationDays: addedDurationDays,),
                       ),
                     );
                   },

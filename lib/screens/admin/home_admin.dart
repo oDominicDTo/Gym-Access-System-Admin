@@ -26,7 +26,7 @@ class _HomeAdminPageState extends State<HomeAdminPage> {
     MembershipStatusChartPage(),
     const MemberInput(adminName: '',),
     const MemberListScreen(),
-    const RenewalPage(),
+    const RenewalPage(adminName: '',),
     const ManagementPage(),
     const FeedbackPage(),
   ];
@@ -119,7 +119,7 @@ class _HomeAdminPageState extends State<HomeAdminPage> {
                 ? Navigator(
               onGenerateRoute: (settings) {
                 return MaterialPageRoute(
-                  builder: (_) => const RenewalPage(),
+                  builder: (_) => RenewalPage(adminName: widget.adminName),
                 );
               },
             )

@@ -294,7 +294,7 @@ final _entities = <ModelEntity>[
   ModelEntity(
       id: const IdUid(15, 7772235705929313319),
       name: 'AdminRenewalLog',
-      lastPropertyId: const IdUid(9, 5625649490804205479),
+      lastPropertyId: const IdUid(10, 6509957765120067021),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
@@ -326,6 +326,11 @@ final _entities = <ModelEntity>[
             id: const IdUid(9, 5625649490804205479),
             name: 'membershipType',
             type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(10, 6509957765120067021),
+            name: 'addedDurationDays',
+            type: 6,
             flags: 0)
       ],
       relations: <ModelRelation>[],
@@ -797,13 +802,14 @@ ModelDefinition getObjectBoxModel() {
           final memberNameOffset = fbb.writeString(object.memberName);
           final adminNameOffset = fbb.writeString(object.adminName);
           final membershipTypeOffset = fbb.writeString(object.membershipType);
-          fbb.startTable(10);
+          fbb.startTable(11);
           fbb.addInt64(0, object.id);
           fbb.addInt64(1, object.renewalDate.millisecondsSinceEpoch);
           fbb.addFloat64(5, object.amount);
           fbb.addOffset(6, memberNameOffset);
           fbb.addOffset(7, adminNameOffset);
           fbb.addOffset(8, membershipTypeOffset);
+          fbb.addInt64(9, object.addedDurationDays);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -821,6 +827,8 @@ ModelDefinition getObjectBoxModel() {
                   .vTableGet(buffer, rootOffset, 18, ''),
               membershipType: const fb.StringReader(asciiOptimization: true)
                   .vTableGet(buffer, rootOffset, 20, ''),
+              addedDurationDays:
+                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 22, 0),
               amount: const fb.Float64Reader()
                   .vTableGet(buffer, rootOffset, 14, 0));
 
@@ -1108,6 +1116,10 @@ class AdminRenewalLog_ {
   /// see [AdminRenewalLog.membershipType]
   static final membershipType =
       QueryStringProperty<AdminRenewalLog>(_entities[7].properties[5]);
+
+  /// see [AdminRenewalLog.addedDurationDays]
+  static final addedDurationDays =
+      QueryIntegerProperty<AdminRenewalLog>(_entities[7].properties[6]);
 }
 
 /// [CardChangeLog] entity fields to define ObjectBox queries.

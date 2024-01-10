@@ -4,7 +4,8 @@ import '../../main.dart';
 import '../../models/model.dart';
 
 class MemberSelectionPage extends StatefulWidget {
-  const MemberSelectionPage({Key? key}) : super(key: key);
+  final String adminName;
+  const MemberSelectionPage({Key? key, required this.adminName}) : super(key: key);
 
   @override
   State createState() => _MemberSelectionPageState();
@@ -53,7 +54,7 @@ class _MemberSelectionPageState extends State<MemberSelectionPage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => PreviewMemberPage(member: selectedMember),
+        builder: (context) => PreviewMemberPage(member: selectedMember, adminName: widget.adminName,),
       ),
     );
   }

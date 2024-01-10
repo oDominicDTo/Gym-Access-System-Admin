@@ -4,10 +4,11 @@ import 'package:gym_kiosk_admin/models/model.dart';
 
 class MembershipDurationPage extends StatefulWidget {
   final Member selectedMember;
+  final String adminName;
 
   const MembershipDurationPage({
     Key? key,
-    required this.selectedMember,
+    required this.selectedMember, required this.adminName,
   }) : super(key: key);
 
   @override
@@ -126,6 +127,7 @@ class _MembershipDurationPageState extends State<MembershipDurationPage> {
                         builder: (context) => ConfirmationPaymentPage(
                           selectedMember: widget.selectedMember,
                           months: months,
+                          adminName: widget.adminName,
                         ),
                       ),
                     );
@@ -142,7 +144,7 @@ class _MembershipDurationPageState extends State<MembershipDurationPage> {
                         MaterialPageRoute(
                           builder: (context) => ConfirmationPaymentPage(
                             selectedMember: widget.selectedMember,
-                            months: months,
+                            months: months, adminName: widget.adminName,
                           ),
                         ),
                       );

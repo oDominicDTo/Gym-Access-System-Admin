@@ -5,7 +5,8 @@ import '../../widgets/custom_card_button.dart';
 
 
 class RenewMemberPage extends StatelessWidget {
-  const RenewMemberPage({Key? key}) : super(key: key);
+  final String adminName;
+  const RenewMemberPage({Key? key, required this.adminName}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +25,7 @@ class RenewMemberPage extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const MemberSelectionPage(),
+                    builder: (context) => MemberSelectionPage(adminName: adminName),
                   ),
                 );
               },

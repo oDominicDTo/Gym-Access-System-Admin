@@ -282,7 +282,7 @@
     },
     {
       "id": "15:7772235705929313319",
-      "lastPropertyId": "9:5625649490804205479",
+      "lastPropertyId": "10:6509957765120067021",
       "name": "AdminRenewalLog",
       "properties": [
         {
@@ -315,6 +315,11 @@
           "id": "9:5625649490804205479",
           "name": "membershipType",
           "type": 9
+        },
+        {
+          "id": "10:6509957765120067021",
+          "name": "addedDurationDays",
+          "type": 6
         }
       ],
       "relations": []
