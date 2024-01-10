@@ -119,6 +119,7 @@ class _MembershipDurationPageState extends State<MembershipDurationPage> {
                           membershipStartDate: DateTime.now(),
                           membershipEndDate: membershipEndDate,
                           photoPath: '',
+                          checkedIn: false,
                         );
 
                         showDialog(

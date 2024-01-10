@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import '../../../models/model.dart';
-import 'renewal_page.dart';
 import '../../../widgets/custom_card_button.dart';
 
 class SuccessPage extends StatelessWidget {

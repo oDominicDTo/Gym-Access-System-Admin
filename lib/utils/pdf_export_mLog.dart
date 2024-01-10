@@ -40,7 +40,7 @@ class NewMemberPDFExporter {
     final List<int> bytes = await document.save();
     document.dispose();
 
-    final String formattedDateTime = DateFormat('MM_dd_yyyy').format(DateTime.now());
+   // final String formattedDateTime = DateFormat('MM_dd_yyyy').format(DateTime.now());
     final String fileName = selectedMonth != null
         ? 'NewMember_Data_${DateFormat('MMM_yyyy').format(DateTime(selectedYear, selectedMonth))}.pdf'
         : 'NewMember_Data_$selectedYear.pdf';
@@ -93,7 +93,6 @@ class NewMemberPDFExporter {
     grid.headers[0].cells[3].value = 'Membership Type';
     grid.headers[0].cells[4].value = 'Amount';
 
-    double totalAmount = 0.0;
 
     for (final NewMemberLog log in newMemberLogs) {
       final PdfGridRow pdfRow = grid.rows.add();
@@ -105,7 +104,6 @@ class NewMemberPDFExporter {
       pdfRow.cells[3].value = log.membershipType;
       pdfRow.cells[4].value = log.amount.toString();
 
-      totalAmount += log.amount;
     }
 
     return grid;

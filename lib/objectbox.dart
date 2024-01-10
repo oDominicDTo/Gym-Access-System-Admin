@@ -9,7 +9,7 @@ import 'dart:math';
 
 class ObjectBox {
   late final Store _store;
-
+  Store get store => _store;
   late final Admin _admin;
   late final Box<Administrator> _administratorBox;
   late final Box<Member> _memberBox;
@@ -21,6 +21,8 @@ class ObjectBox {
   late final Box<UserFeedback> _feedbackBox;
   late final Box<NewMemberLog> _newMemberLogBox;
   late final Box<AdminRenewalLog> _adminRenewalLogBox;
+  late final Box<Attendance> _attendanceBox;
+
   ObjectBox._create(this._store) {
     // Optional: enable ObjectBox Admin on debug builds.
     // https://docs.objectbox.io/data-browser
@@ -38,9 +40,7 @@ class ObjectBox {
     _feedbackBox = Box<UserFeedback>(_store);
     _newMemberLogBox = Box<NewMemberLog>(_store);
     _adminRenewalLogBox = Box<AdminRenewalLog>(_store);
-
-    // Start NFC event listener
-    _startNFCListener();
+    _attendanceBox = Box<Attendance>(_store);
     // Add some demo data if the box is empty.
     if (_memberBox.isEmpty()) {
       _putDemoData();
@@ -62,46 +62,6 @@ class ObjectBox {
     final store = await openStore(directory: directoryPath);
 
     return ObjectBox._create(store);
-  }
-
-  void _startNFCListener() {
-    _nfcService.onNFCEvent.listen((tagId) {
-      if (tagId != 'Error') {
-        Member? member = getMemberByNfcTag(tagId);
-
-        if (member != null) {
-          logCheckIn(member, checkInTime: DateTime.now());
-        } else {
-          print("Member not found or error in NFC scanning.");
-        }
-      }
-    });
-  }
-
-  void logCheckIn(Member member, {required DateTime checkInTime}) {
-    _recordCheckIn(member, checkInTime);
-  }
-
-  void logCheckOut(Member member, {required DateTime checkOutTime}) {
-    _recordCheckOut(member, checkOutTime);
-  }
-
-  void _recordCheckIn(Member member, DateTime checkInTime) {
-    final checkIn = CheckIn(
-      member: ToOne<Member>()
-        ..target = member,
-      checkInTime: checkInTime,
-    );
-    _checkInBox.put(checkIn);
-  }
-
-  void _recordCheckOut(Member member, DateTime checkOutTime) {
-    final checkOut = CheckOut(
-      member: ToOne<Member>()
-        ..target = member,
-      checkOutTime: checkOutTime,
-    );
-    _checkOutBox.put(checkOut);
   }
 
   Member? getMemberByNfcTag(String tagId) {
@@ -148,6 +108,7 @@ class ObjectBox {
       membershipStartDate: DateTime.now(),
       membershipEndDate: DateTime.now().add(const Duration(days: 30)),
       photoPath: 'dom.jpg',
+      checkedIn: false,
     );
     member1.membershipType.target =
     membershipTypes[faker.randomGenerator.integer(membershipTypes.length)];
@@ -163,6 +124,7 @@ class ObjectBox {
       membershipStartDate: DateTime.now(),
       membershipEndDate: DateTime.now().add(const Duration(days: 30)),
       photoPath: 'jayan.jpg',
+      checkedIn: false,
     );
     member2.membershipType.target =
     membershipTypes[faker.randomGenerator.integer(membershipTypes.length)];
@@ -196,6 +158,7 @@ class ObjectBox {
         membershipStartDate: membershipStartDate,
         membershipEndDate: membershipEndDate,
         photoPath: faker.image.image(),
+        checkedIn: false,
       );
 
       member.membershipType.target =
@@ -758,6 +721,119 @@ class ObjectBox {
 
     final adminRenewalLogs = query.find();
     return adminRenewalLogs;
+  }
+
+// Method to add an Attendance record
+
+  // Method to delete an Attendance record
+  Future<void> deleteAttendance(int id) async {
+    _attendanceBox.remove(id);
+  }
+
+  // Method to retrieve all Attendance records
+  List<Attendance> getAllAttendances() {
+    return _attendanceBox.getAll();
+  }
+
+  List<Attendance> getAttendancesForMember(int memberId) {
+    final query = _attendanceBox.query(Attendance_.memberId.equals(memberId)).build();
+    return query.find();
+  }
+
+
+  Future<List<Attendance>> getAttendanceForMember(int memberId) async {
+    final query = _attendanceBox.query(Attendance_.memberId.equals(memberId)).build();
+    return query.find();
+  }
+
+  void logCheckIn(int memberId, {required DateTime checkInTime}) async {
+    _store.runInTransaction(TxMode.write, () {
+      final member = _memberBox.get(memberId);
+
+      if (member != null && !member.checkedIn) {
+        final attendance = Attendance(
+          checkInTime: checkInTime,
+          memberId: memberId,
+        );
+
+        addAttendance(attendance);
+
+        member.checkedIn = true;
+        updateMember(member);
+      }
+    });
+  }
+
+  void addAttendance(Attendance attendance) {
+    _attendanceBox.put(attendance);
+  }
+
+
+
+  // Method to log check out for a member
+  Future<void> logCheckOut(int memberId, {required DateTime checkOutTime}) async {
+    final member = _memberBox.get(memberId);
+
+    if (member != null && member.checkedIn) {
+      final latestAttendance = getLatestAttendanceForMember(memberId);
+
+      if (latestAttendance != null && latestAttendance.checkOutTime == null) {
+        latestAttendance.checkOutTime = checkOutTime;
+        await updateAttendance(latestAttendance);
+
+        // Update the member's checkedIn status
+        member.checkedIn = false;
+        updateMember(member);
+      }
+    }
+  }
+
+  Future<List<Attendance>> fetchAttendanceForDay(DateTime date, DateTime endOfDay) async {
+    final startOfDay = DateTime(date.year, date.month, date.day, 0, 0, 0);
+    final endOfDay = DateTime(date.year, date.month, date.day, 23, 59, 59);
+
+    final query = _attendanceBox
+        .query(Attendance_.checkInTime.between(startOfDay.millisecondsSinceEpoch, endOfDay.millisecondsSinceEpoch))
+        .order(Attendance_.checkInTime, flags: Order.descending)
+        .build();
+    return query.find();
+  }
+
+
+  Attendance? getLatestAttendanceForMember(int memberId) {
+    final query = _attendanceBox.query(Attendance_.memberId.equals(memberId))
+        .order(Attendance_.checkInTime, flags: Order.descending)
+        .build();
+    final attendances = query.find();
+    return attendances.isNotEmpty ? attendances.first : null;
+  }
+
+
+  void updateLatestAttendanceForMember(int memberId, DateTime checkOutTime) {
+    getAttendanceForMember(memberId).then((attendances) {
+      if (attendances.isNotEmpty) {
+        final latestAttendance = attendances.reduce((a, b) =>
+        a.checkInTime.isAfter(b.checkInTime) ? a : b);
+
+        if (latestAttendance != null && latestAttendance.checkOutTime == null) {
+          latestAttendance.checkOutTime = checkOutTime;
+          updateAttendance(latestAttendance);
+        }
+      }
+    });
+  }
+
+  Future<void> updateAttendance(Attendance attendance) async {
+    // Fetch the existing attendance record from the database
+    Attendance? existingAttendance = _attendanceBox.get(attendance.id);
+
+    if (existingAttendance != null) {
+      // Update the checkOutTime in the fetched attendance record
+      existingAttendance.checkOutTime = attendance.checkOutTime;
+
+      // Put the updated attendance record back into the database
+      _attendanceBox.put(existingAttendance);
+    }
   }
 
 }

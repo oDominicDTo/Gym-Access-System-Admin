@@ -22,8 +22,8 @@ class _HomeAdminPageState extends State<HomeAdminPage> {
   int _selectedIndex = 0;
 
   final List<Widget> _screens = [
-    const HomePage(),
-    MembershipStatusChartPage(),
+    HomePage(),
+    const MembershipStatusChartPage(),
     const MemberInput(adminName: '',),
     const MemberListScreen(),
     const RenewalPage(adminName: '',),
@@ -128,6 +128,14 @@ class _HomeAdminPageState extends State<HomeAdminPage> {
               onGenerateRoute: (settings) {
                 return MaterialPageRoute(
                   builder: (_) => const FeedbackPage(),
+                );
+              },
+            )
+                : _selectedIndex == 0
+                ? Navigator(
+              onGenerateRoute: (settings) {
+                return MaterialPageRoute(
+                  builder: (_) => HomePage(),
                 );
               },
             )

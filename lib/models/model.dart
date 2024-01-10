@@ -50,6 +50,10 @@ class Member {
 
   String photoPath;
 
+  bool checkedIn = false;
+
+  final attendance = ToMany<Attendance>();
+
   Member(
       {this.id = 0,
       required this.firstName,
@@ -61,6 +65,7 @@ class Member {
       required this.nfcTagID,
       required this.membershipEndDate,
       required this.photoPath,
+        required this.checkedIn,
       DateTime? membershipStartDate,
       DateTime? dateCreated})
       : membershipStartDate = membershipStartDate ?? DateTime.now();
@@ -104,6 +109,51 @@ class Member {
     }
   }
 }
+@Entity()
+class Attendance {
+  @Id()
+  int id;
+
+  @Property(type: PropertyType.date)
+  DateTime checkInTime;
+
+  @Property(type: PropertyType.date)
+  DateTime? checkOutTime; // Nullable DateTime
+
+  @Property(type: PropertyType.int)
+  int memberId; // Member ID
+
+  Attendance({
+    this.id = 0,
+    required this.checkInTime,
+    DateTime? checkOutTime,
+    required this.memberId, // Member ID
+  }) : checkOutTime = checkOutTime ?? DateTime(2000); // Set default if null
+}
+
+
+@Entity()
+class MembershipType {
+  int id;
+
+  String typeName;
+  double fee;
+  double discount;
+  bool isLifetime;
+
+  MembershipType({
+    this.id = 0,
+    required this.typeName,
+    required this.fee,
+    required this.discount,
+    required this.isLifetime,
+  });
+  @override
+  String toString() {
+    return typeName; // Or any other representation you prefer
+  }
+}
+
 
 @Entity()
 class CheckIn {
@@ -144,27 +194,7 @@ class CheckOut {
 }
 
 
-@Entity()
-class MembershipType {
-  int id;
 
-  String typeName;
-  double fee;
-  double discount;
-  bool isLifetime;
-
-  MembershipType({
-    this.id = 0,
-    required this.typeName,
-    required this.fee,
-    required this.discount,
-    required this.isLifetime,
-  });
-  @override
-  String toString() {
-    return typeName; // Or any other representation you prefer
-  }
-}
 
 
 
@@ -291,3 +321,4 @@ class NewMemberLog {
     return DateFormat('MMM dd, yyyy').format(creationDate);
   }
 }
+

@@ -22,7 +22,7 @@ final _entities = <ModelEntity>[
   ModelEntity(
       id: const IdUid(1, 3748044336097075588),
       name: 'Member',
-      lastPropertyId: const IdUid(25, 5957749286008793752),
+      lastPropertyId: const IdUid(26, 345754059898093024),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
@@ -86,9 +86,19 @@ final _entities = <ModelEntity>[
             id: const IdUid(25, 5957749286008793752),
             name: 'photoPath',
             type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(26, 345754059898093024),
+            name: 'checkedIn',
+            type: 1,
             flags: 0)
       ],
-      relations: <ModelRelation>[],
+      relations: <ModelRelation>[
+        ModelRelation(
+            id: const IdUid(3, 6736217485813754610),
+            name: 'attendance',
+            targetId: const IdUid(18, 2081315261096462691))
+      ],
       backlinks: <ModelBacklink>[]),
   ModelEntity(
       id: const IdUid(5, 2984732517655358409),
@@ -402,6 +412,35 @@ final _entities = <ModelEntity>[
             flags: 0)
       ],
       relations: <ModelRelation>[],
+      backlinks: <ModelBacklink>[]),
+  ModelEntity(
+      id: const IdUid(18, 2081315261096462691),
+      name: 'Attendance',
+      lastPropertyId: const IdUid(4, 4123573638309648325),
+      flags: 0,
+      properties: <ModelProperty>[
+        ModelProperty(
+            id: const IdUid(1, 5317237823587812643),
+            name: 'id',
+            type: 6,
+            flags: 1),
+        ModelProperty(
+            id: const IdUid(2, 5230130202438955630),
+            name: 'memberId',
+            type: 5,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(3, 3352998470332577348),
+            name: 'checkInTime',
+            type: 10,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(4, 4123573638309648325),
+            name: 'checkOutTime',
+            type: 10,
+            flags: 0)
+      ],
+      relations: <ModelRelation>[],
       backlinks: <ModelBacklink>[])
 ];
 
@@ -425,9 +464,9 @@ Future<Store> openStore(
 ModelDefinition getObjectBoxModel() {
   final model = ModelInfo(
       entities: _entities,
-      lastEntityId: const IdUid(17, 911722525332705996),
-      lastIndexId: const IdUid(16, 6265988615060526806),
-      lastRelationId: const IdUid(2, 3094033825849941879),
+      lastEntityId: const IdUid(18, 2081315261096462691),
+      lastIndexId: const IdUid(18, 8367150605901343270),
+      lastRelationId: const IdUid(3, 6736217485813754610),
       lastSequenceId: const IdUid(0, 0),
       retiredEntityUids: const [
         2820634563096386653,
@@ -444,7 +483,9 @@ ModelDefinition getObjectBoxModel() {
         2120226973327850613,
         6947746077445817224,
         2348804463278203920,
-        6265988615060526806
+        6265988615060526806,
+        1963462599147352398,
+        8367150605901343270
       ],
       retiredPropertyUids: const [
         7215617545020444247,
@@ -514,7 +555,8 @@ ModelDefinition getObjectBoxModel() {
     Member: EntityDefinition<Member>(
         model: _entities[0],
         toOneRelations: (Member object) => [object.membershipType],
-        toManyRelations: (Member object) => {},
+        toManyRelations: (Member object) =>
+            {RelInfo<Member>.toMany(3, object.id): object.attendance},
         getId: (Member object) => object.id,
         setId: (Member object, int id) {
           object.id = id;
@@ -527,7 +569,7 @@ ModelDefinition getObjectBoxModel() {
           final emailOffset = fbb.writeString(object.email);
           final addressOffset = fbb.writeString(object.address);
           final photoPathOffset = fbb.writeString(object.photoPath);
-          fbb.startTable(26);
+          fbb.startTable(27);
           fbb.addInt64(0, object.id);
           fbb.addOffset(12, firstNameOffset);
           fbb.addOffset(13, lastNameOffset);
@@ -540,6 +582,7 @@ ModelDefinition getObjectBoxModel() {
           fbb.addInt64(22, object.membershipStartDate.millisecondsSinceEpoch);
           fbb.addInt64(23, object.membershipEndDate.millisecondsSinceEpoch);
           fbb.addOffset(24, photoPathOffset);
+          fbb.addBool(25, object.checkedIn);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -565,10 +608,13 @@ ModelDefinition getObjectBoxModel() {
                   .vTableGet(buffer, rootOffset, 40, ''),
               membershipEndDate: DateTime.fromMillisecondsSinceEpoch(const fb.Int64Reader().vTableGet(buffer, rootOffset, 50, 0)),
               photoPath: const fb.StringReader(asciiOptimization: true).vTableGet(buffer, rootOffset, 52, ''),
+              checkedIn: const fb.BoolReader().vTableGet(buffer, rootOffset, 54, false),
               membershipStartDate: DateTime.fromMillisecondsSinceEpoch(const fb.Int64Reader().vTableGet(buffer, rootOffset, 48, 0)));
           object.membershipType.targetId =
               const fb.Int64Reader().vTableGet(buffer, rootOffset, 34, 0);
           object.membershipType.attach(store);
+          InternalToManyAccess.setRelInfo<Member>(
+              object.attendance, store, RelInfo<Member>.toMany(3, object.id));
           return object;
         }),
     MembershipType: EntityDefinition<MembershipType>(
@@ -908,6 +954,40 @@ ModelDefinition getObjectBoxModel() {
                   .vTableGet(buffer, rootOffset, 14, 0));
 
           return object;
+        }),
+    Attendance: EntityDefinition<Attendance>(
+        model: _entities[10],
+        toOneRelations: (Attendance object) => [],
+        toManyRelations: (Attendance object) => {},
+        getId: (Attendance object) => object.id,
+        setId: (Attendance object, int id) {
+          object.id = id;
+        },
+        objectToFB: (Attendance object, fb.Builder fbb) {
+          fbb.startTable(5);
+          fbb.addInt64(0, object.id);
+          fbb.addInt32(1, object.memberId);
+          fbb.addInt64(2, object.checkInTime.millisecondsSinceEpoch);
+          fbb.addInt64(3, object.checkOutTime?.millisecondsSinceEpoch);
+          fbb.finish(fbb.endTable());
+          return object.id;
+        },
+        objectFromFB: (Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+          final checkOutTimeValue =
+              const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 10);
+          final object = Attendance(
+              id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
+              checkInTime: DateTime.fromMillisecondsSinceEpoch(
+                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 8, 0)),
+              checkOutTime: checkOutTimeValue == null
+                  ? null
+                  : DateTime.fromMillisecondsSinceEpoch(checkOutTimeValue),
+              memberId:
+                  const fb.Int32Reader().vTableGet(buffer, rootOffset, 6, 0));
+
+          return object;
         })
   };
 
@@ -961,6 +1041,14 @@ class Member_ {
   /// see [Member.photoPath]
   static final photoPath =
       QueryStringProperty<Member>(_entities[0].properties[11]);
+
+  /// see [Member.checkedIn]
+  static final checkedIn =
+      QueryBooleanProperty<Member>(_entities[0].properties[12]);
+
+  /// see [Member.attendance]
+  static final attendance =
+      QueryRelationToMany<Member, Attendance>(_entities[0].relations[0]);
 }
 
 /// [MembershipType] entity fields to define ObjectBox queries.
@@ -1166,4 +1254,23 @@ class NewMemberLog_ {
   /// see [NewMemberLog.membershipType]
   static final membershipType =
       QueryStringProperty<NewMemberLog>(_entities[9].properties[5]);
+}
+
+/// [Attendance] entity fields to define ObjectBox queries.
+class Attendance_ {
+  /// see [Attendance.id]
+  static final id =
+      QueryIntegerProperty<Attendance>(_entities[10].properties[0]);
+
+  /// see [Attendance.memberId]
+  static final memberId =
+      QueryIntegerProperty<Attendance>(_entities[10].properties[1]);
+
+  /// see [Attendance.checkInTime]
+  static final checkInTime =
+      QueryIntegerProperty<Attendance>(_entities[10].properties[2]);
+
+  /// see [Attendance.checkOutTime]
+  static final checkOutTime =
+      QueryIntegerProperty<Attendance>(_entities[10].properties[3]);
 }

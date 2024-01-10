@@ -21,8 +21,8 @@ class _HomeStaffPageState extends State<HomeStaffPage> {
   int _selectedIndex = 0;
 
   final List<Widget> _screens = [
-    const HomePage(),
-    MembershipStatusChartPage(),
+    HomePage(),
+    const MembershipStatusChartPage(),
     const MemberInput(
       adminName: '',
     ),

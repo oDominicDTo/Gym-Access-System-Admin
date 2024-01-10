@@ -4,8 +4,10 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import '../main.dart';
 
 class MembershipStatusChartPage extends StatefulWidget {
+  const MembershipStatusChartPage({super.key});
+
   @override
-  _MembershipStatusChartPageState createState() =>
+  State createState() =>
       _MembershipStatusChartPageState();
 }
 
@@ -28,14 +30,14 @@ class _MembershipStatusChartPageState extends State<MembershipStatusChartPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Membership Status Chart'),
+        title: const Text('Membership Status Chart'),
       ),
       body: membershipStatusData.isEmpty
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : SfCartesianChart(
-        primaryXAxis: CategoryAxis(),
+        primaryXAxis: const CategoryAxis(),
         series: _getChartSeries(),
-        legend: Legend(isVisible: true),
+        legend: const Legend(isVisible: true),
       ),
     );
   }
@@ -46,7 +48,7 @@ class _MembershipStatusChartPageState extends State<MembershipStatusChartPage> {
     // Extract the status types (Active, Expired, Inactive)
     final statusTypes = membershipStatusData.values.first.keys.toList();
 
-    statusTypes.forEach((statusType) {
+    for (var statusType in statusTypes) {
       final List<Map<String, String>> chartData = [];
 
       membershipStatusData.forEach((typeName, statusMap) {
@@ -62,7 +64,7 @@ class _MembershipStatusChartPageState extends State<MembershipStatusChartPage> {
         yValueMapper: (Map<String, String> data, _) => int.parse(data['Status']!),
         name: statusType,
       ));
-    });
+    }
 
     return chartSeries;
   }

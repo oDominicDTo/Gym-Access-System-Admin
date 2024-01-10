@@ -65,7 +65,10 @@ class NFCService {
     _nfcEventStream = null;
     _nfcSubscription = null;
   }
-
+  void dispose() {
+    disposeNFCListener();
+    // Add any other resource cleanup needed for NFCService
+  }
   String hexDump(List<int> data) {
     return data.map((byte) => byte.toRadixString(16).padLeft(2, '0')).join('');
   }

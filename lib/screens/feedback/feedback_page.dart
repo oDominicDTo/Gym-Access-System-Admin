@@ -87,10 +87,8 @@ class _FeedbackPageState extends State<FeedbackPage>{
                             child: CustomCardButton(
                               title: 'Feedback Analytics',
                               icon: Icons.analytics,
-                              onPressed: () {
-                                // Action for feedback analytics
-                              },
-                              iconColor: Colors.orange,
+                              onPressed: () {},
+                              iconColor: Colors.grey,  // Change the icon color to grey
                             ),
                           ),
                           const SizedBox(height: 16.0),
@@ -98,15 +96,13 @@ class _FeedbackPageState extends State<FeedbackPage>{
                             child: CustomCardButton(
                               title: 'Export Feedback',
                               icon: Icons.save_alt,
-                              onPressed: () {
-                                // Action for button 4
-                              },
-                              iconColor: Colors.green,
+                              onPressed: () {},
+                              iconColor: Colors.grey,  // Change the icon color to grey
                             ),
                           ),
                         ],
                       ),
-                    ),
+                    )
                   ],
                 ),
               ),

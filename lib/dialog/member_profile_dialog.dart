@@ -78,8 +78,8 @@ class MemberProfileDialog {
                             },
                           );
                         },
-                        icon: Icon(Icons.edit),
-                        label: Text('Edit'), // Empty text for no label
+                        icon: const Icon(Icons.edit),
+                        label: const Text('Edit'), // Empty text for no label
                       ),
                     ),
                     Positioned(
@@ -90,8 +90,8 @@ class MemberProfileDialog {
                           _showDeleteConfirmationDialog(
                               context, member, deleteMemberAndRefresh);
                         },
-                        icon: Icon(Icons.delete),
-                        label: Text('Delete'), // Empty text for no label
+                        icon: const Icon(Icons.delete),
+                        label: const Text('Delete'), // Empty text for no label
                       ),
                     ),
                   ],
