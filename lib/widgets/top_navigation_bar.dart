@@ -143,7 +143,7 @@ class _TopNavigationBarState extends State<TopNavigationBar> {
               ),
             ),
           ),
-          IconButton(
+        /*  IconButton(
             icon: const Icon(
               Icons.settings,
               color: Colors.black, // Customize the color as needed
@@ -176,7 +176,7 @@ class _TopNavigationBarState extends State<TopNavigationBar> {
                 ),
               )
             ],
-          ),
+          ),*/
           const SizedBox(width: 16), // Adjust the spacing as needed
         ],
       ),

@@ -59,6 +59,8 @@ dependencies:
   file_selector: ^1.0.1
   fl_chart: ^0.66.0
   syncfusion_flutter_charts: ^24.1.45
+  grpc: ^3.2.4
+  msix: ^3.16.7
 
 
 
@@ -75,6 +77,13 @@ dev_dependencies:
   flutter_lints: ^2.0.0
   build_runner: ^2.4.6
   objectbox_generator: any
+
+msix_config:
+  displayName: Gym Kiosk Admin
+  publisherDisplayName: Dominic John Tañas
+  identityName: com.dominic.gym_kiosk_admin
+  msixVersion: 1.0.0.0
+  logo: assets/images/binan_logo.png
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
