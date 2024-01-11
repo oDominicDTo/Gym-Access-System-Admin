@@ -136,7 +136,7 @@ class _MemberInputState extends State<MemberInput> {
                               if (value.length < 2) {
                                 return 'First Name should be at least 2 characters';
                               }
-                              if (!RegExp(r'^[a-zA-ZñÑ\s]+$').hasMatch(value)) {
+                              if (!RegExp(r"^[a-zA-ZñÑ\s']+$").hasMatch(value)) {
                                 return 'First Name should not contain special characters or numbers';
                               }
                               return null;
@@ -155,7 +155,7 @@ class _MemberInputState extends State<MemberInput> {
                               if (value.length < 2) {
                                 return 'Last Name should be at least 2 characters';
                               }
-                              if (!RegExp(r'^[a-zA-ZñÑ\s]+$').hasMatch(value)) {
+                              if (!RegExp(r"^[a-zA-ZñÑ\s']+$").hasMatch(value)) {
                                 return 'Last Name should not contain special characters or numbers';
                               }
 
