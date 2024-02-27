@@ -1,13 +1,13 @@
 import 'dart:io';
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:gym_kiosk_admin/objectbox.dart';
 import 'package:gym_kiosk_admin/screens/login_nfc.dart';
 import 'package:gym_kiosk_admin/widgets/admin_name_provider.dart';
 import 'package:window_size/window_size.dart';
 import 'package:gym_kiosk_admin/screens/admin/home_admin.dart';
 import 'package:gym_kiosk_admin/screens/staff/home_staff.dart';
 import 'package:gym_kiosk_admin/screens/superadmin/home_super_admin.dart';
+import 'objectbox.dart';
 
 
 late ObjectBox objectbox;
