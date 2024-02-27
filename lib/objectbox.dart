@@ -223,15 +223,20 @@ class ObjectBox {
     _memberBox.remove(id);
   }
 
-  // Retrieve all Members
   List<Member> getAllMembers() {
     return _memberBox.getAll();
   }
 
-  // Retrieve all Members asynchronously
-  Future<List<Member>> getAllMembersAsync() async {
-    return _memberBox.getAllAsync();
+  Stream<List<Member>> getAllMemberss() {
+    // Assuming _memberBox is an instance of Box<Member>
+    List<Member> members = _memberBox.getAll();
+
+    // Convert the list to a stream using Stream.fromIterable
+    return Stream.fromIterable([members]);
   }
+
+
+
 
   List<String> getAllMemberNames() {
     final members = _memberBox.getAll();
@@ -446,10 +451,7 @@ class ObjectBox {
     return _renewalLogBox.getAll();
   }
 
-  // Retrieve all RenewalLog entries asynchronously
-  Future<List<RenewalLog>> getAllRenewalLogsAsync() async {
-    return _renewalLogBox.getAllAsync();
-  }
+
 
   Future<List<RenewalLog>> getRenewalLogsForYear(int year) async {
     final startOfYear = DateTime(year, 1, 1);
@@ -535,10 +537,7 @@ class ObjectBox {
     return _feedbackBox.getAll();
   }
 
-  // Retrieve all Feedback entries asynchronously
-  Future<List<UserFeedback>> getAllFeedbackAsync() async {
-    return _feedbackBox.getAllAsync();
-  }
+
 
   Future<List<UserFeedback>> getFeedbackSortedByTimeUser(bool isUser) async {
     final query = _feedbackBox
@@ -616,9 +615,7 @@ class ObjectBox {
     return _newMemberLogBox.getAll();
   }
 
-  Future<List<NewMemberLog>> getAllNewMemberLogsAsync() async {
-    return _newMemberLogBox.getAllAsync();
-  }
+
 
   Future<List<NewMemberLog>> getNewMemberLogsForYear(int year) async {
     final startOfYear = DateTime(year, 1, 1);
@@ -678,9 +675,7 @@ class ObjectBox {
     return _adminRenewalLogBox.getAll();
   }
 
-  Future<List<AdminRenewalLog>> getAllAdminRenewalLogsAsync() async {
-    return _adminRenewalLogBox.getAllAsync();
-  }
+
 
   Future<List<AdminRenewalLog>> getAdminRenewalLogsForYear(int year) async {
     final startOfYear = DateTime(year, 1, 1);

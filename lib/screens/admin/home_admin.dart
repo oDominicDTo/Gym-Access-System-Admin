@@ -6,7 +6,6 @@ import 'package:gym_kiosk_admin/dialog/admin/management_page_admin.dart';
 import 'package:gym_kiosk_admin/screens/member_list_screen.dart';
 import 'package:gym_kiosk_admin/screens/membership_analytics.dart';
 import 'package:gym_kiosk_admin/widgets/top_navigation_bar.dart';
-
 import '../renew/renewal_page.dart';
 
 class HomeAdminPage extends StatefulWidget {
@@ -22,11 +21,11 @@ class _HomeAdminPageState extends State<HomeAdminPage> {
   int _selectedIndex = 0;
 
   final List<Widget> _screens = [
-    HomePage(),
+    const HomePage(),
     const MembershipStatusChartPage(),
-    const MemberInput(adminName: '',),
+    MemberInput(adminName: ''),
     const MemberListScreen(),
-    const RenewalPage(adminName: '',),
+    RenewalPage(adminName: ''),
     const ManagementPage(),
     const FeedbackPage(),
   ];
@@ -40,13 +39,8 @@ class _HomeAdminPageState extends State<HomeAdminPage> {
           NavigationRail(
             selectedIndex: _selectedIndex,
             onDestinationSelected: (int index) {
-              if (index == 4) {
-                setState(() {
-                  _selectedIndex = index;
-                });
-              } else if (index == 7) {
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                    '/', (Route<dynamic> route) => false);
+              if (index == 7) {
+                Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
               } else {
                 setState(() {
                   _selectedIndex = index;
@@ -57,91 +51,47 @@ class _HomeAdminPageState extends State<HomeAdminPage> {
             destinations: const [
               NavigationRailDestination(
                 icon: Icon(Icons.home_filled),
-                label: Text(
-                  'Home',
-                  style: TextStyle(fontFamily: 'Poppins'),
-                ),
+                label: Text('Home'),
               ),
               NavigationRailDestination(
                 icon: Icon(Icons.dashboard),
-                label: Text(
-                  'Overview',
-                  style: TextStyle(fontFamily: 'Poppins'),
-                ),
+                label: Text('Overview'),
               ),
               NavigationRailDestination(
                 icon: Icon(Icons.person_add),
-                label: Text(
-                  'Add Member',
-                  style: TextStyle(fontFamily: 'Poppins'),
-                ),
+                label: Text('Add Member'),
               ),
               NavigationRailDestination(
                 icon: Icon(Icons.list),
-                label: Text(
-                  'View Members',
-                  style: TextStyle(fontFamily: 'Poppins'),
-                ),
+                label: Text('View Members'),
               ),
               NavigationRailDestination(
                 icon: Icon(Icons.person),
-                label: Text(
-                  'Renew',
-                  style: TextStyle(fontFamily: 'Poppins'),
-                ),
+                label: Text('Renew'),
               ),
               NavigationRailDestination(
                 icon: Icon(Icons.build_outlined),
-                label: Text(
-                  'Management',
-                  style: TextStyle(fontFamily: 'Poppins'),
-                ),
+                label: Text('Management'),
               ),
               NavigationRailDestination(
                 icon: Icon(Icons.feedback_outlined),
-                label: Text(
-                  'Feedback',
-                  style: TextStyle(fontFamily: 'Poppins'),
-                ),
+                label: Text('Feedback'),
               ),
               NavigationRailDestination(
                 icon: Icon(Icons.logout_rounded),
-                label: Text(
-                  'Log Out',
-                  style: TextStyle(fontFamily: 'Poppins'),
-                ),
+                label: Text('Log Out'),
               ),
             ],
           ),
           const VerticalDivider(thickness: 1, width: 1),
           Expanded(
-            child: _selectedIndex == 4
-                ? Navigator(
+            child: Navigator(
               onGenerateRoute: (settings) {
                 return MaterialPageRoute(
-                  builder: (_) => RenewalPage(adminName: widget.adminName),
+                  builder: (context) => _screens[_selectedIndex],
                 );
               },
-            )
-                : _selectedIndex == 6
-                ? Navigator(
-              onGenerateRoute: (settings) {
-                return MaterialPageRoute(
-                  builder: (_) => const FeedbackPage(),
-                );
-              },
-            )
-                : _selectedIndex == 0
-                ? Navigator(
-              onGenerateRoute: (settings) {
-                return MaterialPageRoute(
-                  builder: (_) => HomePage(),
-                );
-              },
-            )
-                : _selectedIndex == 2 // Check for Add Member screen
-                ? MemberInput(adminName: widget.adminName) // Pass adminName here
-                : _screens[_selectedIndex],
+            ),
           ),
         ],
       ),

@@ -71,22 +71,28 @@ class _MembershipDurationPageState extends State<MembershipDurationPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  InkWell(
-                    onTap: () {
-                      setState(() {
-                        if (months > 1) months--;
-                      });
-                    },
-                    onHover: (hovering) {
-                      setState(() {
-                        isMinusButtonHovered = hovering;
-                      });
-                    },
-                    child: Icon(
-                      Icons.remove,
-                      color: isMinusButtonHovered ? Colors.purple : Colors.black,
+                  if (months > 1)
+                    InkWell(
+                      onTap: () {
+                        setState(() {
+                          if (months > 1) months--;
+                        });
+                      },
+                      onHover: (hovering) {
+                        setState(() {
+                          isMinusButtonHovered = hovering;
+                        });
+                      },
+                      child: Icon(
+                        Icons.remove,
+                        color: isMinusButtonHovered ? Colors.purple : Colors.black,
+                      ),
+                    )
+                  else
+                    const SizedBox( // Placeholder widget with the same size as the Icon
+                      width: 24, // Adjust the width as needed
+                      height: 24, // Adjust the height as needed
                     ),
-                  ),
                   Text(
                     months == 1 ? '1 month' : '$months months',
                     style: const TextStyle(fontSize: 48),
@@ -159,9 +165,9 @@ class _MembershipDurationPageState extends State<MembershipDurationPage> {
                     child: Text(
                       'Confirm',
                       style: TextStyle(
-                        color: isConfirmButtonHovered ? Colors.black : Colors.white,
-                        fontSize: 16,
-                        fontFamily: 'Poppins'// Adjust the font size here
+                          color: isConfirmButtonHovered ? Colors.black : Colors.white,
+                          fontSize: 16,
+                          fontFamily: 'Poppins'// Adjust the font size here
                       ),
                     ),
                   ),

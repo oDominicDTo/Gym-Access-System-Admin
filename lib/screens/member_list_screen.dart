@@ -17,7 +17,7 @@ class MemberListScreen extends StatefulWidget {
 class _MemberListScreenState extends State<MemberListScreen> {
   bool _sortAscending = true;
   int _sortColumnIndex =
-      1; // Initial sort column index (considering Name column)
+  1; // Initial sort column index (considering Name column)
   late String _searchQuery = '';
   List<Member> _membersData = [];
   List<Member> _displayedMembers = [];
@@ -180,22 +180,22 @@ class _MemberListScreenState extends State<MemberListScreen> {
                   color: Colors.black,
                 ),
                 label:
-                    const Text('Filter', style: TextStyle(color: Colors.black, fontFamily: 'Poppins')),
+                const Text('Filter', style: TextStyle(color: Colors.black, fontFamily: 'Poppins')),
               ),
             ),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 100.0),
                 child: SearchBarWidget(
-                    onChanged: (value) {
-                      setState(() {
-                        _searchQuery = value.toLowerCase();
-                        // Apply search query to the displayed members whenever the text changes
-                        _displayedMembers = _membersData.where((member) =>
-                            '${member.firstName} ${member.lastName}'
-                                .toLowerCase()
-                                .contains(_searchQuery)).toList();
-                      });
+                  onChanged: (value) {
+                    setState(() {
+                      _searchQuery = value.toLowerCase();
+                      // Apply search query to the displayed members whenever the text changes
+                      _displayedMembers = _membersData.where((member) =>
+                          '${member.firstName} ${member.lastName}'
+                              .toLowerCase()
+                              .contains(_searchQuery)).toList();
+                    });
                   },
                 ),
               ),
@@ -204,7 +204,7 @@ class _MemberListScreenState extends State<MemberListScreen> {
               padding: const EdgeInsets.only(right: 50),
               child: TextButton.icon(
                 onPressed: () {
-                exportPDF();
+                  exportPDF();
                 },
                 icon: const Icon(
                   Icons.file_download,
@@ -231,7 +231,7 @@ class _MemberListScreenState extends State<MemberListScreen> {
         ),
       ),
       body: StreamBuilder<List<Member>>(
-        stream: objectbox.getAllMembersAsync().asStream(),
+        stream: objectbox.getAllMemberss(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -310,7 +310,7 @@ class _MemberListScreenState extends State<MemberListScreen> {
       case 1: // Name column
         _sortByName(members, _sortAscending);
         break;
-      // Add cases for other columns if required
+    // Add cases for other columns if required
     }
     return members;
   }

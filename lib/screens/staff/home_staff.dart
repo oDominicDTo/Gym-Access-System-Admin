@@ -21,13 +21,15 @@ class _HomeStaffPageState extends State<HomeStaffPage> {
   int _selectedIndex = 0;
 
   final List<Widget> _screens = [
-    HomePage(),
+    const HomePage(),
     const MembershipStatusChartPage(),
     const MemberInput(
       adminName: '',
     ),
     const MemberListScreen(),
-    const RenewalPage(adminName: '',),
+    const RenewalPage(
+      adminName: '',
+    ),
     const FeedbackPage(),
   ];
 
@@ -91,13 +93,6 @@ class _HomeStaffPageState extends State<HomeStaffPage> {
                 ),
               ),
               NavigationRailDestination(
-                icon: Icon(Icons.build_outlined),
-                label: Text(
-                  'Management',
-                  style: TextStyle(fontFamily: 'Poppins'),
-                ),
-              ),
-              NavigationRailDestination(
                 icon: Icon(Icons.feedback_outlined),
                 label: Text(
                   'Feedback',
@@ -119,22 +114,23 @@ class _HomeStaffPageState extends State<HomeStaffPage> {
                 ? Navigator(
               onGenerateRoute: (settings) {
                 return MaterialPageRoute(
-                  builder: (_) => RenewalPage(adminName: widget.adminName),
+                  builder: (_) =>
+                      RenewalPage(adminName: widget.adminName),
                 );
               },
             )
-            : _selectedIndex == 5
+                : _selectedIndex == 5
                 ? Navigator(
-                    onGenerateRoute: (settings) {
-                      return MaterialPageRoute(
-                        builder: (_) => const FeedbackPage(),
-                      );
-                    },
-                  )
+              onGenerateRoute: (settings) {
+                return MaterialPageRoute(
+                  builder: (_) => const FeedbackPage(),
+                );
+              },
+            )
                 : _selectedIndex == 2 // Check for Add Member screen
-                    ? MemberInput(
-                        adminName: widget.adminName) // Pass adminName here
-                    : _screens[_selectedIndex],
+                ? MemberInput(
+                adminName: widget.adminName) // Pass adminName here
+                : _screens[_selectedIndex],
           ),
         ],
       ),
