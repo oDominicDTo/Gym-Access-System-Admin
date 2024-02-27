@@ -64,8 +64,12 @@ class _MembershipDurationPageState extends State<MembershipDurationPage> {
                         if (months > 1) months--;
                       });
                     },
-                    icon: Icon(Icons.remove, color: Colors.red),
-                  ),
+                    icon: const Icon(Icons.remove, color: Colors.red),
+                  )  else
+                    const SizedBox( // Placeholder widget with the same size as the Icon
+                      width: 24, // Adjust the width as needed
+                      height: 24, // Adjust the height as needed
+                    ),
                   Text(
                     months == 1 ? '1 month' : '$months months',
                     style: const TextStyle(fontSize: 48),
@@ -76,7 +80,7 @@ class _MembershipDurationPageState extends State<MembershipDurationPage> {
                         months++;
                       });
                     },
-                    icon: Icon(Icons.add, color: Colors.green),
+                    icon: const Icon(Icons.add, color: Colors.green),
                   ),
                 ],
               ),
@@ -115,7 +119,7 @@ class _MembershipDurationPageState extends State<MembershipDurationPage> {
                       return const BorderSide(color: Colors.black); // Black border when not hovered
                     }),
                   ),
-                  child: Text('Cancel', style: TextStyle(color: Colors.black, fontFamily: 'Poppins', fontWeight: FontWeight.bold)),
+                  child: const Text('Cancel', style: TextStyle(color: Colors.black, fontFamily: 'Poppins', fontWeight: FontWeight.bold)),
                 ),
                 const SizedBox(width: 40),
                 ElevatedButton(
@@ -182,6 +186,7 @@ class _MembershipDurationPageState extends State<MembershipDurationPage> {
                                               selectedMembershipType: widget.selectedMembershipType,
                                               adminName: widget.adminName,
                                               totalPrice: totalPrice,
+                                              months : months,
                                             ),
                                           ),
                                         );

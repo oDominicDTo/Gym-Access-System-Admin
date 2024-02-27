@@ -14,13 +14,14 @@ class CameraPage extends StatefulWidget {
   final Member newMember;
   final String adminName;
   final double totalPrice;
+  final int months;
 
   const CameraPage(
       {Key? key,
       required this.newMember,
       this.selectedMembershipType,
       required this.adminName,
-      required this.totalPrice})
+      required this.totalPrice, required this.months})
       : super(key: key);
 
   @override
@@ -153,6 +154,7 @@ class _CameraPageState extends State<CameraPage> {
             selectedMembershipType: widget.selectedMembershipType,
             adminName: widget.adminName,
             totalPrice: widget.totalPrice,
+            months : widget.months,
           ),
         ),
       );

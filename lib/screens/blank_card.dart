@@ -5,7 +5,7 @@ import 'package:lottie/lottie.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:gym_kiosk_admin/main.dart';
 import 'package:gym_kiosk_admin/models/model.dart';
-
+import 'package:gym_kiosk_admin/screens/preview_success.dart';
 import '../../services/nfc_service.dart';
 
 class InsertBlankCard extends StatefulWidget {
@@ -13,12 +13,13 @@ class InsertBlankCard extends StatefulWidget {
   final MembershipType? selectedMembershipType;
   final String adminName;
   final double totalPrice;
+  final int months;
   const InsertBlankCard(
       {Key? key,
         required this.newMember,
         this.selectedMembershipType,
         required this.adminName,
-        required this.totalPrice})
+        required this.totalPrice, required this.months})
       : super(key: key);
 
   @override
@@ -62,7 +63,7 @@ class _InsertBlankCardState extends State<InsertBlankCard> {
       objectbox.addMember(widget.newMember);
       objectbox.addNewMemberLog(newMemberLog); // Log the addition of the new member
 
-      _showSuccessDialog();
+      _showSuccessPage();
     } else {
       _showExistingTagDialog();
     }
@@ -88,38 +89,12 @@ class _InsertBlankCardState extends State<InsertBlankCard> {
     );
   }
 
-  void _showSuccessDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('NFC Tag Assigned'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Container(
-                padding: EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.green[100],
-                ),
-                child: Icon(Icons.check, size: 48, color: Colors.black),
-              ),
-              SizedBox(height: 16),
-              Text('NFC tag assigned successfully.'),
-            ],
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('OK'),
-              onPressed: () {
-                Navigator.of(context).pop();
-                Navigator.of(context).pop(); // Pop twice to go back to the first screen
-              },
-            ),
-          ],
-        );
-      },
+  void _showSuccessPage() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SuccessPage(member: widget.newMember, months: widget.months),
+      ),
     );
   }
 
