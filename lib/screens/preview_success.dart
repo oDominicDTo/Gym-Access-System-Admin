@@ -58,6 +58,12 @@ class SuccessPage extends StatelessWidget {
                         color: Colors.blue,
                       ),
                       _buildInfoRow(
+                        icon: Icons.label,
+                        label: 'Membership Type:',
+                        value: member.membershipType.target?.typeName ?? 'Unknown', // Access typeName from the target MembershipType object
+                        color: Colors.blue,
+                      ),
+                      _buildInfoRow(
                         icon: Icons.event,
                         label: 'Start Date:',
                         value: member.membershipStartDateFormat,
