@@ -142,7 +142,7 @@ class _MemberInputState extends State<MemberInput> {
                               return null;
                             },
                             isNameField:
-                                true, // Set the flag for the First Name field
+                            true, // Set the flag for the First Name field
                           ),
                           const SizedBox(width: 15),
                           _buildTextFormField(
@@ -162,7 +162,7 @@ class _MemberInputState extends State<MemberInput> {
                               return null;
                             },
                             isNameField:
-                                true, // Set the flag for the Last Name field
+                            true, // Set the flag for the Last Name field
                           ),
                         ],
                       ),
@@ -229,10 +229,7 @@ class _MemberInputState extends State<MemberInput> {
                                   content: Text(
                                     'Please select an Address',
                                     textAlign: TextAlign.center,
-                                    // Center align the text
-                                    style: TextStyle(
-                                        // Add additional styling if needed
-                                        ),
+                                    style: TextStyle(),
                                   ),
                                 ),
                               );
@@ -243,15 +240,13 @@ class _MemberInputState extends State<MemberInput> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => MembershipDurationPage(
-                                    selectedMembershipType:
-                                        selectedMembershipType,
+                                    selectedMembershipType: selectedMembershipType,
                                     firstName: firstNameController.text,
                                     lastName: lastNameController.text,
                                     contactNumber: contactNumberController.text,
                                     email: emailController.text,
                                     dateOfBirth: dobController.text,
-                                    address: selectedAddress ==
-                                            AddressSelection.other
+                                    address: selectedAddress == AddressSelection.other
                                         ? '$otherCity, $otherBarangay'
                                         : 'Biñan, $selectedBinanBarangay',
                                     onSaveMember: (Member newMember) {},
@@ -262,11 +257,22 @@ class _MemberInputState extends State<MemberInput> {
                             }
                           }
                         },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.black, // Set background color to black
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
+                            if (states.contains(MaterialState.hovered)) {
+                              return Colors.purple[100]!; // Light purple when hovered
+                            }
+                            return Colors.black; // Black when not hovered
+                          }),
+                          foregroundColor: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
+                            if (states.contains(MaterialState.hovered)) {
+                              return Colors.black; // Black when hovered
+                            }
+                            return Colors.white; // White when not hovered
+                          }),
                         ),
-                        child: const Text('Next', style: TextStyle(color: Colors.white)),
-                      ),
+                        child: const Text('Next'),
+                      )
                     ],
                   ),
                 ),
@@ -321,24 +327,24 @@ class _MemberInputState extends State<MemberInput> {
             keyboardType: keyboardType,
             inputFormatters: isNameField
                 ? [
-                    TextInputFormatter.withFunction((oldValue, newValue) {
-                      if (newValue.text.isNotEmpty) {
-                        final correctedText =
-                            newValue.text.toLowerCase().split(' ').map((word) {
-                          if (word.isNotEmpty) {
-                            return '${word[0].toUpperCase()}${word.substring(1)}';
-                          } else {
-                            return '';
-                          }
-                        }).join(' ');
-                        return TextEditingValue(
-                          text: correctedText,
-                          selection: newValue.selection,
-                        );
-                      }
-                      return newValue;
-                    }),
-                  ]
+              TextInputFormatter.withFunction((oldValue, newValue) {
+                if (newValue.text.isNotEmpty) {
+                  final correctedText =
+                  newValue.text.toLowerCase().split(' ').map((word) {
+                    if (word.isNotEmpty) {
+                      return '${word[0].toUpperCase()}${word.substring(1)}';
+                    } else {
+                      return '';
+                    }
+                  }).join(' ');
+                  return TextEditingValue(
+                    text: correctedText,
+                    selection: newValue.selection,
+                  );
+                }
+                return newValue;
+              }),
+            ]
                 : null,
           ),
         ],

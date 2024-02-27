@@ -171,6 +171,7 @@ class _SubmitFeedbackState extends State<SubmitFeedback> {
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.black, // Set background color to black
+                  minimumSize: Size(double.infinity, 50), // Set button height
                 ),
                 child: const Text('Submit', style: TextStyle(color: Colors.white, fontFamily: 'Poppins')),
               ),

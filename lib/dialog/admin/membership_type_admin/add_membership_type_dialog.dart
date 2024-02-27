@@ -61,17 +61,95 @@ class _AddMembershipTypeDialogState extends State<AddMembershipTypeDialog> {
       actions: [
         TextButton(
           onPressed: () {
-            final newType = MembershipType(
-              typeName: typeName,
-              fee: fee,
-              discount: discount,
-              isLifetime: isLifetime,
-            );
-            widget.onAdd(newType); // Send the new type back
-            Navigator.of(context).pop(); // Close the dialog
+            if (typeName.isEmpty) {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: const Text('Invalid Type Name', style: TextStyle(color: Colors.black, fontFamily: 'Poppins')),
+                    content: const Text('Type Name cannot be empty.'),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop(); // Close the dialog
+                        },
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
+                            if (states.contains(MaterialState.hovered)) {
+                              return Colors.purple[100]!; // Light purple when hovered
+                            }
+                            return Colors.black; // Black when not hovered
+                          }),
+                          foregroundColor: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
+                            if (states.contains(MaterialState.hovered)) {
+                              return Colors.black; // Black text when hovered
+                            }
+                            return Colors.white; // White text when not hovered
+                          }),
+                        ),
+                        child: const Text('OK', style: TextStyle(fontFamily: 'Poppins')),
+                      ),
+                    ],
+                  );
+                },
+              );
+            } else if (fee <= 0) {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: const Text('Invalid Fee', style: TextStyle(color: Colors.black, fontFamily: 'Poppins')),
+                    content: const Text('Fee must be greater than 0.'),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop(); // Close the dialog
+                        },
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
+                            if (states.contains(MaterialState.hovered)) {
+                              return Colors.purple[100]!; // Light purple when hovered
+                            }
+                            return Colors.black; // Black when not hovered
+                          }),
+                          foregroundColor: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
+                            if (states.contains(MaterialState.hovered)) {
+                              return Colors.black; // Black text when hovered
+                            }
+                            return Colors.white; // White text when not hovered
+                          }),
+                        ),
+                        child: const Text('OK', style: TextStyle(fontFamily: 'Poppins')),
+                      ),
+                    ],
+                  );
+                },
+              );
+
+            } else {
+              final newType = MembershipType(
+                typeName: typeName,
+                fee: fee,
+                discount: discount,
+                isLifetime: isLifetime,
+              );
+              widget.onAdd(newType); // Send the new type back
+              Navigator.of(context).pop(); // Close the dialog
+            }
           },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.black, // Set background color to black
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
+              if (states.contains(MaterialState.hovered)) {
+                return Colors.purple[100]!; // Light purple when hovered
+              }
+              return Colors.black; // Black when not hovered
+            }),
+            foregroundColor: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
+              if (states.contains(MaterialState.hovered)) {
+                return Colors.black; // Black text when hovered
+              }
+              return Colors.black; // White text when not hovered
+            }),
           ),
           child: const Text('Add', style: TextStyle(color: Colors.white, fontFamily: 'Poppins')),
         ),
@@ -79,3 +157,4 @@ class _AddMembershipTypeDialogState extends State<AddMembershipTypeDialog> {
     );
   }
 }
+

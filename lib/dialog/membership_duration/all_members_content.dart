@@ -166,7 +166,7 @@ class _AllMembersContentState extends State<AllMembersContent> {
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.black, // Set background color to black
                           ),
-                          child: const Text('OK', style: TextStyle(color: Colors.black, fontFamily: 'Poppins')),
+                          child: const Text('OK', style: TextStyle(color: Colors.white, fontFamily: 'Poppins')),
                         ),
                       ],
                     );

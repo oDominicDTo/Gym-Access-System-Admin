@@ -8,14 +8,18 @@ import 'package:gym_kiosk_admin/models/model.dart';
 
 import '../../services/nfc_service.dart';
 
-
-
 class InsertBlankCard extends StatefulWidget {
   final Member newMember;
   final MembershipType? selectedMembershipType;
   final String adminName;
   final double totalPrice;
-  const InsertBlankCard({Key? key, required this.newMember, this.selectedMembershipType, required this.adminName, required this.totalPrice}) : super(key: key);
+  const InsertBlankCard(
+      {Key? key,
+        required this.newMember,
+        this.selectedMembershipType,
+        required this.adminName,
+        required this.totalPrice})
+      : super(key: key);
 
   @override
   State<InsertBlankCard> createState() => _InsertBlankCardState();
@@ -63,6 +67,7 @@ class _InsertBlankCardState extends State<InsertBlankCard> {
       _showExistingTagDialog();
     }
   }
+
   void _showExistingTagDialog() {
     showDialog(
       context: context,
@@ -87,15 +92,35 @@ class _InsertBlankCardState extends State<InsertBlankCard> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return const AlertDialog(
+        return AlertDialog(
           title: Text('NFC Tag Assigned'),
-          content: Text('NFC tag assigned successfully.'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Container(
+                padding: EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.green[100],
+                ),
+                child: Icon(Icons.check, size: 48, color: Colors.black),
+              ),
+              SizedBox(height: 16),
+              Text('NFC tag assigned successfully.'),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.of(context).pop(); // Pop twice to go back to the first screen
+              },
+            ),
+          ],
         );
       },
     );
-    Future.delayed(const Duration(seconds: 2), () {
-      Navigator.of(context).popUntil((route) => route.isFirst);
-    });
   }
 
   @override
